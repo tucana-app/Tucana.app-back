@@ -1,12 +1,8 @@
 const db = require("../models");
 const emailController = require("./email.controller");
 const templateNewMessage = require("./EmailTemplates/newMessage");
-// const Ride = db.Ride;
-// const RideStatus = db.RideStatus;
 const User = db.User;
 const Driver = db.Driver;
-// const Bookings = db.Bookings;
-// const BookingStatus = db.BookingStatus;
 const Conversation = db.Conversation;
 const Message = db.Message;
 const MessageStatus = db.MessageStatus;
@@ -99,16 +95,13 @@ module.exports = {
       },
     })
       .then((conversation) => {
-        // No errors
-
         // Conversation found
         if (conversation) {
           res
             .status(200)
             .json({ conversationId: conversation.id, uuid: conversation.UUID });
         } else {
-          // Conversation found
-
+          // Conversation not found
           const uuid = uuidv4();
 
           Conversation.create({
@@ -116,7 +109,6 @@ module.exports = {
             UserId: userId,
             RideId: rideId,
             BookingId: bookingId,
-            archived: false,
             UUID: uuid,
           })
             .then((conversation) => {

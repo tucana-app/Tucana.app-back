@@ -31,11 +31,9 @@ module.exports = {
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        // console.log(error);
-        return res.status(400).json(error);
+        // console.log("Error:", error);
       } else {
-        // console.log("Email sent: " + info.response);
-        return res.status(200).json({ message: "Email sent" });
+        // console.log("Email sent: ", info.response);
       }
     });
   },

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       emailReminderRating.belongsTo(models.Ride, {
         onDelete: "NO ACTION",
       });
-      emailReminderRating.belongsTo(models.Bookings, {
+      emailReminderRating.belongsTo(models.Booking, {
         onDelete: "NO ACTION",
       });
     }

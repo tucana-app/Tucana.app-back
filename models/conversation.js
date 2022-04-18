@@ -20,10 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "NO ACTION",
       });
 
-      Conversation.belongsTo(models.Bookings, {
-        onDelete: "NO ACTION",
-      });
-
       Conversation.hasMany(models.Message, {
         onDelete: "NO ACTION",
       });
@@ -34,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
       DriverId: DataTypes.INTEGER,
       UserId: DataTypes.INTEGER,
       RideId: DataTypes.INTEGER,
-      BookingId: DataTypes.INTEGER,
       archived: DataTypes.BOOLEAN,
       UUID: DataTypes.UUID,
     },

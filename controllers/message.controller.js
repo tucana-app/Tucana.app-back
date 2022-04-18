@@ -21,7 +21,7 @@ module.exports = {
     return Conversation.findAll({
       where: {
         [Op.or]: [
-          // Look for one of the combinaise for driver/user
+          // Look for one of the combinaison for driver/user
           { DriverId: req.query.userId },
           { UserId: req.query.userId },
         ],
@@ -83,7 +83,7 @@ module.exports = {
   },
 
   startConversation(req, res) {
-    const { driverId, userId, rideId, bookingId } = req.body;
+    const { driverId, userId, rideId } = req.body;
 
     return Conversation.findOne({
       where: {
@@ -108,7 +108,6 @@ module.exports = {
             DriverId: driverId,
             UserId: userId,
             RideId: rideId,
-            BookingId: bookingId,
             UUID: uuid,
           })
             .then((conversation) => {
@@ -124,7 +123,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
         res.status(400).json({
           errorMessage,
           errorCode: 1,

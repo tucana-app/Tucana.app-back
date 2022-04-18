@@ -7,7 +7,7 @@ const User = db.User;
 const Ride = db.Ride;
 const Driver = db.Driver;
 const RideStatus = db.RideStatus;
-const Bookings = db.Bookings;
+const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const PassengerRating = db.PassengerRating;
 const DriverRating = db.DriverRating;
@@ -117,7 +117,7 @@ module.exports = {
   },
 
   adminSingleRideAllBookings(req, res) {
-    return Bookings.findAll({
+    return Booking.findAll({
       where: {
         RideId: req.query.rideId,
       },
@@ -191,7 +191,7 @@ module.exports = {
             model: Ride,
           },
           {
-            model: Bookings,
+            model: Booking,
           },
           {
             model: Driver,
@@ -262,7 +262,7 @@ module.exports = {
             model: Ride,
           },
           {
-            model: Bookings,
+            model: Booking,
           },
           {
             model: Driver,

@@ -4,7 +4,7 @@ const RideFeedback = db.RideFeedback;
 const RideStatus = db.RideStatus;
 const User = db.User;
 const Driver = db.Driver;
-const Bookings = db.Bookings;
+const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const Op = db.Sequelize.Op;
 require("dotenv").config;
@@ -124,7 +124,7 @@ module.exports = {
   },
 
   getBooking(req, res) {
-    return Bookings.findOne({
+    return Booking.findOne({
       where: {
         id: req.params.bookingId,
       },
@@ -181,7 +181,7 @@ module.exports = {
   },
 
   getDriverBookings(req, res) {
-    return Bookings.findAll({
+    return Booking.findAll({
       where: {
         DriverId: req.query.userId,
       },
@@ -262,7 +262,7 @@ module.exports = {
     if (req.body.formValues.seatsNeeded === 0) {
       res.status(400).json({ message: "How many seats do you need?" });
     } else {
-      return Bookings.create({
+      return Booking.create({
         UserId: req.body.userId,
         RideId: req.body.rideId,
         DriverId: req.body.driverId,
@@ -309,7 +309,7 @@ module.exports = {
     } else {
       // if booking accepted by driver
       if (newStatus === 3) {
-        return Bookings.update(
+        return Booking.update(
           {
             commentDriver: comment,
             BookingStatusId: newStatus,
@@ -353,7 +353,7 @@ module.exports = {
 
       //if booking refused by driver
       if (newStatus === 4) {
-        return Bookings.update(
+        return Booking.update(
           {
             commentDriver: comment,
             BookingStatusId: newStatus,
@@ -379,7 +379,7 @@ module.exports = {
   },
 
   getUserBookingRide(req, res) {
-    return Bookings.findAll({
+    return Booking.findAll({
       where: {
         UserId: req.query.userId,
         RideId: req.query.rideId,
@@ -401,7 +401,7 @@ module.exports = {
   },
 
   getDriverBookingRide(req, res) {
-    return Bookings.findAll({
+    return Booking.findAll({
       where: {
         DriverId: req.query.driverId,
         RideId: req.query.rideId,
@@ -462,7 +462,7 @@ module.exports = {
   },
 
   getDriverNewRidesRequests(req, res) {
-    return Bookings.findAndCountAll({
+    return Booking.findAndCountAll({
       where: {
         BookingStatusId: 1,
         DriverId: req.query.driverId,
@@ -537,7 +537,7 @@ module.exports = {
   },
 
   getPassengerBookingsResponses(req, res) {
-    return Bookings.findAndCountAll({
+    return Booking.findAndCountAll({
       where: {
         UserId: req.query.userId,
         [Op.or]: [{ BookingStatusId: 3 }, { BookingStatusId: 4 }],
@@ -618,7 +618,7 @@ module.exports = {
   },
 
   getUserBookings(req, res) {
-    return Bookings.findAll({
+    return Booking.findAll({
       where: {
         UserId: req.query.userId,
       },
@@ -666,7 +666,7 @@ module.exports = {
   },
 
   getPassengers(req, res) {
-    return Bookings.findAll({
+    return Booking.findAll({
       where: {
         RideId: req.query.rideId,
         BookingStatusId: {
@@ -701,7 +701,7 @@ module.exports = {
     let ridesToFeedback = [];
 
     (async function () {
-      let bookings = await Bookings.findAll({
+      let bookings = await Booking.findAll({
         where: {
           [Op.or]: {
             UserId: userId,
@@ -721,7 +721,7 @@ module.exports = {
               },
               include: [
                 {
-                  model: Bookings,
+                  model: Booking,
                   include: [
                     {
                       model: User,

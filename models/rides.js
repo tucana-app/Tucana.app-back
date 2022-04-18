@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "NO ACTION",
       });
 
-      Ride.hasOne(models.Bookings, {
+      Ride.hasOne(models.Booking, {
         onDelete: "NO ACTION",
       });
 

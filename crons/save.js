@@ -45,7 +45,7 @@ const checkRideStatus = () => {
           // If no booking were made on the ride
           if (ride.seatsAvailable !== ride.seatsLeft) {
             // The ride has had bookings, next step is to get the accepted booking (3)
-            return Bookings.findAll({
+            return Booking.findAll({
               where: {
                 RideId: ride.id,
                 BookingStatusId: 3,

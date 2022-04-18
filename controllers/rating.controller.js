@@ -5,7 +5,7 @@ const User = db.User;
 const Driver = db.Driver;
 const Ride = db.Ride;
 const RideFeedback = db.RideFeedback;
-const Bookings = db.Bookings;
+const Booking = db.Booking;
 const Op = db.Sequelize.Op;
 require("dotenv").config;
 
@@ -17,7 +17,7 @@ module.exports = {
     let ratingsToDoPassenger = [];
 
     (async function () {
-      let bookings = await Bookings.findAll({
+      let bookings = await Booking.findAll({
         where: {
           UserId: userId,
           BookingStatusId: 3, // accepted
@@ -34,7 +34,7 @@ module.exports = {
               },
               include: [
                 {
-                  model: Bookings,
+                  model: Booking,
                   include: [
                     {
                       model: User,
@@ -112,7 +112,7 @@ module.exports = {
     let ratingsToDoDriver = [];
 
     (async function () {
-      let bookings = await Bookings.findAll({
+      let bookings = await Booking.findAll({
         where: {
           DriverId: userId,
           BookingStatusId: 3, // accepted
@@ -129,7 +129,7 @@ module.exports = {
               },
               include: [
                 {
-                  model: Bookings,
+                  model: Booking,
                   include: [
                     {
                       model: User,

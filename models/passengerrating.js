@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "NO ACTION",
       });
 
-      PassengerRating.belongsTo(models.Bookings, {
+      PassengerRating.belongsTo(models.Booking, {
         onDelete: "NO ACTION",
       });
     }

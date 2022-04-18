@@ -23,11 +23,6 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      BookingId: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-      },
       UUID: {
         type: Sequelize.UUID,
         allowNull: false,

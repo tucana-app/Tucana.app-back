@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "NO ACTION",
       });
 
-      RideFeedback.belongsTo(models.Bookings, {
+      RideFeedback.belongsTo(models.Booking, {
         onDelete: "NO ACTION",
       });
 

@@ -163,6 +163,9 @@ module.exports = {
                 },
               ],
             },
+            {
+              model: RideStatus,
+            },
           ],
         },
         {
@@ -290,11 +293,7 @@ module.exports = {
     emailsFound = findEmails(comment);
     messageConverted = convert(comment);
 
-    if (comment.length === 0) {
-      res.status(401).json({
-        message: "Your message cannot be empty",
-      });
-    } else if (linksFound && linksFound.length > 0) {
+    if (linksFound && linksFound.length > 0) {
       res.status(401).json({
         message: "Do not include links in your comment",
       });

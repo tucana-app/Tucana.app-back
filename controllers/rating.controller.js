@@ -280,7 +280,7 @@ module.exports = {
       .then((rating) => {
         // console.log(conversations);
         res.status(201).json({
-          message: "Rating submitted for review by an moderator",
+          message: "Rating submitted for review by a moderator",
           flag: "SUCCESS",
         });
       })
@@ -304,7 +304,7 @@ module.exports = {
       .then((rating) => {
         // console.log(conversations);
         res.status(201).json({
-          message: "Rating submitted for review by an moderator",
+          message: "Rating submitted for review by a moderator",
           flag: "SUCCESS",
         });
       })

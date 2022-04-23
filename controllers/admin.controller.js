@@ -16,19 +16,6 @@ const admin_VerifDriverRating = db.admin_VerifDriverRating;
 
 const errorMessage = { message: "A problem occured with this request" };
 
-const transporter = nodemailer.createTransport({
-  host: "mail.privateemail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_ADDRESS,
-    pass: process.env.EMAIL_PASSWORD,
-  },
-  tls: {
-    ciphers: "SSLv3",
-  },
-});
-
 module.exports = {
   adminListUsers(req, res) {
     return User.findAll()
@@ -147,26 +134,6 @@ module.exports = {
         // console.log(error);
         res.status(400).json(errorMessage);
       });
-  },
-
-  adminSendTestEmail(req, res) {
-    var mailOptions = {
-      from: `Ride.CR <${process.env.EMAIL_ADDRESS}>`,
-      to: `${req.query.email}`,
-      subject: "Test email",
-      text: "Hi. This is an email sent from the admin panel of Ride.CR | Please do not answer back to this email",
-      html: "Hi. This is an email sent from the admin panel of Ride.CR | Please do not answer back to this email",
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        // console.log(error);
-        return res.status(400).json(errorMessage);
-      } else {
-        // console.log("Email sent: " + info.response);
-        return res.status(200).json({ message: "Email sent" });
-      }
-    });
   },
 
   getPassengersRatings(req, res) {

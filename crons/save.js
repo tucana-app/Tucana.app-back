@@ -96,7 +96,7 @@ const checkRideStatus = () => {
                                   .then((user) => {
                                     if (user) {
                                       // Send the reminder email
-                                      emailController.sendEmailBasic(
+                                      emailController.sendEmail(
                                         user,
                                         templateReminderRatingToPassenger.reminderRatingToPassenger(
                                           {
@@ -185,7 +185,7 @@ const checkRideStatus = () => {
                                   .then((user) => {
                                     if (user) {
                                       // Send the reminder email
-                                      emailController.sendEmailBasic(
+                                      emailController.sendEmail(
                                         user,
                                         templateReminderRatingToDriver.reminderRatingToDriver(
                                           {

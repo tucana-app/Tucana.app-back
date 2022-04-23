@@ -7,9 +7,11 @@ const Driver = db.Driver;
 const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const Op = db.Sequelize.Op;
+const emailController = require("./email.controller");
+const templates = require("./EmailTemplates/");
 require("dotenv").config;
 
-const { findEmails, findPhones, findLinks } = require("./functions/functions");
+const { findEmails, findPhones, findLinks } = require("./helpers");
 const { convert } = require("html-to-text");
 
 const errorMessage = { message: "A problem occured with this request" };
@@ -40,18 +42,18 @@ module.exports = {
   },
 
   addRide(req, res) {
-    const { comment } = req.body.formValues;
+    const { user, formValues } = req.body;
 
-    linksFound = findLinks(comment);
-    phonesFound = findPhones(comment);
-    emailsFound = findEmails(comment);
-    messageConverted = convert(comment);
+    linksFound = findLinks(formValues.comment);
+    phonesFound = findPhones(formValues.comment);
+    emailsFound = findEmails(formValues.comment);
+    messageConverted = convert(formValues.comment);
 
     if (linksFound && linksFound.length > 0) {
       res.status(401).json({
         message: "Do not include links in your comment",
       });
-    } else if (phonesFound.length > 0) {
+    } else if (phonesFound && phonesFound.length > 0) {
       res.status(401).json({
         message: "Do not include phone numbers in your comment",
       });
@@ -61,21 +63,24 @@ module.exports = {
       });
     } else {
       return Ride.create({
-        DriverId: req.body.userId,
-        cityOrigin: req.body.formValues.cityOrigin,
-        provinceOrigin: req.body.formValues.provinceOrigin,
-        cityDestination: req.body.formValues.cityDestination,
-        provinceDestination: req.body.formValues.provinceDestination,
-        dateTime: req.body.formValues.dateTime,
-        seatsAvailable: req.body.formValues.seatsAvailable,
-        seatsLeft: req.body.formValues.seatsAvailable,
-        comment,
+        DriverId: user.id,
+        cityOrigin: formValues.cityOrigin,
+        provinceOrigin: formValues.provinceOrigin,
+        cityDestination: formValues.cityDestination,
+        provinceDestination: formValues.provinceDestination,
+        dateTime: formValues.dateTime,
+        seatsAvailable: formValues.seatsAvailable,
+        seatsLeft: formValues.seatsAvailable,
+        comment: formValues.comment,
       })
-        .then((response) => {
-          // console.log(response);
+        .then((ride) => {
+          // console.log(ride);
+
           res
-            .status(201)
+            .status(400)
             .json({ message: "You ride has been successfully added" });
+
+          emailController.sendEmail(user, templates.offerRide(ride));
         })
         .catch((error) => {
           console.log(error);

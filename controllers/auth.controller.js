@@ -1,9 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const emailController = require("./email.controller");
-const templateSignup = require("./EmailTemplates/signup");
-const templateForgotPassword = require("./EmailTemplates/forgotPassword");
-const templateResetPasswordSuccess = require("./EmailTemplates/resetPasswordSuccess");
+const emailTemplate = require("./EmailTemplates/");
 const validator = require("validator");
 const User = db.User;
 const Driver = db.Driver;
@@ -38,12 +36,12 @@ module.exports = {
           UUID: uuidv4(),
         })
           .then((confirmEmailLine) => {
-            emailController.sendEmailBasic(
-              user,
-              templateSignup.confirmSignup(confirmEmailLine.UUID)
-            );
-
             res.status(201).send({ message: "Sign up successful" });
+
+            emailController.sendEmail(
+              user,
+              emailTemplate.confirmSignup(confirmEmailLine.UUID)
+            );
           })
           .catch((error) => {
             res.status(400).send({ message: "An error occured" });
@@ -313,15 +311,15 @@ module.exports = {
                     }
                   )
                     .then((response) => {
-                      emailController.sendEmailBasic(
-                        user,
-                        templateForgotPassword.forgotPassword(line.UUID)
-                      );
-
                       res.status(200).send({
                         message:
                           "If your email address exists, please verify your inbox for a password reset link email",
                       });
+
+                      emailController.sendEmail(
+                        user,
+                        emailTemplate.forgotPassword(line.UUID)
+                      );
                     })
                     .catch((error) => {
                       // console.log(error);
@@ -338,15 +336,15 @@ module.exports = {
                   UUID: uuidv4(),
                 })
                   .then((newLine) => {
-                    emailController.sendEmailBasic(
-                      user,
-                      templateForgotPassword.forgotPassword(newLine.UUID)
-                    );
-
                     res.status(201).send({
                       message:
                         "If your email address exists, please verify your inbox for a password reset link email",
                     });
+
+                    emailController.sendEmail(
+                      user,
+                      emailTemplate.forgotPassword(newLine.UUID)
+                    );
                   })
                   .catch((error) => {
                     // console.log(error);
@@ -427,17 +425,15 @@ module.exports = {
                       },
                     })
                       .then((user) => {
-                        emailController.sendEmailBasic(
-                          user,
-                          templateResetPasswordSuccess.resetPasswordSuccess(
-                            user
-                          )
-                        );
-
                         res.status(200).send({
                           message: "Your password has been successfully reset",
                           flag: "RESET_PASSWORD_SUCCESS",
                         });
+
+                        emailController.sendEmail(
+                          user,
+                          emailTemplate.resetPasswordSuccess(user)
+                        );
                       })
                       .catch((error) => {
                         // console.log(error);
@@ -501,16 +497,16 @@ module.exports = {
                   flag: "NO_CONFIRMATION",
                 });
               } else {
-                emailController.sendEmailBasic(
-                  user,
-                  templateSignup.confirmSignup(confirmation.UUID)
-                );
-
                 res.status(200).send({
                   message:
                     "We have resent you the confirmation link over email",
                   flag: "SUCCESS",
                 });
+
+                emailController.sendEmail(
+                  user,
+                  emailTemplate.confirmSignup(confirmation.UUID)
+                );
               }
             })
             .catch((error) => {

@@ -1,6 +1,6 @@
 const db = require("../models");
 const emailController = require("./email.controller");
-const templateNewMessage = require("./EmailTemplates/newMessage");
+const emailTemplate = require("./EmailTemplates/");
 const User = db.User;
 const Driver = db.Driver;
 const Conversation = db.Conversation;
@@ -10,7 +10,7 @@ const Op = db.Sequelize.Op;
 const { convert } = require("html-to-text");
 require("dotenv").config;
 
-const { findEmails, findPhones, findLinks } = require("./functions/functions");
+const { findEmails, findPhones, findLinks } = require("./helpers");
 
 const { v4: uuidv4 } = require("uuid");
 
@@ -175,14 +175,11 @@ module.exports = {
               },
             })
               .then((user) => {
-                emailController.sendEmailBasic(
-                  user,
-                  templateNewMessage.newMessage()
-                );
+                emailController.sendEmail(user, emailTemplate.newMessage());
               })
               .catch((error) => {
                 // Couldn't find user
-                console.log(error);
+                // console.log(error);
                 res.status(400).json(errorMessage);
               });
           })

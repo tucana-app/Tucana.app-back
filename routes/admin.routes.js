@@ -20,8 +20,6 @@ module.exports = (app) => {
     controller.adminSingleRideAllBookings
   );
 
-  app.get("/api/admin/send-test-email", controller.adminSendTestEmail);
-
   app.get("/api/admin/get-passengers-ratings", controller.getPassengersRatings);
 
   app.get("/api/admin/get-drivers-ratings", controller.getDriversRatings);

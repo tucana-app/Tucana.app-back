@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "NO ACTION",
       });
 
+      Driver.hasMany(models.Booking, {
+        onDelete: "NO ACTION",
+      });
+
       Driver.hasMany(models.Conversation, {
         onDelete: "NO ACTION",
       });

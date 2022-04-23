@@ -5,6 +5,13 @@ const reminderRatingToDriver = require("./reminderRatingToDriver");
 const reminderRatingToPassenger = require("./reminderRatingToPassenger");
 const offerRide = require("./offerRide");
 const newMessage = require("./newMessage");
+const acceptedByDriver = require("./acceptedByDriver");
+const acceptedToUser = require("./acceptedToUser");
+const bookRideByUser = require("./bookRideByUser");
+const bookRideToDriver = require("./bookRideToDriver");
+const refusedByDriver = require("./refusedByDriver");
+const refusedToUser = require("./refusedToUser");
+const signupConfirmed = require("./signupConfirmed");
 
 module.exports = {
   confirmSignup,
@@ -14,4 +21,11 @@ module.exports = {
   reminderRatingToPassenger,
   offerRide,
   newMessage,
+  acceptedByDriver,
+  acceptedToUser,
+  bookRideByUser,
+  bookRideToDriver,
+  refusedByDriver,
+  refusedToUser,
+  signupConfirmed,
 };

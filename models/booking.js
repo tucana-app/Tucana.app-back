@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "NO ACTION",
       });
 
+      Booking.belongsTo(models.Driver, {
+        onDelete: "NO ACTION",
+      });
+
       Booking.belongsTo(models.Ride, {
         onDelete: "NO ACTION",
       });

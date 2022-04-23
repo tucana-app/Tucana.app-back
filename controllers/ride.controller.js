@@ -77,7 +77,7 @@ module.exports = {
           // console.log(ride);
 
           res
-            .status(400)
+            .status(200)
             .json({ message: "You ride has been successfully added" });
 
           emailController.sendEmail(user, templates.offerRide(ride));
@@ -157,7 +157,6 @@ module.exports = {
                   model: User,
                   attributes: {
                     exclude: [
-                      "email",
                       "biography",
                       "password",
                       "phoneNumber",
@@ -267,20 +266,31 @@ module.exports = {
   },
 
   bookRide(req, res) {
-    if (req.body.formValues.seatsNeeded === 0) {
+    const { passenger, ride, formValues } = req.body;
+
+    if (formValues.seatsNeeded === 0) {
       res.status(400).json({ message: "How many seats do you need?" });
     } else {
       return Booking.create({
-        UserId: req.body.userId,
-        RideId: req.body.rideId,
-        DriverId: req.body.driverId,
-        seatsBooked: req.body.formValues.seatsNeeded,
+        UserId: passenger.id,
+        RideId: ride.id,
+        DriverId: ride.DriverId,
+        seatsBooked: formValues.seatsNeeded,
       })
-        .then((response) => {
+        .then((booking) => {
           // console.log(response);
           res
             .status(201)
             .json({ message: "Your booking has been submitted to the driver" });
+
+          emailController.sendEmail(
+            passenger,
+            templates.bookRideByUser(ride, formValues)
+          );
+          emailController.sendEmail(
+            ride.Driver.User,
+            templates.bookRideToDriver(ride, passenger, formValues)
+          );
         })
         .catch((error) => {
           // console.log(error);
@@ -290,13 +300,12 @@ module.exports = {
   },
 
   driverResponseBooking(req, res) {
-    const { comment, newStatus, bookingId, newSeatsAvailable, rideId } =
-      req.body.formValues;
+    const { booking, formValues } = req.body;
 
-    linksFound = findLinks(comment);
-    phonesFound = findPhones(comment);
-    emailsFound = findEmails(comment);
-    messageConverted = convert(comment);
+    linksFound = findLinks(formValues.comment);
+    phonesFound = findPhones(formValues.comment);
+    emailsFound = findEmails(formValues.comment);
+    messageConverted = convert(formValues.comment);
 
     if (linksFound && linksFound.length > 0) {
       res.status(401).json({
@@ -312,59 +321,65 @@ module.exports = {
       });
     } else {
       // if booking accepted by driver
-      if (newStatus === 3) {
+      if (formValues.newStatus === 3) {
         return Booking.update(
           {
-            commentDriver: comment,
-            BookingStatusId: newStatus,
+            commentDriver: formValues.comment,
+            BookingStatusId: formValues.newStatus,
           },
           {
             where: {
-              id: bookingId,
+              id: booking.id,
             },
           }
-        ).then((response) => {
-          return Ride.update(
-            {
-              seatsLeft: newSeatsAvailable,
-            },
-            {
-              where: {
-                id: rideId,
+        )
+          .then((response) => {
+            return Ride.update(
+              {
+                seatsLeft: formValues.newSeatsAvailable,
               },
-            }
-          )
-            .then((response) => {
-              // console.log(response);
+              {
+                where: {
+                  id: formValues.rideId,
+                },
+              }
+            )
+              .then((response) => {
+                // console.log(response);
 
-              res
-                .status(200)
-                .send({
+                res.status(200).send({
                   message: "You have accepted the booking",
-                  newStatus,
-                })
-                .catch((error) => {
-                  // console.log(error);
-                  res.status(400).json(error);
+                  formValues: formValues.newStatus,
                 });
-            })
-            .catch((error) => {
-              // console.log(error);
-              res.status(400).json(error);
-            });
-        });
-      }
 
-      //if booking refused by driver
-      if (newStatus === 4) {
+                emailController.sendEmail(
+                  booking.User,
+                  templates.acceptedToUser(booking, formValues)
+                );
+                emailController.sendEmail(
+                  booking.Ride.Driver.User,
+                  templates.acceptedByDriver(booking)
+                );
+              })
+              .catch((error) => {
+                // console.log(error);
+                res.status(400).json(error);
+              });
+          })
+          .catch((error) => {
+            // console.log(error);
+            res.status(400).json(error);
+          });
+      } else if (formValues.newStatus === 4) {
+        //if booking refused by driver
         return Booking.update(
           {
-            commentDriver: comment,
-            BookingStatusId: newStatus,
+            commentDriver: formValues.comment,
+            BookingStatusId: formValues.newStatus,
           },
           {
             where: {
-              id: bookingId,
+              id: formValues.bookingId,
             },
           }
         )
@@ -372,12 +387,26 @@ module.exports = {
             // console.log(response);
             res
               .status(200)
-              .send({ message: "You have refused this booking", newStatus });
+              .send({
+                message: "You have refused this booking",
+                formValues: formValues.newStatus,
+              });
+
+            emailController.sendEmail(
+              booking.User,
+              templates.refusedToUser(booking, formValues)
+            );
+            emailController.sendEmail(
+              booking.Ride.Driver.User,
+              templates.refusedByDriver(booking)
+            );
           })
           .catch((error) => {
             // console.log(error);
             res.status(400).json(error);
           });
+      } else {
+        return res.status(400).json({});
       }
     }
   },

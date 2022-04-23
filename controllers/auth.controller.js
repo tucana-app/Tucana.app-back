@@ -54,12 +54,14 @@ module.exports = {
   },
 
   confirmEmail(req, res) {
+    const { uuid } = req.body;
+
     // Check if the UUID provided over the put call is valid
-    if (validator.isUUID(req.body.confirmEmailUUID)) {
+    if (validator.isUUID(uuid)) {
       // Check first if the email has already been confirmed
       return ConfirmEmail.findOne({
         where: {
-          UUID: req.body.confirmEmailUUID,
+          UUID: uuid,
         },
       })
         .then((confirmation) => {
@@ -87,6 +89,11 @@ module.exports = {
                         flag: "CONFIRMED_SUCCESS",
                         message: "You're email address has been confirmed",
                       });
+
+                      emailController.sendEmail(
+                        user,
+                        emailTemplate.signupConfirmed(user)
+                      );
 
                       return ConfirmEmail.destroy({
                         where: {

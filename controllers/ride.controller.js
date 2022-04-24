@@ -83,7 +83,7 @@ module.exports = {
           emailController.sendEmail(user, templates.offerRide(ride));
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           res.status(400).json(errorMessage);
         });
     }
@@ -260,7 +260,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         res.status(400).json(errorMessage);
       });
   },
@@ -385,12 +385,10 @@ module.exports = {
         )
           .then((response) => {
             // console.log(response);
-            res
-              .status(200)
-              .send({
-                message: "You have refused this booking",
-                formValues: formValues.newStatus,
-              });
+            res.status(200).send({
+              message: "You have refused this booking",
+              formValues: formValues.newStatus,
+            });
 
             emailController.sendEmail(
               booking.User,
@@ -811,7 +809,7 @@ module.exports = {
 
         return res.status(200).json(ridesToFeedback);
       } else {
-        console.log("No bookings");
+        // console.log("No bookings");
         return res.status(200).json(ridesToFeedback);
       }
     })();

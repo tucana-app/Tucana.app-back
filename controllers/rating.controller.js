@@ -101,7 +101,7 @@ module.exports = {
 
         return res.status(200).json(ratingsToDoPassenger);
       } else {
-        console.log("No bookings");
+        // console.log("No bookings");
         return res.status(200).json(ratingsToDoPassenger);
       }
     })();
@@ -196,7 +196,7 @@ module.exports = {
 
         return res.status(200).json(ratingsToDoDriver);
       } else {
-        console.log("No bookings");
+        // console.log("No bookings");
         return res.status(200).json(ratingsToDoDriver);
       }
     })();

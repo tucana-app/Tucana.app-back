@@ -1,7 +1,6 @@
-var nodemailer = require("nodemailer");
-require("dotenv").config;
-
 const db = require("../models");
+const config = require("../config/auth.config");
+
 const Admin = db.Admin;
 const User = db.User;
 const Ride = db.Ride;
@@ -13,10 +12,67 @@ const PassengerRating = db.PassengerRating;
 const DriverRating = db.DriverRating;
 const admin_VerifPassengerRating = db.admin_VerifPassengerRating;
 const admin_VerifDriverRating = db.admin_VerifDriverRating;
+const Op = db.Sequelize.Op;
+
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 
 const errorMessage = { message: "A problem occured with this request" };
 
 module.exports = {
+  adminSignin(req, res) {
+    return Admin.findOne({
+      where: {
+        [Op.or]: {
+          username: req.body.formLogin.credential,
+          username: req.body.formLogin.credential.toLowerCase(),
+          email: req.body.formLogin.credential,
+          email: req.body.formLogin.credential.toLowerCase(),
+        },
+      },
+    })
+      .then((admin) => {
+        if (!admin) {
+          res
+            .status(404)
+            .send({ message: "User not found", flag: "GENERAL_ERROR" });
+        } else {
+          var passwordIsValid = bcrypt.compareSync(
+            req.body.formLogin.password,
+            admin.password
+          );
+
+          if (!passwordIsValid) {
+            return res.status(401).send({
+              accessToken: null,
+              message: "Invalid Password",
+            });
+          }
+
+          var token = jwt.sign({ id: admin.id }, config.secret, {
+            expiresIn: 604800, // 7 days
+          });
+
+          res.status(200).send({
+            adminId: admin.id,
+            firstName: admin.firstName,
+            lastName: admin.lastName,
+            username: admin.username,
+            email: admin.email,
+            createdAt: admin.createdAt,
+            accessToken: token,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).send({
+          message: "It looks like we can't log you in right now",
+          flag: "GENERAL_ERROR",
+        });
+      });
+  },
+
   adminListUsers(req, res) {
     return User.findAll()
       .then((response) => {

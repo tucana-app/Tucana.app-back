@@ -5,7 +5,6 @@ const emailTemplate = require("./EmailTemplates/");
 const validator = require("validator");
 const User = db.User;
 const Driver = db.Driver;
-const Admin = db.Admin;
 const Op = db.Sequelize.Op;
 const ConfirmEmail = db.ConfirmEmail;
 const ForgotPassword = db.ForgotPassword;
@@ -174,56 +173,9 @@ module.exports = {
     })
       .then((user) => {
         if (!user) {
-          return Admin.findOne({
-            where: {
-              [Op.or]: {
-                username: req.body.formLogin.credential,
-                username: req.body.formLogin.credential.toLowerCase(),
-                email: req.body.formLogin.credential,
-                email: req.body.formLogin.credential.toLowerCase(),
-              },
-            },
-          })
-            .then((admin) => {
-              if (!admin) {
-                res
-                  .status(404)
-                  .send({ message: "User not found", flag: "GENERAL_ERROR" });
-              } else {
-                var passwordIsValid = bcrypt.compareSync(
-                  req.body.formLogin.password,
-                  admin.password
-                );
-
-                if (!passwordIsValid) {
-                  return res.status(401).send({
-                    accessToken: null,
-                    message: "Invalid Password",
-                  });
-                }
-
-                var token = jwt.sign({ id: admin.id }, config.secret, {
-                  expiresIn: 604800, // 7 days
-                });
-
-                res.status(200).send({
-                  adminId: admin.id,
-                  firstName: admin.firstName,
-                  lastName: admin.lastName,
-                  username: admin.username,
-                  email: admin.email,
-                  createdAt: admin.createdAt,
-                  accessToken: token,
-                });
-              }
-            })
-            .catch((error) => {
-              // console.log(error);
-              res.status(500).send({
-                message: "It looks like we can't log you in right now",
-                flag: "GENERAL_ERROR",
-              });
-            });
+          res
+            .status(404)
+            .send({ message: "User not found", flag: "GENERAL_ERROR" });
         } else {
           var passwordIsValid = bcrypt.compareSync(
             req.body.formLogin.password,

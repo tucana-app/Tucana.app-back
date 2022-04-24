@@ -123,7 +123,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         res.status(400).json({
           errorMessage,
           errorCode: 1,

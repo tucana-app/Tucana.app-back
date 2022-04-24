@@ -9,6 +9,8 @@ module.exports = (app) => {
     next();
   });
 
+  app.post("/api/admin/auth/signin", controller.adminSignin);
+
   app.get("/api/admin/list-users", controller.adminListUsers);
 
   app.get("/api/admin/list-rides", controller.adminListRides);

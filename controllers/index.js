@@ -1,4 +1,4 @@
-const auth = require("./auth.controller");
+const user = require("./user.controller");
 const admin = require("./admin.controller");
 const ride = require("./ride.controller");
 const email = require("./email.controller");
@@ -6,7 +6,7 @@ const message = require("./message.controller");
 const rating = require("./rating.controller");
 
 module.exports = {
-  auth,
+  user,
   admin,
   ride,
   email,

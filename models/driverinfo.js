@@ -1,38 +1,31 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Driver extends Model {
+  class DriverInfo extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Driver.belongsTo(models.User, {
+      DriverInfo.belongsTo(models.User, {
         onDelete: "NO ACTION",
       });
 
-      Driver.hasMany(models.Ride, {
-        onDelete: "NO ACTION",
-      });
-
-      Driver.hasMany(models.Booking, {
-        onDelete: "NO ACTION",
-      });
-
-      Driver.hasMany(models.Conversation, {
+      DriverInfo.hasMany(models.admin_VerifDriverInfo, {
         onDelete: "NO ACTION",
       });
     }
   }
-  Driver.init(
+  DriverInfo.init(
     {
       UserId: DataTypes.INTEGER,
+      document: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "Driver",
+      modelName: "DriverInfo",
     }
   );
-  return Driver;
+  return DriverInfo;
 };

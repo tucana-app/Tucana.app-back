@@ -31,7 +31,7 @@ if (!isDev && cluster.isMaster) {
   app.use(express.urlencoded({ extended: true }));
 
   // Answer API requests.
-  require("./routes/auth.routes")(app);
+  require("./routes/user.routes")(app);
   require("./routes/admin.routes")(app);
   require("./routes/ride.routes")(app);
   require("./routes/email.routes")(app);

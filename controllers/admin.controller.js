@@ -1,10 +1,11 @@
 const db = require("../models");
-const config = require("../config/auth.config");
+const config = require("../config/user.config");
 
 const Admin = db.Admin;
 const User = db.User;
 const Ride = db.Ride;
 const Driver = db.Driver;
+const DriverInfo = db.DriverInfo;
 const RideStatus = db.RideStatus;
 const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
@@ -13,6 +14,7 @@ const DriverRating = db.DriverRating;
 const admin_VerifPassengerRating = db.admin_VerifPassengerRating;
 const admin_VerifDriverRating = db.admin_VerifDriverRating;
 const Op = db.Sequelize.Op;
+const admin_VerifDriverInfo = db.admin_VerifDriverInfo;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -50,7 +52,7 @@ module.exports = {
           }
 
           var token = jwt.sign({ id: admin.id }, config.secret, {
-            expiresIn: 604800, // 7 days
+            expiresIn: 86400, // 1 day
           });
 
           res.status(200).send({
@@ -65,7 +67,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         res.status(500).send({
           message: "It looks like we can't log you in right now",
           flag: "GENERAL_ERROR",
@@ -192,7 +194,7 @@ module.exports = {
       });
   },
 
-  getPassengersRatings(req, res) {
+  adminPassengersRatings(req, res) {
     let ratingsPassenger = [];
 
     (async function () {
@@ -263,7 +265,7 @@ module.exports = {
     })();
   },
 
-  getDriversRatings(req, res) {
+  adminDriversRatings(req, res) {
     let ratingsDriver = [];
 
     (async function () {
@@ -332,5 +334,106 @@ module.exports = {
         res.status(200).json(ratingsDriver);
       }
     })();
+  },
+
+  adminAllDriversInfo(req, res) {
+    return DriverInfo.findAll({
+      include: [
+        {
+          model: admin_VerifDriverInfo,
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminDriverInfo(req, res) {
+    const { driverInfoId } = req.query;
+
+    return DriverInfo.findOne({
+      where: {
+        id: driverInfoId,
+      },
+      include: [
+        {
+          model: admin_VerifDriverInfo,
+          include: [
+            {
+              model: Admin,
+            },
+          ],
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  submitVerifDriverInfo(req, res) {
+    const { adminId, userId, driverInfoId, comment, accepted } = req.body;
+
+    return admin_VerifDriverInfo
+      .create({
+        AdminId: adminId,
+        DriverInfoId: driverInfoId,
+        accepted: accepted,
+        comment: comment,
+      })
+      .then((response) => {
+        // console.log(response);
+
+        // Create the new driver
+        return Driver.create({
+          UserId: userId,
+        })
+          .then((response) => {
+            res.status(200).json({});
+          })
+          .catch((error) => {
+            // console.log(error);
+            res.status(400).json(errorMessage);
+          });
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json(errorMessage);
+      });
   },
 };

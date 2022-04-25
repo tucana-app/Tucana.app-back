@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       Admin.belongsToMany(models.Role, {
         through: "admins_roles",
       });
+
+      Admin.hasMany(models.admin_VerifDriverInfo, {
+        onDelete: "NO ACTION",
+      });
     }
   }
   Admin.init(

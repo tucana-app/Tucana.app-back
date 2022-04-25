@@ -9,7 +9,7 @@ module.exports = (app) => {
     next();
   });
 
-  app.post("/api/admin/auth/signin", controller.adminSignin);
+  app.post("/api/admin/user/signin", controller.adminSignin);
 
   app.get("/api/admin/list-users", controller.adminListUsers);
 
@@ -22,7 +22,19 @@ module.exports = (app) => {
     controller.adminSingleRideAllBookings
   );
 
-  app.get("/api/admin/get-passengers-ratings", controller.getPassengersRatings);
+  app.get(
+    "/api/admin/get-passengers-ratings",
+    controller.adminPassengersRatings
+  );
 
-  app.get("/api/admin/get-drivers-ratings", controller.getDriversRatings);
+  app.get("/api/admin/get-drivers-ratings", controller.adminDriversRatings);
+
+  app.get("/api/admin/user/all-drivers-info", controller.adminAllDriversInfo);
+
+  app.get("/api/admin/user/driver-info", controller.adminDriverInfo);
+
+  app.post(
+    "/api/admin/user/submit-verif-driver-info",
+    controller.submitVerifDriverInfo
+  );
 };

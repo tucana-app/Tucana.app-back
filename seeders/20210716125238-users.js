@@ -55,6 +55,18 @@ module.exports = {
         emailConfirmed: true,
         phoneConfirmed: false,
       },
+      {
+        firstName: "Ben",
+        lastName: "Jamin",
+        username: "ben",
+        email: "ben@ride.cr",
+        password: bcrypt.hashSync(process.env.USER_PASSWORD, 10),
+        phoneNumber: "87907000",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        emailConfirmed: true,
+        phoneConfirmed: false,
+      },
     ]);
   },
 
@@ -64,6 +76,7 @@ module.exports = {
       username: "damien",
       username: "peter",
       username: "alan",
+      username: "ben",
     });
   },
 };

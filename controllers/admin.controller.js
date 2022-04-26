@@ -419,17 +419,21 @@ module.exports = {
       .then((response) => {
         // console.log(response);
 
-        // Create the new driver
-        return Driver.create({
-          UserId: userId,
-        })
-          .then((response) => {
-            res.status(200).json({});
+        if (accepted) {
+          // Create the new driver
+          return Driver.create({
+            UserId: userId,
           })
-          .catch((error) => {
-            // console.log(error);
-            res.status(400).json(errorMessage);
-          });
+            .then((response) => {
+              res.status(200).json({});
+            })
+            .catch((error) => {
+              // console.log(error);
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res.status(200).json({});
+        }
       })
       .catch((error) => {
         // console.log(error);

@@ -517,50 +517,19 @@ module.exports = {
   submitBecomeDriver(req, res) {
     const { userId } = req.body;
 
-    return Driver.findOne({
-      where: {
-        UserId: userId,
-      },
+    return DriverInfo.create({
+      UserId: userId,
     })
-      .then((user) => {
-        if (user) {
-          res.status(400).send({
-            flag: "ALREADY_SUBMITTED",
-            message: "You already have submitted the form",
-          });
-        } else {
-          return DriverInfo.findAll({})
-            .then((info) => {
-              return DriverInfo.create({
-                UserId: userId,
-              })
-                .then((driver) => {
-                  res.status(200).send({});
-                })
-                .catch((error) =>
-                  // console.log(error)
-                  res.status(400).json({
-                    message: "A problem occured",
-                    flag: "GENERAL_ERROR",
-                  })
-                );
-            })
-            .catch((error) => {
-              // console.log(error)
-              res.status(400).json({
-                message: "A problem occured",
-                flag: "GENERAL_ERROR",
-              });
-            });
-        }
+      .then((driver) => {
+        res.status(200).send({});
       })
-      .catch((error) => {
+      .catch((error) =>
         // console.log(error)
         res.status(400).json({
           message: "A problem occured",
           flag: "GENERAL_ERROR",
-        });
-      });
+        })
+      );
   },
 
   updateDriverState(req, res) {

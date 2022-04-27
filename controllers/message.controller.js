@@ -10,8 +10,6 @@ const Op = db.Sequelize.Op;
 const { convert } = require("html-to-text");
 require("dotenv").config;
 
-const { findEmails, findPhones, findLinks } = require("./helpers");
-
 const { v4: uuidv4 } = require("uuid");
 
 const errorMessage = { message: "A problem occured with this request" };
@@ -139,55 +137,38 @@ module.exports = {
         message: "Your message cannot be empty",
       });
     } else {
-      linksFound = findLinks(message);
-      phonesFound = findPhones(message);
-      emailsFound = findEmails(message);
       messageConverted = convert(message);
 
-      if (linksFound && linksFound.length > 0) {
-        res.status(401).json({
-          message: "Do not include links in your comment",
-        });
-      } else if (phonesFound.length > 0) {
-        res.status(401).json({
-          message: "Do not include phone numbers in your comment",
-        });
-      } else if (emailsFound && emailsFound.length > 0) {
-        res.status(401).json({
-          message: "Do not include emails in your comment",
-        });
-      } else {
-        return Message.create({
-          SenderId: senderId,
-          ReceiverId: receiverId,
-          body: messageConverted,
-          ConversationId: conversationId,
-          MessageStatusId: 1,
-        })
-          .then((response) => {
-            // console.log(response);
-            res.status(201).json({ message: "Message sent" });
+      return Message.create({
+        SenderId: senderId,
+        ReceiverId: receiverId,
+        body: messageConverted,
+        ConversationId: conversationId,
+        MessageStatusId: 1,
+      })
+        .then((response) => {
+          // console.log(response);
+          res.status(201).json({ message: "Message sent" });
 
-            // Find the receiver of the message
-            return User.findOne({
-              where: {
-                id: receiverId,
-              },
-            })
-              .then((user) => {
-                emailController.sendEmail(user, emailTemplate.newMessage());
-              })
-              .catch((error) => {
-                // Couldn't find user
-                // console.log(error);
-                res.status(400).json(errorMessage);
-              });
+          // Find the receiver of the message
+          return User.findOne({
+            where: {
+              id: receiverId,
+            },
           })
-          .catch((error) => {
-            // console.log(error);
-            res.status(400).json(errorMessage);
-          });
-      }
+            .then((user) => {
+              emailController.sendEmail(user, emailTemplate.newMessage());
+            })
+            .catch((error) => {
+              // Couldn't find user
+              // console.log(error);
+              res.status(400).json(errorMessage);
+            });
+        })
+        .catch((error) => {
+          // console.log(error);
+          res.status(400).json(errorMessage);
+        });
     }
   },
 

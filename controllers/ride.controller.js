@@ -11,7 +11,6 @@ const emailController = require("./email.controller");
 const templates = require("./EmailTemplates/");
 require("dotenv").config;
 
-const { findEmails, findPhones, findLinks } = require("./helpers");
 const { convert } = require("html-to-text");
 
 const errorMessage = { message: "A problem occured with this request" };
@@ -44,49 +43,32 @@ module.exports = {
   addRide(req, res) {
     const { user, formValues } = req.body;
 
-    linksFound = findLinks(formValues.comment);
-    phonesFound = findPhones(formValues.comment);
-    emailsFound = findEmails(formValues.comment);
-    messageConverted = convert(formValues.comment);
+    messageConverted = convert(messageConverted);
 
-    if (linksFound && linksFound.length > 0) {
-      res.status(401).json({
-        message: "Do not include links in your comment",
-      });
-    } else if (phonesFound && phonesFound.length > 0) {
-      res.status(401).json({
-        message: "Do not include phone numbers in your comment",
-      });
-    } else if (emailsFound && emailsFound.length > 0) {
-      res.status(401).json({
-        message: "Do not include emails in your comment",
-      });
-    } else {
-      return Ride.create({
-        DriverId: user.id,
-        cityOrigin: formValues.cityOrigin,
-        provinceOrigin: formValues.provinceOrigin,
-        cityDestination: formValues.cityDestination,
-        provinceDestination: formValues.provinceDestination,
-        dateTime: formValues.dateTime,
-        seatsAvailable: formValues.seatsAvailable,
-        seatsLeft: formValues.seatsAvailable,
-        comment: formValues.comment,
+    return Ride.create({
+      DriverId: user.id,
+      cityOrigin: formValues.cityOrigin,
+      provinceOrigin: formValues.provinceOrigin,
+      cityDestination: formValues.cityDestination,
+      provinceDestination: formValues.provinceDestination,
+      dateTime: formValues.dateTime,
+      seatsAvailable: formValues.seatsAvailable,
+      seatsLeft: formValues.seatsAvailable,
+      comment: messageConverted,
+    })
+      .then((ride) => {
+        // console.log(ride);
+
+        res
+          .status(200)
+          .json({ message: "You ride has been successfully added" });
+
+        emailController.sendEmail(user, templates.offerRide(ride));
       })
-        .then((ride) => {
-          // console.log(ride);
-
-          res
-            .status(200)
-            .json({ message: "You ride has been successfully added" });
-
-          emailController.sendEmail(user, templates.offerRide(ride));
-        })
-        .catch((error) => {
-          // console.log(error);
-          res.status(400).json(errorMessage);
-        });
-    }
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json(errorMessage);
+      });
   },
 
   getRide(req, res) {
@@ -302,110 +284,93 @@ module.exports = {
   driverResponseBooking(req, res) {
     const { booking, formValues } = req.body;
 
-    linksFound = findLinks(formValues.comment);
-    phonesFound = findPhones(formValues.comment);
-    emailsFound = findEmails(formValues.comment);
     messageConverted = convert(formValues.comment);
 
-    if (linksFound && linksFound.length > 0) {
-      res.status(401).json({
-        message: "Do not include links in your comment",
-      });
-    } else if (phonesFound.length > 0) {
-      res.status(401).json({
-        message: "Do not include phone numbers in your comment",
-      });
-    } else if (emailsFound && emailsFound.length > 0) {
-      res.status(401).json({
-        message: "Do not include emails in your comment",
-      });
-    } else {
-      // if booking accepted by driver
-      if (formValues.newStatus === 3) {
-        return Booking.update(
-          {
-            commentDriver: formValues.comment,
-            BookingStatusId: formValues.newStatus,
+    // if booking accepted by driver
+    if (formValues.newStatus === 3) {
+      return Booking.update(
+        {
+          commentDriver: messageConverted,
+          BookingStatusId: formValues.newStatus,
+        },
+        {
+          where: {
+            id: booking.id,
           },
-          {
-            where: {
-              id: booking.id,
+        }
+      )
+        .then((response) => {
+          return Ride.update(
+            {
+              seatsLeft: formValues.newSeatsAvailable,
             },
-          }
-        )
-          .then((response) => {
-            return Ride.update(
-              {
-                seatsLeft: formValues.newSeatsAvailable,
+            {
+              where: {
+                id: formValues.rideId,
               },
-              {
-                where: {
-                  id: formValues.rideId,
-                },
-              }
-            )
-              .then((response) => {
-                // console.log(response);
+            }
+          )
+            .then((response) => {
+              // console.log(response);
 
-                res.status(200).send({
-                  message: "You have accepted the booking",
-                  formValues: formValues.newStatus,
-                });
-
-                emailController.sendEmail(
-                  booking.User,
-                  templates.acceptedToUser(booking, formValues)
-                );
-                emailController.sendEmail(
-                  booking.Ride.Driver.User,
-                  templates.acceptedByDriver(booking)
-                );
-              })
-              .catch((error) => {
-                // console.log(error);
-                res.status(400).json(error);
+              res.status(200).send({
+                message: "You have accepted the booking",
+                formValues: formValues.newStatus,
               });
-          })
-          .catch((error) => {
-            // console.log(error);
-            res.status(400).json(error);
-          });
-      } else if (formValues.newStatus === 4) {
-        //if booking refused by driver
-        return Booking.update(
-          {
-            commentDriver: formValues.comment,
-            BookingStatusId: formValues.newStatus,
-          },
-          {
-            where: {
-              id: formValues.bookingId,
-            },
-          }
-        )
-          .then((response) => {
-            // console.log(response);
-            res.status(200).send({
-              message: "You have refused this booking",
-              formValues: formValues.newStatus,
-            });
 
-            emailController.sendEmail(
-              booking.User,
-              templates.refusedToUser(booking, formValues)
-            );
-            emailController.sendEmail(
-              booking.Ride.Driver.User,
-              templates.refusedByDriver(booking)
-            );
-          })
-          .catch((error) => {
-            // console.log(error);
-            res.status(400).json(error);
+              emailController.sendEmail(
+                booking.User,
+                templates.acceptedToUser(booking, formValues)
+              );
+              emailController.sendEmail(
+                booking.Ride.Driver.User,
+                templates.acceptedByDriver(booking)
+              );
+            })
+            .catch((error) => {
+              // console.log(error);
+              res.status(400).json(error);
+            });
+        })
+        .catch((error) => {
+          // console.log(error);
+          res.status(400).json(error);
+        });
+    } else if (formValues.newStatus === 4) {
+      //if booking refused by driver
+      return Booking.update(
+        {
+          commentDriver: messageConverted,
+          BookingStatusId: formValues.newStatus,
+        },
+        {
+          where: {
+            id: formValues.bookingId,
+          },
+        }
+      )
+        .then((response) => {
+          // console.log(response);
+          res.status(200).send({
+            message: "You have refused this booking",
+            formValues: formValues.newStatus,
           });
-      } else {
-        return res.status(400).json({});
-      }
+
+          emailController.sendEmail(
+            booking.User,
+            templates.refusedToUser(booking, formValues)
+          );
+          emailController.sendEmail(
+            booking.Ride.Driver.User,
+            templates.refusedByDriver(booking)
+          );
+        })
+        .catch((error) => {
+          // console.log(error);
+          res.status(400).json(error);
+        });
+    } else {
+      return res.status(400).json({});
     }
   },
 

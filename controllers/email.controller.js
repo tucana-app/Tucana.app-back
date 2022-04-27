@@ -1,9 +1,6 @@
 var nodemailer = require("nodemailer");
 require("dotenv").config;
 
-const { findEmails, findPhones, findLinks } = require("./helpers");
-const { convert } = require("html-to-text");
-
 const transporter = nodemailer.createTransport({
   host: "mail.privateemail.com",
   port: 587,

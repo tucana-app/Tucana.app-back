@@ -43,6 +43,7 @@
     "ride",
     "share"
   ],
+  "author": "Ride.CR",
   "license": "MIT",
   "devDependencies": {
     "nodemon": "^2.0.12"
@@ -53,6 +54,5 @@
   },
   "bugs": {
     "url": "https://github.com/ridecr/Ride.CR-back/issues"
-  },
-  "author": "Ride.CR"
+  }
 }

@@ -14,19 +14,13 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      cityOrigin: {
-        type: Sequelize.STRING,
+      origin: {
+        type: Sequelize.JSONB,
         allowNull: false,
       },
-      provinceOrigin: {
-        type: Sequelize.STRING,
-      },
-      cityDestination: {
-        type: Sequelize.STRING,
+      destination: {
+        type: Sequelize.JSONB,
         allowNull: false,
-      },
-      provinceDestination: {
-        type: Sequelize.STRING,
       },
       dateTime: {
         type: Sequelize.DATE,

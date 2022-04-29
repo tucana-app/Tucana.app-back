@@ -28,10 +28,8 @@ module.exports = (sequelize, DataTypes) => {
   Ride.init(
     {
       DriverId: DataTypes.INTEGER,
-      cityOrigin: DataTypes.STRING,
-      provinceOrigin: DataTypes.STRING,
-      cityDestination: DataTypes.STRING,
-      provinceDestination: DataTypes.STRING,
+      origin: DataTypes.JSONB,
+      destination: DataTypes.JSONB,
       dateTime: DataTypes.DATE,
       seatsAvailable: DataTypes.INTEGER,
       seatsLeft: DataTypes.INTEGER,

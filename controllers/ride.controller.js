@@ -41,27 +41,23 @@ module.exports = {
   },
 
   addRide(req, res) {
-    const { user, formValues } = req.body;
+    const { user, formOfferRide } = req.body;
 
-    messageConverted = convert(messageConverted);
+    commentConverted = convert(formOfferRide.comment);
 
     return Ride.create({
       DriverId: user.id,
-      cityOrigin: formValues.cityOrigin,
-      provinceOrigin: formValues.provinceOrigin,
-      cityDestination: formValues.cityDestination,
-      provinceDestination: formValues.provinceDestination,
-      dateTime: formValues.dateTime,
-      seatsAvailable: formValues.seatsAvailable,
-      seatsLeft: formValues.seatsAvailable,
-      comment: messageConverted,
+      origin: formOfferRide.origin,
+      destination: formOfferRide.destination,
+      dateTime: formOfferRide.dateTime,
+      seatsAvailable: formOfferRide.seats,
+      seatsLeft: formOfferRide.seats,
+      comment: commentConverted,
     })
       .then((ride) => {
         // console.log(ride);
 
-        res
-          .status(200)
-          .json({ message: "You ride has been successfully added" });
+        res.status(200).json({ flag: "SUCCESS" });
 
         emailController.sendEmail(user, templates.offerRide(ride));
       })

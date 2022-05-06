@@ -202,14 +202,20 @@ module.exports = {
       });
   },
 
-  getAllRides(req, res) {
+  getFilteredRides(req, res) {
+    const { date } = req.query;
+
+    // date2 = date + 1 day at midnight
+    var datePlusOne = new Date(date);
+    datePlusOne.setDate(datePlusOne.getDate() + 1);
+
     return Ride.findAll({
       where: {
         seatsLeft: {
           [Op.gt]: 0,
         },
         dateTime: {
-          [Op.gt]: new Date(),
+          [Op.between]: [new Date(date), datePlusOne],
         },
       },
       order: [["dateTime", "ASC"]],

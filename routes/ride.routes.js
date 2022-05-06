@@ -21,7 +21,7 @@ module.exports = (app) => {
 
   app.get("/api/ride/user-rides", controller.getDriverRides);
 
-  app.get("/api/ride/all-rides", controller.getAllRides);
+  app.get("/api/ride/filtered-rides", controller.getFilteredRides);
 
   app.post("/api/ride/add-ride", controller.addRide);
 

@@ -9,10 +9,7 @@
   "scripts": {
     "start": "node server",
     "dev": "nodemon server",
-    "rs-db": "sequelize db:migrate:undo:all",
-    "rs-db-seed": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed --seed 20210716125238-users.js && sequelize db:seed --seed 20210716225046-ride-status.js && sequelize db:seed --seed 20210718204543-booking-status.js",
-    "rs-db-seed-rides": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed --seed 20210716125238-users.js && sequelize db:seed --seed 20210716225046-ride-status.js && sequelize db:seed --seed 20210717012650-rides.js && sequelize db:seed --seed 20210718204543-booking-status.js",
-    "rs-db-seed-all": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all"
+    "rs-db": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all"
   },
   "cacheDirectories": [
     "node_modules"

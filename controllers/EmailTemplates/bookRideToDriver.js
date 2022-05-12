@@ -2,8 +2,8 @@ const dateFormat = require("dateformat");
 
 module.exports = function bookRideToDriver(ride, passenger, formValues) {
   const subject = "You have a new booking | Ride.CR";
-  const text = `Your ride from ${ride.cityOrigin} to ${
-    ride.cityDestination
+  const text = `Your ride from ${ride.origin.city} to ${
+    ride.destination.city
   } (${dateFormat(
     ride.dateTime,
     "dd/mm/yyyy"
@@ -14,10 +14,9 @@ module.exports = function bookRideToDriver(ride, passenger, formValues) {
   }/ride/${ride.id}`;
   const html = `<div>
     <h1>
-    Your ride from ${ride.cityOrigin} to ${ride.cityDestination} (${dateFormat(
-    ride.dateTime,
-    "dd/mm/yyyy"
-  )}) has a new booking!</h1>
+    Your ride from ${ride.origin.city} to ${
+    ride.destination.city
+  } (${dateFormat(ride.dateTime, "dd/mm/yyyy")}) has a new booking!</h1>
     <p>
     The passenger ${passenger.firstName} has requested ${
     formValues.seatsNeeded

@@ -5,8 +5,8 @@ module.exports = function bookRideByUser(ride, formValues) {
   const text = `You have made a booking request for ${
     formValues.seatsNeeded
   } seats on the ride from ${ride.Driver.User.firstName} from ${
-    ride.cityDestination
-  } to ${ride.cityOrigin} on the ${dateFormat(
+    ride.destination.city
+  } to ${ride.origin.city} on the ${dateFormat(
     ride.dateTime,
     "dd/mm/yyyy"
   )} at ${dateFormat(
@@ -22,7 +22,7 @@ module.exports = function bookRideByUser(ride, formValues) {
     <h3>Booking details</h3>
     <p>${formValues.seatsNeeded} seats on the ride by ${
     ride.Driver.User.firstName
-  } from ${ride.cityDestination} to ${ride.cityOrigin} on the ${dateFormat(
+  } from ${ride.destination.city} to ${ride.origin.city} on the ${dateFormat(
     ride.dateTime,
     "dd/mm/yyyy"
   )} at ${dateFormat(ride.dateTime, "hh:mm TT")}</p>

@@ -47,11 +47,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
-      // SettingsId: {
-      //   type: Sequelize.INTEGER,
-      //   allowNull: false,
-      //   primaryKey: true,
-      // },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

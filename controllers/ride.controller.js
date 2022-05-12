@@ -213,9 +213,6 @@ module.exports = {
     const dateTimeZonePlusOne = new Date(dateTimeZone);
     dateTimeZonePlusOne.setDate(dateTimeZonePlusOne.getDate() + 1);
 
-    console.log(dateTimeZone);
-    console.log(dateTimeZonePlusOne);
-
     return Ride.findAll({
       where: {
         seatsLeft: {
@@ -505,14 +502,6 @@ module.exports = {
               "RideStatusId",
               "createdAt",
               "updatedAt",
-              // "id",
-              // "cityDestination",
-              // "cityOrigin",
-              // "dateTime",
-              // "provinceDestination",
-              // "provinceOrigin",
-              // "seatsAvailable",
-              // "seatsLeft",
             ],
           },
         },
@@ -576,14 +565,6 @@ module.exports = {
               "RideStatusId",
               "createdAt",
               "updatedAt",
-              // "id",
-              // "cityDestination",
-              // "cityOrigin",
-              // "dateTime",
-              // "provinceDestination",
-              // "provinceOrigin",
-              // "seatsAvailable",
-              // "seatsLeft",
             ],
           },
           include: [

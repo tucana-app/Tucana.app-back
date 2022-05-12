@@ -1001,6 +1001,10 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete("Rides", null, {});
+    return queryInterface.bulkDelete("Rides", {
+      DriverId: {
+        [Sequelize.Op.in]: [1, 2, 3, 4, 5],
+      },
+    });
   },
 };

@@ -72,11 +72,9 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete("Users", {
-      username: "val",
-      username: "damien",
-      username: "peter",
-      username: "alan",
-      username: "ben",
+      username: {
+        [Sequelize.Op.in]: ["val", "damien", "peter", "alan", "ben"],
+      },
     });
   },
 };

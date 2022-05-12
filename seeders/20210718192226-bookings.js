@@ -128,8 +128,8 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete("Bookings", {
-      UserId: {
-        [Sequelize.Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      DriverId: {
+        [Sequelize.Op.in]: [1, 2, 3, 4, 5],
       },
     });
   },

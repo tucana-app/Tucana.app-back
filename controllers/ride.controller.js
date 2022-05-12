@@ -205,9 +205,16 @@ module.exports = {
   getFilteredRides(req, res) {
     const { date } = req.query;
 
-    // date2 = date + 1 day at midnight
-    var datePlusOne = new Date(date);
-    datePlusOne.setDate(datePlusOne.getDate() + 1);
+    // Convert the date submitted back to UTC
+    const dateTimeZone = new Date(
+      `${date.slice(0, 4)},${date.slice(5, 7)},${date.slice(8, 10)}`
+    );
+
+    const dateTimeZonePlusOne = new Date(dateTimeZone);
+    dateTimeZonePlusOne.setDate(dateTimeZonePlusOne.getDate() + 1);
+
+    console.log(dateTimeZone);
+    console.log(dateTimeZonePlusOne);
 
     return Ride.findAll({
       where: {
@@ -215,7 +222,7 @@ module.exports = {
           [Op.gt]: 0,
         },
         dateTime: {
-          [Op.between]: [new Date(date), datePlusOne],
+          [Op.between]: [dateTimeZone, dateTimeZonePlusOne],
         },
       },
       order: [["dateTime", "ASC"]],

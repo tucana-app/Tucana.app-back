@@ -45,4 +45,6 @@ module.exports = function (app) {
   app.post("/api/user/submit-become-driver", controller.submitBecomeDriver);
 
   app.get("/api/user/driver-state", controller.updateDriverState);
+
+  app.post("/api/user/submit-contact-form", controller.submitFormContact);
 };

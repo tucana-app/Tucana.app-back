@@ -1,7 +1,7 @@
 const dateFormat = require("dateformat");
 
 module.exports = function acceptedByDriver(booking) {
-  const subject = "✅ You have accepted a booking | Ride.CR";
+  const subject = "✅ You have accepted a booking | Tucána";
   const text = `You have accepted the booking of ${
     booking.User.firstName
   } on your ride from ${booking.Ride.origin.city} to ${

@@ -1,7 +1,7 @@
 const dateFormat = require("dateformat");
 
 module.exports = function refusedByDriver(booking) {
-  const subject = "You have refused a booking | Ride.CR";
+  const subject = "You have refused a booking | Tucána";
   const text = `You have refused the booking of ${
     booking.User.firstName
   } on your ride from ${booking.Ride.origin.city} to ${

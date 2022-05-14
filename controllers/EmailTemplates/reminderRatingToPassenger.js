@@ -2,8 +2,8 @@ require("dotenv").config;
 const dateFormat = require("dateformat");
 
 module.exports = function reminderRatingToPassenger({ user, ride, booking }) {
-  const subject = "Reminder to rate your ride | Ride.CR";
-  const text = `Ride.CR | We would like to know more about your ride from ${
+  const subject = "Reminder to rate your ride | Tucána";
+  const text = `Tucána | We would like to know more about your ride from ${
     ride.origin.city
   } to ${ride.destination.city} on the ${dateFormat(
     ride.dateTime,
@@ -11,7 +11,7 @@ module.exports = function reminderRatingToPassenger({ user, ride, booking }) {
   )}. You can add your rating at ${process.env.REACT_APP_URL_CLIENT}/ratings/`;
   const html = `
       <div>
-      <h1>Ride.CR</h1>
+      <h1>Tucána</h1>
       <p>We would like to know more about your ride from ${
         ride.origin.city
       } to ${ride.destination.city} on the ${dateFormat(

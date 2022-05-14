@@ -1,7 +1,7 @@
 const dateFormat = require("dateformat");
 
 module.exports = function bookRideByUser(ride, formValues) {
-  const subject = "Summary of your booking | Ride.CR";
+  const subject = "Summary of your booking | Tucána";
   const text = `You have made a booking request for ${
     formValues.seatsNeeded
   } seats on the ride from ${ride.Driver.User.firstName} from ${

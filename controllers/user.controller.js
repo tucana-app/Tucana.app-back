@@ -551,4 +551,36 @@ module.exports = {
         });
       });
   },
+
+  submitFormContact(req, res) {
+    const { user, values } = req.body;
+    var userInfo = {};
+    var companyInfo = {};
+
+    if (!user) {
+      userInfo = {
+        id: 0,
+        firstName: values.fullname,
+        lastName: "",
+        email: values.email,
+      };
+    } else {
+      userInfo = user;
+    }
+
+    companyInfo = {
+      firstName: "Tucána",
+      lastName: "App",
+      email: process.env.EMAIL_ADDRESS,
+    };
+
+    emailController.sendEmail(
+      companyInfo,
+      emailTemplate.contactToCompany(userInfo, values)
+    );
+
+    emailController.sendEmail(userInfo, emailTemplate.contactToUser(values));
+
+    return res.status(200).json({});
+  },
 };

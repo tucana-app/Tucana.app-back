@@ -12,6 +12,8 @@ const bookRideToDriver = require("./bookRideToDriver");
 const refusedByDriver = require("./refusedByDriver");
 const refusedToUser = require("./refusedToUser");
 const signupConfirmed = require("./signupConfirmed");
+const contactToCompany = require("./contactToCompany");
+const contactToUser = require("./contactToUser");
 
 module.exports = {
   confirmSignup,
@@ -28,4 +30,6 @@ module.exports = {
   refusedByDriver,
   refusedToUser,
   signupConfirmed,
+  contactToCompany,
+  contactToUser,
 };

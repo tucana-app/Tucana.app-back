@@ -5,6 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert("Rides", [
       // Ride #1
       {
+        id: 1,
         DriverId: 3,
         origin: JSON.stringify({
           city: "Sámara",
@@ -116,6 +117,7 @@ module.exports = {
       },
       // Ride #2
       {
+        id: 2,
         DriverId: 4,
         origin: JSON.stringify({
           city: "Limon",
@@ -227,6 +229,7 @@ module.exports = {
       },
       // Ride #3
       {
+        id: 3,
         DriverId: 1,
         origin: JSON.stringify({
           city: "Uvita",
@@ -331,6 +334,7 @@ module.exports = {
       },
       // Ride #4
       {
+        id: 4,
         DriverId: 1,
         origin: JSON.stringify({
           city: "Dominical",
@@ -447,6 +451,7 @@ module.exports = {
       },
       // Ride #5
       {
+        id: 5,
         DriverId: 2,
         origin: JSON.stringify({
           city: "Tamarindo",
@@ -557,6 +562,7 @@ module.exports = {
       },
       // Ride #6
       {
+        id: 6,
         DriverId: 4,
         origin: JSON.stringify({
           city: "Escazu",
@@ -668,6 +674,7 @@ module.exports = {
       },
       // Ride #7
       {
+        id: 7,
         DriverId: 2,
         origin: JSON.stringify({
           city: "Tarcoles",
@@ -779,6 +786,7 @@ module.exports = {
       },
       // Ride #8
       {
+        id: 8,
         DriverId: 3,
         origin: JSON.stringify({
           city: "Jaco",
@@ -889,6 +897,7 @@ module.exports = {
       },
       // Ride #9
       {
+        id: 9,
         DriverId: 2,
         origin: JSON.stringify({
           city: "La Fortuna",
@@ -997,13 +1006,345 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        id: 10,
+        DriverId: 1,
+        origin: JSON.stringify({
+          city: "La Fortuna",
+          province: "Alajuela",
+          address: "Alajuela Province, La Fortuna, Costa Rica",
+          latLng: {
+            lat: 10.4678335,
+            lng: -84.64268059999999,
+          },
+          details: {
+            address_components: [
+              {
+                long_name: "La Fortuna",
+                short_name: "La Fortuna",
+                types: ["locality", "political"],
+              },
+              {
+                long_name: "Alajuela Province",
+                short_name: "Alajuela Province",
+                types: ["administrative_area_level_1", "political"],
+              },
+              {
+                long_name: "Costa Rica",
+                short_name: "CR",
+                types: ["country", "political"],
+              },
+            ],
+            formatted_address: "Alajuela Province, La Fortuna, Costa Rica",
+            geometry: {
+              bounds: {
+                south: 10.4606771,
+                west: -84.6542071,
+                north: 10.4792034,
+                east: -84.6265696,
+              },
+              location: {
+                lat: 10.4678335,
+                lng: -84.64268059999999,
+              },
+              location_type: "APPROXIMATE",
+              viewport: {
+                south: 10.4606771,
+                west: -84.6542071,
+                north: 10.4792034,
+                east: -84.6265696,
+              },
+            },
+            place_id: "ChIJmelgBokMoI8R5ixX0nuo42k",
+            types: ["locality", "political"],
+          },
+        }),
+        destination: JSON.stringify({
+          city: "Santo Domingo",
+          province: "Heredia",
+          address: "Heredia Province, Santo Domingo, Costa Rica",
+          latLng: {
+            lat: 9.980723399999999,
+            lng: -84.0909289,
+          },
+          details: {
+            address_components: [
+              {
+                long_name: "Santo Domingo",
+                short_name: "Santo Domingo",
+                types: ["locality", "political"],
+              },
+              {
+                long_name: "Heredia Province",
+                short_name: "Heredia Province",
+                types: ["administrative_area_level_1", "political"],
+              },
+              {
+                long_name: "Costa Rica",
+                short_name: "CR",
+                types: ["country", "political"],
+              },
+            ],
+            formatted_address: "Heredia Province, Santo Domingo, Costa Rica",
+            geometry: {
+              bounds: {
+                south: 9.9747785,
+                west: -84.0950793,
+                north: 9.9842382,
+                east: -84.08667319999999,
+              },
+              location: {
+                lat: 9.980723399999999,
+                lng: -84.0909289,
+              },
+              location_type: "APPROXIMATE",
+              viewport: {
+                south: 9.9747785,
+                west: -84.0950793,
+                north: 9.9842382,
+                east: -84.08667319999999,
+              },
+            },
+            place_id: "ChIJf6EoYt_koI8R0OlnyT25pVw",
+            types: ["locality", "political"],
+          },
+        }),
+        dateTime: new Date(new Date().setDate(new Date().getDate() + 7)),
+        seatsAvailable: 5,
+        seatsLeft: 5,
+        comment: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 11,
+        DriverId: 3,
+        origin: JSON.stringify({
+          city: "Tarcoles",
+          province: "Puntarenas",
+          address: "Puntarenas Province, Tarcoles, Costa Rica",
+          latLng: {
+            lat: 9.7730312,
+            lng: -84.6295991,
+          },
+          details: {
+            address_components: [
+              {
+                long_name: "Tarcoles",
+                short_name: "Tarcoles",
+                types: ["locality", "political"],
+              },
+              {
+                long_name: "Puntarenas Province",
+                short_name: "Puntarenas Province",
+                types: ["administrative_area_level_1", "political"],
+              },
+              {
+                long_name: "Costa Rica",
+                short_name: "CR",
+                types: ["country", "political"],
+              },
+            ],
+            formatted_address: "Puntarenas Province, Tarcoles, Costa Rica",
+            geometry: {
+              bounds: {
+                south: 9.752412399999999,
+                west: -84.6388865,
+                north: 9.7832442,
+                east: -84.62240709999999,
+              },
+              location: {
+                lat: 9.7730312,
+                lng: -84.6295991,
+              },
+              location_type: "APPROXIMATE",
+              viewport: {
+                south: 9.752412399999999,
+                west: -84.6388865,
+                north: 9.7832442,
+                east: -84.62240709999999,
+              },
+            },
+            place_id: "ChIJK6DhS4rJoY8RJ_dRPU1yUoc",
+            types: ["locality", "political"],
+          },
+        }),
+        destination: JSON.stringify({
+          city: "Santa Teresa Beach",
+          province: "Puntarenas",
+          address: "Santa Teresa Beach, Puntarenas Province, Costa Rica",
+          latLng: {
+            lat: 9.6463176,
+            lng: -85.1673785,
+          },
+          details: {
+            address_components: [
+              {
+                long_name: "Santa Teresa Beach",
+                short_name: "Santa Teresa Beach",
+                types: ["political", "sublocality", "sublocality_level_1"],
+              },
+              {
+                long_name: "Puntarenas Province",
+                short_name: "Puntarenas Province",
+                types: ["administrative_area_level_1", "political"],
+              },
+              {
+                long_name: "Costa Rica",
+                short_name: "CR",
+                types: ["country", "political"],
+              },
+            ],
+            formatted_address:
+              "Santa Teresa Beach, Puntarenas Province, Costa Rica",
+            geometry: {
+              bounds: {
+                south: 9.6349381,
+                west: -85.1816367,
+                north: 9.6564731,
+                east: -85.15605939999999,
+              },
+              location: {
+                lat: 9.6463176,
+                lng: -85.1673785,
+              },
+              location_type: "APPROXIMATE",
+              viewport: {
+                south: 9.6349381,
+                west: -85.1816367,
+                north: 9.6564731,
+                east: -85.15605939999999,
+              },
+            },
+            place_id: "ChIJOy2b519un48RhY0NoTvQ1h8",
+            types: ["political", "sublocality", "sublocality_level_1"],
+          },
+        }),
+        dateTime: new Date(new Date().setDate(new Date().getDate() + 7)),
+        seatsAvailable: 2,
+        seatsLeft: 2,
+        comment: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 12,
+        DriverId: 3,
+        origin: JSON.stringify({
+          city: "Sámara",
+          province: "Guanacaste",
+          address: "Guanacaste Province, Sámara, Costa Rica",
+          latLng: {
+            lat: 9.8820222,
+            lng: -85.5290361,
+          },
+          details: {
+            address_components: [
+              {
+                long_name: "Sámara",
+                short_name: "Sámara",
+                types: ["locality", "political"],
+              },
+              {
+                long_name: "Guanacaste",
+                short_name: "Guanacaste Province",
+                types: ["administrative_area_level_1", "political"],
+              },
+              {
+                long_name: "Costa Rica",
+                short_name: "CR",
+                types: ["country", "political"],
+              },
+            ],
+            formatted_address: "Guanacaste Province, Sámara, Costa Rica",
+            geometry: {
+              bounds: {
+                south: 9.8766989,
+                west: -85.5323626,
+                north: 9.8843937,
+                east: -85.5134367,
+              },
+              location: {
+                lat: 9.8820222,
+                lng: -85.5290361,
+              },
+              location_type: "APPROXIMATE",
+              viewport: {
+                south: 9.8766989,
+                west: -85.5323626,
+                north: 9.8843937,
+                east: -85.5134367,
+              },
+            },
+            place_id: "ChIJI1IHqgOqn48RxK8xGSlmLkQ",
+            types: ["locality", "political"],
+          },
+        }),
+        destination: JSON.stringify({
+          city: "Tumbas",
+          province: "San José",
+          address: "Tumbas, San José Province, Pérez Zeledón, Costa Rica",
+          latLng: {
+            lat: 9.35473,
+            lng: -83.63484299999999,
+          },
+          details: {
+            address_components: [
+              {
+                long_name: "Pérez Zeledón",
+                short_name: "Pérez Zeledón",
+                types: ["administrative_area_level_2", "political"],
+              },
+              {
+                long_name: "San José",
+                short_name: "San José Province",
+                types: ["administrative_area_level_1", "political"],
+              },
+              {
+                long_name: "Costa Rica",
+                short_name: "CR",
+                types: ["country", "political"],
+              },
+            ],
+            formatted_address: "San José Province, Pérez Zeledón, Costa Rica",
+            geometry: {
+              bounds: {
+                south: 9.0680257,
+                west: -83.995285,
+                north: 9.5727367,
+                east: -83.4157562,
+              },
+              location: {
+                lat: 9.35473,
+                lng: -83.63484299999999,
+              },
+              location_type: "APPROXIMATE",
+              viewport: {
+                south: 9.0680257,
+                west: -83.995285,
+                north: 9.5727367,
+                east: -83.4157562,
+              },
+            },
+            partial_match: true,
+            place_id: "ChIJm5e09CROoY8R_4jlBTygm1c",
+            types: ["administrative_area_level_2", "political"],
+          },
+        }),
+        dateTime: new Date(new Date().setDate(new Date().getDate() + 7)),
+        seatsAvailable: 2,
+        seatsLeft: 2,
+        comment: "Passing by Ruta 27 and San Jose",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
   down: async (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete("Rides", {
-      DriverId: {
-        [Sequelize.Op.in]: [1, 2, 3, 4, 5],
+      id: {
+        [Sequelize.Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       },
     });
   },

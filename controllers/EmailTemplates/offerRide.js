@@ -1,7 +1,7 @@
 require("dotenv").config;
 
 module.exports = function offerRide(ride) {
-  const subject = "Your ride is online | Ride.CR";
+  const subject = "Your ride is online | Tucána";
   const text = `Your ride from ${ride.origin.city} to ${ride.destination.city} with ${ride.seatsAvailable} seat(s) available is already online! You can already check it out on our platform at ${process.env.REACT_APP_URL_CLIENT}/rides/driver`;
   const html = `
     <div>

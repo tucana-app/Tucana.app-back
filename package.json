@@ -1,7 +1,7 @@
 {
-  "name": "ride.cr-back",
+  "name": "tucana-app-back",
   "version": "0.5.0",
-  "description": "Ride.CR | Back-end",
+  "description": "Tucána | Back-end",
   "private": false,
   "engines": {
     "node": "10.x"
@@ -40,16 +40,16 @@
     "ride",
     "share"
   ],
-  "author": "Ride.CR",
+  "author": "Tucána",
   "license": "MIT",
   "devDependencies": {
     "nodemon": "^2.0.12"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ridecr/Ride.CR-back.git"
+    "url": "git+https://github.com/tucana-app/tucana-app-back.git"
   },
   "bugs": {
-    "url": "https://github.com/ridecr/Ride.CR-back/issues"
+    "url": "https://github.com/tucana-app/tucana-app-back/issues"
   }
 }

@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 module.exports = {
   sendEmail(user, template) {
     var mailOptions = {
-      from: `Ride.CR <${process.env.EMAIL_ADDRESS}>`,
+      from: `Tucána <${process.env.EMAIL_ADDRESS}>`,
       to: `${user.firstName} ${user.lastName} <${user.email}>`,
       subject: template.subject,
       text: template.text,

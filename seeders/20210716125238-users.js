@@ -8,6 +8,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert("Users", [
       {
+        id: 1,
         firstName: "Valentin",
         lastName: "Palmer",
         username: "val",
@@ -20,6 +21,7 @@ module.exports = {
         phoneConfirmed: false,
       },
       {
+        id: 2,
         firstName: "Damien",
         lastName: "Roufre",
         username: "damien",
@@ -32,6 +34,7 @@ module.exports = {
         phoneConfirmed: false,
       },
       {
+        id: 3,
         firstName: "Peter",
         lastName: "Furniture",
         username: "peter",
@@ -44,6 +47,7 @@ module.exports = {
         phoneConfirmed: false,
       },
       {
+        id: 4,
         firstName: "Alan",
         lastName: "Matera",
         username: "alan",
@@ -56,6 +60,7 @@ module.exports = {
         phoneConfirmed: false,
       },
       {
+        id: 5,
         firstName: "Ben",
         lastName: "Jamin",
         username: "ben",
@@ -72,8 +77,8 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete("Users", {
-      username: {
-        [Sequelize.Op.in]: ["val", "damien", "peter", "alan", "ben"],
+      id: {
+        [Sequelize.Op.in]: [1, 2, 3, 4, 5],
       },
     });
   },

@@ -6,6 +6,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert("Conversations", [
       {
+        id: 1,
         DriverId: 4,
         UserId: 2,
         RideId: 6,
@@ -15,6 +16,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 2,
         DriverId: 3,
         UserId: 2,
         RideId: 1,
@@ -27,6 +29,10 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete("Conversations", {});
+    await queryInterface.bulkDelete("Conversations", {
+      id: {
+        [Sequelize.Op.in]: [1, 2],
+      },
+    });
   },
 };

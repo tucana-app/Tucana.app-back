@@ -7,6 +7,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert("Admins", [
       {
+        id: 1,
         firstName: process.env.ADMIN_FIRSTNAME,
         lastName: process.env.ADMIN_LASTNAME,
         username: process.env.ADMIN_USERNAME,
@@ -16,6 +17,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 2,
         firstName: process.env.MODO_FIRSTNAME,
         lastName: process.env.MODO_LASTNAME,
         username: process.env.MODO_USERNAME,
@@ -25,6 +27,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 3,
         firstName: process.env.SUPPORT_FIRSTNAME,
         lastName: process.env.SUPPORT_LASTNAME,
         username: process.env.SUPPORT_USERNAME,
@@ -34,6 +37,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 4,
         firstName: process.env.SALES_FIRSTNAME,
         lastName: process.env.SALES_LASTNAME,
         username: process.env.SALES_USERNAME,
@@ -47,13 +51,8 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete("Admins", {
-      username: {
-        [Sequelize.Op.in]: [
-          process.env.ADMIN_USERNAME,
-          process.env.MODO_USERNAME,
-          process.env.SUPPORT_USERNAME,
-          process.env.SALES_USERNAME,
-        ],
+      id: {
+        [Sequelize.Op.in]: [1, 2, 3, 4],
       },
     });
   },

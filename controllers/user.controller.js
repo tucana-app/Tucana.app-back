@@ -18,8 +18,8 @@ const { v4: uuidv4 } = require("uuid");
 
 module.exports = {
   signup(req, res) {
-    const { firstName, lastName, email, password, username, phoneNumber } =
-      req.body.formSignupUser;
+    const { firstName, lastName, email, phoneNumber, username, password } =
+      req.body.values;
 
     return User.create({
       firstName,
@@ -45,11 +45,12 @@ module.exports = {
             );
           })
           .catch((error) => {
+            // console.log(error);
             res.status(400).send({ message: "An error occured" });
           });
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
         res.status(400).send({ message: error.message });
       });
   },

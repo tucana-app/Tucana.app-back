@@ -3,7 +3,7 @@ const User = db.User;
 const Admin = db.Admin;
 
 checkDuplicate = (req, res, next) => {
-  const { email, username, phoneNumber } = req.body.formSignupUser;
+  const { email, username, phoneNumber } = req.body.values;
 
   // Username
   return User.findOne({

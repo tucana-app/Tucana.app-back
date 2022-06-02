@@ -5,7 +5,6 @@ module.exports = {
     return queryInterface.bulkInsert("Rides", [
       // Ride #1
       {
-        id: 1,
         DriverId: 3,
         origin: JSON.stringify({
           city: "Sámara",
@@ -117,7 +116,6 @@ module.exports = {
       },
       // Ride #2
       {
-        id: 2,
         DriverId: 4,
         origin: JSON.stringify({
           city: "Limon",
@@ -229,7 +227,6 @@ module.exports = {
       },
       // Ride #3
       {
-        id: 3,
         DriverId: 1,
         origin: JSON.stringify({
           city: "Uvita",
@@ -334,7 +331,6 @@ module.exports = {
       },
       // Ride #4
       {
-        id: 4,
         DriverId: 1,
         origin: JSON.stringify({
           city: "Dominical",
@@ -451,7 +447,6 @@ module.exports = {
       },
       // Ride #5
       {
-        id: 5,
         DriverId: 2,
         origin: JSON.stringify({
           city: "Tamarindo",
@@ -562,7 +557,6 @@ module.exports = {
       },
       // Ride #6
       {
-        id: 6,
         DriverId: 4,
         origin: JSON.stringify({
           city: "Escazu",
@@ -674,7 +668,6 @@ module.exports = {
       },
       // Ride #7
       {
-        id: 7,
         DriverId: 2,
         origin: JSON.stringify({
           city: "Tarcoles",
@@ -786,7 +779,6 @@ module.exports = {
       },
       // Ride #8
       {
-        id: 8,
         DriverId: 3,
         origin: JSON.stringify({
           city: "Jaco",
@@ -897,7 +889,6 @@ module.exports = {
       },
       // Ride #9
       {
-        id: 9,
         DriverId: 2,
         origin: JSON.stringify({
           city: "La Fortuna",
@@ -1007,7 +998,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 10,
         DriverId: 1,
         origin: JSON.stringify({
           city: "La Fortuna",
@@ -1117,7 +1107,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 11,
         DriverId: 3,
         origin: JSON.stringify({
           city: "Tarcoles",
@@ -1228,7 +1217,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 12,
         DriverId: 3,
         origin: JSON.stringify({
           city: "Sámara",

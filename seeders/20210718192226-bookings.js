@@ -5,7 +5,6 @@ module.exports = {
     return queryInterface.bulkInsert("Bookings", [
       // Booking #1
       {
-        id: 1,
         DriverId: 4,
         UserId: 2,
         RideId: 6,
@@ -16,7 +15,6 @@ module.exports = {
       },
       // Booking #2
       {
-        id: 2,
         DriverId: 1,
         UserId: 3,
         RideId: 4,
@@ -27,7 +25,6 @@ module.exports = {
       },
       // Booking #3
       {
-        id: 3,
         DriverId: 2,
         UserId: 1,
         RideId: 9,
@@ -38,7 +35,6 @@ module.exports = {
       },
       // Booking #4
       {
-        id: 4,
         DriverId: 3,
         UserId: 1,
         RideId: 8,
@@ -49,7 +45,6 @@ module.exports = {
       },
       // Booking #5
       {
-        id: 5,
         DriverId: 3,
         UserId: 4,
         RideId: 1,
@@ -60,7 +55,6 @@ module.exports = {
       },
       // Booking #6
       {
-        id: 6,
         DriverId: 2,
         UserId: 4,
         RideId: 5,
@@ -71,7 +65,6 @@ module.exports = {
       },
       // Booking #7
       {
-        id: 7,
         DriverId: 2,
         UserId: 1,
         RideId: 7,
@@ -82,7 +75,6 @@ module.exports = {
       },
       // Booking #8
       {
-        id: 8,
         DriverId: 4,
         UserId: 3,
         RideId: 2,
@@ -93,7 +85,6 @@ module.exports = {
       },
       // Booking #9
       {
-        id: 9,
         DriverId: 4,
         UserId: 3,
         RideId: 6,
@@ -104,7 +95,6 @@ module.exports = {
       },
       // Booking #10
       {
-        id: 10,
         DriverId: 1,
         UserId: 2,
         RideId: 3,
@@ -115,7 +105,6 @@ module.exports = {
       },
       // Booking #11
       {
-        id: 11,
         DriverId: 2,
         UserId: 1,
         RideId: 5,
@@ -126,7 +115,6 @@ module.exports = {
       },
       // Booking #12
       {
-        id: 12,
         DriverId: 3,
         UserId: 2,
         RideId: 1,

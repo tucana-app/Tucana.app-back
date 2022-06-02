@@ -6,7 +6,6 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert("Conversations", [
       {
-        id: 1,
         DriverId: 4,
         UserId: 2,
         RideId: 6,
@@ -16,7 +15,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 2,
         DriverId: 3,
         UserId: 2,
         RideId: 1,

@@ -427,15 +427,15 @@ module.exports = {
             UserId: user.id,
           })
             .then((response) => {
-              res.status(200).json({});
-
               emailController.sendEmail(
                 user,
                 emailTemplates.becomeDriver(accepted, comment)
               );
+
+              res.status(200).json({});
             })
             .catch((error) => {
-              // console.log(error);
+              console.log("1", error);
               res.status(400).json(errorMessage);
             });
         } else {
@@ -449,6 +449,7 @@ module.exports = {
       })
       .catch((error) => {
         // console.log(error);
+        console.log("2", error);
         res.status(400).json(errorMessage);
       });
   },

@@ -411,9 +411,6 @@ module.exports = {
   submitVerifDriverInfo(req, res) {
     const { adminId, user, driverInfoId, comment, accepted } = req.body;
 
-    console.log(user);
-    return res.status(200).json({});
-
     return admin_VerifDriverInfo
       .create({
         AdminId: adminId,
@@ -438,7 +435,7 @@ module.exports = {
               res.status(200).json({});
             })
             .catch((error) => {
-              console.log("1", error);
+              // console.log(error);
               res.status(400).json(errorMessage);
             });
         } else {
@@ -452,7 +449,6 @@ module.exports = {
       })
       .catch((error) => {
         // console.log(error);
-        console.log("2", error);
         res.status(400).json(errorMessage);
       });
   },

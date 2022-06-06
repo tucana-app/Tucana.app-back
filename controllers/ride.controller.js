@@ -1,3 +1,5 @@
+require("dotenv").config;
+
 const db = require("../models");
 const Ride = db.Ride;
 const RideFeedback = db.RideFeedback;
@@ -7,11 +9,13 @@ const Driver = db.Driver;
 const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const Op = db.Sequelize.Op;
+
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates/");
-require("dotenv").config;
-
 const { convert } = require("html-to-text");
+
+var distance = require("hpsweb-google-distance");
+distance.apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const errorMessage = { message: "A problem occured with this request" };
 
@@ -203,7 +207,15 @@ module.exports = {
   },
 
   getFilteredRides(req, res) {
-    const { date } = req.query;
+    const {
+      originProvince,
+      originLat,
+      originLng,
+      destinationProvince,
+      destinationLat,
+      destinationLng,
+      date,
+    } = req.query;
 
     // Convert the date submitted back to UTC
     const dateTimeZone = new Date(
@@ -245,7 +257,48 @@ module.exports = {
     })
       .then((response) => {
         // console.log(response);
-        res.status(200).json(response);
+
+        var ridesFound = [];
+        var arrayRidesLatLng = [];
+
+        response.map((ride) => {
+          if (
+            ride.dataValues.origin.province === originProvince &&
+            ride.dataValues.destination.province === destinationProvince
+          ) {
+            ridesFound.push(ride);
+
+            arrayRidesLatLng.push(
+              `${ride.dataValues.origin.latLng.lat},${ride.dataValues.origin.latLng.lng}`
+            );
+          }
+        });
+
+        if (ridesFound.length) {
+          distance
+            .get({
+              origin: `${originLat},${originLng}`,
+              destinations: arrayRidesLatLng,
+            })
+            .then((data) => {
+              // console.log(data);
+
+              // Add the distance object to each rides found
+              const ridesWithDistance = ridesFound.map((ride, index) => ({
+                rideDetails: ride,
+                distanceFromOrigin: data[index],
+              }));
+
+              res.status(200).json(ridesWithDistance);
+            })
+            .catch((err) => {
+              // console.log(err);
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          // No rides found
+          res.status(200).json({});
+        }
       })
       .catch((error) => {
         // console.log(error);

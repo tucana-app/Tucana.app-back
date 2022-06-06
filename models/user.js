@@ -24,11 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "SenderId",
         onDelete: "NO ACTION",
       });
-
-      // User.hasOne(models.Settings, {
-      //   foreignKey: "SettingsId",
-      //   onDelete: "NO ACTION",
-      // });
     }
   }
   User.init(
@@ -42,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
       phoneNumber: DataTypes.STRING,
       emailConfirmed: DataTypes.BOOLEAN,
       phoneConfirmed: DataTypes.BOOLEAN,
-      // SettingsId: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -45,9 +45,10 @@ checkDuplicate = (req, res, next) => {
                 });
               } else {
                 // Email already confirmed, so is already in use
-                res.status(400).send({
+                res.status(403).send({
                   message: "Email already in use, but not confirmed yet",
                   flag: "NOT_CONFIRMED",
+                  userId: user.id,
                 });
               }
             } else {

@@ -14,6 +14,8 @@ const refusedToUser = require("./refusedToUser");
 const signupConfirmed = require("./signupConfirmed");
 const contactToCompany = require("./contactToCompany");
 const contactToUser = require("./contactToUser");
+const becomeDriver = require("./becomeDriver");
+const newFormBecomeDriver = require("./newFormBecomeDriver");
 
 module.exports = {
   confirmSignup,
@@ -32,4 +34,6 @@ module.exports = {
   signupConfirmed,
   contactToCompany,
   contactToUser,
+  becomeDriver,
+  newFormBecomeDriver,
 };

@@ -8,7 +8,7 @@ const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const Op = db.Sequelize.Op;
 const emailController = require("./email.controller");
-const templates = require("./EmailTemplates/");
+const emailTemplates = require("./EmailTemplates/");
 require("dotenv").config;
 
 const { convert } = require("html-to-text");
@@ -59,7 +59,7 @@ module.exports = {
 
         res.status(200).json({ flag: "SUCCESS" });
 
-        emailController.sendEmail(user, templates.offerRide(ride));
+        emailController.sendEmail(user, emailTemplates.offerRide(ride));
       })
       .catch((error) => {
         // console.log(error);
@@ -273,11 +273,11 @@ module.exports = {
 
           emailController.sendEmail(
             passenger,
-            templates.bookRideByUser(ride, formValues)
+            emailTemplates.bookRideByUser(ride, formValues)
           );
           emailController.sendEmail(
             ride.Driver.User,
-            templates.bookRideToDriver(ride, passenger, formValues)
+            emailTemplates.bookRideToDriver(ride, passenger, formValues)
           );
         })
         .catch((error) => {
@@ -326,11 +326,11 @@ module.exports = {
 
               emailController.sendEmail(
                 booking.User,
-                templates.acceptedToUser(booking, formValues)
+                emailTemplates.acceptedToUser(booking, formValues)
               );
               emailController.sendEmail(
                 booking.Ride.Driver.User,
-                templates.acceptedByDriver(booking)
+                emailTemplates.acceptedByDriver(booking)
               );
             })
             .catch((error) => {
@@ -364,11 +364,11 @@ module.exports = {
 
           emailController.sendEmail(
             booking.User,
-            templates.refusedToUser(booking, formValues)
+            emailTemplates.refusedToUser(booking, formValues)
           );
           emailController.sendEmail(
             booking.Ride.Driver.User,
-            templates.refusedByDriver(booking)
+            emailTemplates.refusedByDriver(booking)
           );
         })
         .catch((error) => {

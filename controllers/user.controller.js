@@ -1,7 +1,7 @@
 const db = require("../models");
 const config = require("../config/user.config");
 const emailController = require("./email.controller");
-const emailTemplate = require("./EmailTemplates");
+const emailTemplates = require("./EmailTemplates");
 const validator = require("validator");
 const User = db.User;
 const Driver = db.Driver;
@@ -28,8 +28,6 @@ module.exports = {
       phoneNumber,
       username: username.toLowerCase(),
       password: bcrypt.hashSync(password, 10),
-      emailConfirmed: false,
-      phoneConfirmed: false,
     })
       .then((user) => {
         return ConfirmEmail.create({
@@ -41,7 +39,7 @@ module.exports = {
 
             emailController.sendEmail(
               user,
-              emailTemplate.confirmSignup(confirmEmailLine.UUID)
+              emailTemplates.confirmSignup(confirmEmailLine.UUID)
             );
           })
           .catch((error) => {
@@ -50,7 +48,7 @@ module.exports = {
           });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         res.status(400).send({ message: error.message });
       });
   },
@@ -94,7 +92,7 @@ module.exports = {
 
                       emailController.sendEmail(
                         user,
-                        emailTemplate.signupConfirmed(user)
+                        emailTemplates.signupConfirmed(user)
                       );
 
                       return ConfirmEmail.destroy({
@@ -156,13 +154,15 @@ module.exports = {
   },
 
   signin(req, res) {
+    const { credential, password } = req.body.formLogin;
+
     return User.findOne({
       where: {
         [Op.or]: {
-          username: req.body.formLogin.credential,
-          username: req.body.formLogin.credential.toLowerCase(),
-          email: req.body.formLogin.credential,
-          email: req.body.formLogin.credential.toLowerCase(),
+          username: credential,
+          username: credential.toLowerCase(),
+          email: credential,
+          email: credential.toLowerCase(),
         },
       },
       include: [
@@ -180,10 +180,7 @@ module.exports = {
             .status(404)
             .send({ message: "User not found", flag: "GENERAL_ERROR" });
         } else {
-          var passwordIsValid = bcrypt.compareSync(
-            req.body.formLogin.password,
-            user.password
-          );
+          var passwordIsValid = bcrypt.compareSync(password, user.password);
 
           if (!passwordIsValid) {
             return res.status(401).send({
@@ -280,7 +277,7 @@ module.exports = {
 
                       emailController.sendEmail(
                         user,
-                        emailTemplate.forgotPassword(line.UUID)
+                        emailTemplates.forgotPassword(line.UUID)
                       );
                     })
                     .catch((error) => {
@@ -305,7 +302,7 @@ module.exports = {
 
                     emailController.sendEmail(
                       user,
-                      emailTemplate.forgotPassword(newLine.UUID)
+                      emailTemplates.forgotPassword(newLine.UUID)
                     );
                   })
                   .catch((error) => {
@@ -394,7 +391,7 @@ module.exports = {
 
                         emailController.sendEmail(
                           user,
-                          emailTemplate.resetPasswordSuccess(user)
+                          emailTemplates.resetPasswordSuccess(user)
                         );
                       })
                       .catch((error) => {
@@ -467,7 +464,7 @@ module.exports = {
 
                 emailController.sendEmail(
                   user,
-                  emailTemplate.confirmSignup(confirmation.UUID)
+                  emailTemplates.confirmSignup(confirmation.UUID)
                 );
               }
             })
@@ -523,6 +520,8 @@ module.exports = {
     })
       .then((driver) => {
         res.status(200).send({});
+
+        emailController.sendEmailToAdmin(emailTemplates.newFormBecomeDriver());
       })
       .catch((error) =>
         // console.log(error)
@@ -577,10 +576,10 @@ module.exports = {
 
     emailController.sendEmail(
       companyInfo,
-      emailTemplate.contactToCompany(userInfo, values)
+      emailTemplates.contactToCompany(userInfo, values)
     );
 
-    emailController.sendEmail(userInfo, emailTemplate.contactToUser(values));
+    emailController.sendEmail(userInfo, emailTemplates.contactToUser(values));
 
     return res.status(200).json({});
   },

@@ -15,6 +15,8 @@ const admin_VerifPassengerRating = db.admin_VerifPassengerRating;
 const admin_VerifDriverRating = db.admin_VerifDriverRating;
 const Op = db.Sequelize.Op;
 const admin_VerifDriverInfo = db.admin_VerifDriverInfo;
+const emailController = require("./email.controller");
+const emailTemplates = require("./EmailTemplates/");
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -407,14 +409,14 @@ module.exports = {
   },
 
   submitVerifDriverInfo(req, res) {
-    const { adminId, userId, driverInfoId, comment, accepted } = req.body;
+    const { adminId, user, driverInfoId, comment, accepted } = req.body;
 
     return admin_VerifDriverInfo
       .create({
         AdminId: adminId,
         DriverInfoId: driverInfoId,
-        accepted: accepted,
-        comment: comment,
+        accepted,
+        comment,
       })
       .then((response) => {
         // console.log(response);
@@ -422,10 +424,15 @@ module.exports = {
         if (accepted) {
           // Create the new driver
           return Driver.create({
-            UserId: userId,
+            UserId: user.id,
           })
             .then((response) => {
               res.status(200).json({});
+
+              emailController.sendEmail(
+                user,
+                emailTemplates.becomeDriver(accepted, comment)
+              );
             })
             .catch((error) => {
               // console.log(error);
@@ -433,6 +440,11 @@ module.exports = {
             });
         } else {
           res.status(200).json({});
+
+          emailController.sendEmail(
+            user,
+            emailTemplates.becomeDriver(accepted, comment)
+          );
         }
       })
       .catch((error) => {

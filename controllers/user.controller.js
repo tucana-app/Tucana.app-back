@@ -244,7 +244,6 @@ module.exports = {
           });
         } else {
           // Email found
-
           return ForgotPassword.findOne({
             where: {
               UserId: user.id,
@@ -489,7 +488,7 @@ module.exports = {
       });
   },
 
-  submissionsBecomeDriver(req, res) {
+  getApplicationsBecomeDriver(req, res) {
     const { userId } = req.query;
 
     return DriverInfo.findAll({
@@ -552,7 +551,7 @@ module.exports = {
       });
   },
 
-  submitFormContact(req, res) {
+  submitContactForm(req, res) {
     const { user, values } = req.body;
     var userInfo = {};
     var companyInfo = {};

@@ -39,12 +39,12 @@ module.exports = function (app) {
 
   app.get(
     "/api/user/submissions-become-driver",
-    controller.submissionsBecomeDriver
+    controller.getApplicationsBecomeDriver
   );
 
   app.post("/api/user/submit-become-driver", controller.submitBecomeDriver);
 
   app.get("/api/user/driver-state", controller.updateDriverState);
 
-  app.post("/api/user/submit-contact-form", controller.submitFormContact);
+  app.post("/api/user/submit-contact-form", controller.submitContactForm);
 };

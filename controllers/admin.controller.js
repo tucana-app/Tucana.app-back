@@ -411,6 +411,9 @@ module.exports = {
   submitVerifDriverInfo(req, res) {
     const { adminId, user, driverInfoId, comment, accepted } = req.body;
 
+    console.log(user);
+    return res.status(200).json({});
+
     return admin_VerifDriverInfo
       .create({
         AdminId: adminId,

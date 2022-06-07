@@ -512,23 +512,24 @@ module.exports = {
   },
 
   submitBecomeDriver(req, res) {
-    const { userId } = req.body;
+    const { user } = req.body;
 
     return DriverInfo.create({
-      UserId: userId,
+      UserId: user.id,
     })
       .then((driver) => {
         res.status(200).send({});
 
         emailController.sendEmailToAdmin(emailTemplates.newFormBecomeDriver());
       })
-      .catch((error) =>
-        // console.log(error)
+      .catch((error) => {
+        // console.log(error);
+
         res.status(400).json({
           message: "A problem occured",
           flag: "GENERAL_ERROR",
-        })
-      );
+        });
+      });
   },
 
   updateDriverState(req, res) {

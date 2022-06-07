@@ -38,7 +38,7 @@ module.exports = function (app) {
   );
 
   app.get(
-    "/api/user/submissions-become-driver",
+    "/api/user/applications-become-driver",
     controller.getApplicationsBecomeDriver
   );
 

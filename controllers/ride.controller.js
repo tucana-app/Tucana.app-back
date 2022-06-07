@@ -291,8 +291,8 @@ module.exports = {
 
               res.status(200).json(ridesWithDistance);
             })
-            .catch((err) => {
-              console.log("1", err);
+            .catch((error) => {
+              console.log("1", error);
               res.status(400).json(errorMessage);
             });
         } else {

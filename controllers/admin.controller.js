@@ -91,7 +91,7 @@ module.exports = {
 
   adminListRides(req, res) {
     return Ride.findAll({
-      order: [["dateTime", "DESC"]],
+      order: [["id", "ASC"]],
       include: [
         {
           model: Driver,

@@ -261,8 +261,8 @@ module.exports = {
         var ridesFound = [];
         var arrayRidesOriginLatLng = [];
         var arrayRidesDestinationLatLng = [];
-        var distanceFromOrigin = [];
-        var distanceFromDestination = [];
+        // var distanceFromOrigin = [];
+        // var distanceFromDestination = [];
 
         response.map((ride) => {
           if (
@@ -283,50 +283,42 @@ module.exports = {
 
         if (ridesFound.length) {
           (async function () {
-            await Promise.all(
-              [
-                distance
-                  .get({
-                    origin: `${originLat},${originLng}`,
-                    destinations: arrayRidesOriginLatLng,
-                  })
-                  .then((data) => {
-                    // console.log(data);
-                    distanceFromOrigin = data;
-                  })
-                  .catch((error) => {
-                    console.log("2", error);
-                    // res.status(400).json(errorMessage);
-                  }),
-              ],
-              [
-                distance
-                  .get({
-                    origin: `${destinationLat},${destinationLng}`,
-                    destinations: arrayRidesDestinationLatLng,
-                  })
-                  .then((data) => {
-                    // console.log(data);
-                    distanceFromDestination = data;
-                  })
-                  .catch((error) => {
-                    console.log("3", error);
-                    // res.status(400).json(errorMessage);
-                  }),
-                ,
-              ]
-            ).catch((error) => {
-              console.log("3", error);
-              res.status(400).json(errorMessage);
-            });
+            const promiseDistanceOrigin = distance
+              .get({
+                origin: `${originLat},${originLng}`,
+                destinations: arrayRidesOriginLatLng,
+              })
+              .then((data) => data)
+              .catch((error) => {
+                console.log("5", error);
+                res.status(400).json(errorMessage);
+              });
 
-            const ridesWithDistance = ridesFound.map((ride, index) => ({
-              rideDetails: ride,
-              distanceFromOrigin: distanceFromOrigin[index],
-              distanceFromDestination: distanceFromDestination[index],
-            }));
+            const promiseDistanceDestination = distance
+              .get({
+                origin: `${destinationLat},${destinationLng}`,
+                destinations: arrayRidesDestinationLatLng,
+              })
+              .then((data) => data)
+              .catch((error) => {
+                console.log("6", error);
+                res.status(400).json(errorMessage);
+              });
 
-            res.status(200).json(ridesWithDistance);
+            Promise.all([promiseDistanceOrigin, promiseDistanceDestination])
+              .then((distances) => {
+                const ridesWithDistance = ridesFound.map((ride, index) => ({
+                  rideDetails: ride,
+                  distanceFromOrigin: distances[0],
+                  distanceFromDestination: distances[1],
+                }));
+
+                res.status(200).json(ridesWithDistance);
+              })
+              .catch((error) => {
+                console.log("10", error);
+                res.status(400).json(errorMessage);
+              });
           })();
         } else {
           // No rides found

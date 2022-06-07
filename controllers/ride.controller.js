@@ -259,7 +259,10 @@ module.exports = {
         // console.log(response);
 
         var ridesFound = [];
-        var arrayRidesLatLng = [];
+        var arrayRidesOriginLatLng = [];
+        var arrayRidesDestinationLatLng = [];
+        var distanceFromOrigin = [];
+        var distanceFromDestination = [];
 
         response.map((ride) => {
           if (
@@ -268,33 +271,63 @@ module.exports = {
           ) {
             ridesFound.push(ride);
 
-            arrayRidesLatLng.push(
+            arrayRidesOriginLatLng.push(
               `${ride.dataValues.origin.latLng.lat},${ride.dataValues.origin.latLng.lng}`
+            );
+
+            arrayRidesDestinationLatLng.push(
+              `${ride.dataValues.destination.latLng.lat},${ride.dataValues.destination.latLng.lng}`
             );
           }
         });
 
         if (ridesFound.length) {
-          distance
-            .get({
-              origin: `${originLat},${originLng}`,
-              destinations: arrayRidesLatLng,
-            })
-            .then((data) => {
-              // console.log(data);
-
-              // Add the distance object to each rides found
-              const ridesWithDistance = ridesFound.map((ride, index) => ({
-                rideDetails: ride,
-                distanceFromOrigin: data[index],
-              }));
-
-              res.status(200).json(ridesWithDistance);
-            })
-            .catch((error) => {
-              console.log("1", error);
+          (async function () {
+            await Promise.all(
+              [
+                distance
+                  .get({
+                    origin: `${originLat},${originLng}`,
+                    destinations: arrayRidesOriginLatLng,
+                  })
+                  .then((data) => {
+                    // console.log(data);
+                    distanceFromOrigin = data;
+                  })
+                  .catch((error) => {
+                    console.log("2", error);
+                    // res.status(400).json(errorMessage);
+                  }),
+              ],
+              [
+                distance
+                  .get({
+                    origin: `${destinationLat},${destinationLng}`,
+                    destinations: arrayRidesDestinationLatLng,
+                  })
+                  .then((data) => {
+                    // console.log(data);
+                    distanceFromDestination = data;
+                  })
+                  .catch((error) => {
+                    console.log("3", error);
+                    // res.status(400).json(errorMessage);
+                  }),
+                ,
+              ]
+            ).catch((error) => {
+              console.log("3", error);
               res.status(400).json(errorMessage);
             });
+
+            const ridesWithDistance = ridesFound.map((ride, index) => ({
+              rideDetails: ride,
+              distanceFromOrigin: distanceFromOrigin[index],
+              distanceFromDestination: distanceFromDestination[index],
+            }));
+
+            res.status(200).json(ridesWithDistance);
+          })();
         } else {
           // No rides found
           res.status(200).json({});
@@ -804,12 +837,14 @@ module.exports = {
                     RideId: ride.id,
                     BookingId: booking.id,
                   },
-                }).then((feedback) => {
-                  if (!feedback) {
-                    // Feedback missing
-                    ridesToFeedback.push(ride);
-                  }
-                });
+                })
+                  .then((feedback) => {
+                    if (!feedback) {
+                      // Feedback missing
+                      ridesToFeedback.push(ride);
+                    }
+                  })
+                  .catch((error) => res.status(400).json([]));
               }
             });
           })

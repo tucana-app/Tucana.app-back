@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node server",
     "dev": "nodemon server",
-    "rs-db": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all"
+    "rs-db": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all",
+    "pushgit": "git push github master"
   },
   "cacheDirectories": [
     "node_modules"

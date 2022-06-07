@@ -61,8 +61,8 @@ module.exports = {
           province: "San José",
           address: "Tumbas, San José Province, Pérez Zeledón, Costa Rica",
           latLng: {
-            lat: 9.35473,
-            lng: -83.63484299999999,
+            lat: 9.2852104,
+            lng: -83.8137418,
           },
           details: {
             address_components: [
@@ -91,8 +91,8 @@ module.exports = {
                 east: -83.4157562,
               },
               location: {
-                lat: 9.35473,
-                lng: -83.63484299999999,
+                lat: 9.2852104,
+                lng: -83.8137418,
               },
               location_type: "APPROXIMATE",
               viewport: {
@@ -1273,8 +1273,8 @@ module.exports = {
           province: "San José",
           address: "Tumbas, San José Province, Pérez Zeledón, Costa Rica",
           latLng: {
-            lat: 9.35473,
-            lng: -83.63484299999999,
+            lat: 9.2852104,
+            lng: -83.8137418,
           },
           details: {
             address_components: [
@@ -1303,8 +1303,8 @@ module.exports = {
                 east: -83.4157562,
               },
               location: {
-                lat: 9.35473,
-                lng: -83.63484299999999,
+                lat: 9.2852104,
+                lng: -83.8137418,
               },
               location_type: "APPROXIMATE",
               viewport: {

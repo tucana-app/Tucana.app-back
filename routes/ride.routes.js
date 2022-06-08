@@ -23,6 +23,8 @@ module.exports = (app) => {
 
   app.get("/api/ride/filtered-rides", controller.getFilteredRides);
 
+  app.get("/api/ride/get-eta", controller.getETA);
+
   app.post("/api/ride/add-ride", controller.addRide);
 
   app.post("/api/ride/book", controller.bookRide);

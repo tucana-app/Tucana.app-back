@@ -44,6 +44,21 @@ module.exports = {
       });
   },
 
+  getETA(req, res) {
+    const { originLat, originLng, destinationLat, destinationLng } = req.query;
+
+    return distance
+      .get({
+        origin: `${originLat},${originLng}`,
+        destination: `${destinationLat},${destinationLng}`,
+      })
+      .then((data) => res.status(200).json(data))
+      .catch((error) => {
+        // console.log("15", error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
   addRide(req, res) {
     const { user, formOfferRide } = req.body;
 

@@ -5,7 +5,7 @@ const Admin = db.Admin;
 const User = db.User;
 const Ride = db.Ride;
 const Driver = db.Driver;
-const DriverInfo = db.DriverInfo;
+const DriverApplication = db.DriverApplication;
 const RideStatus = db.RideStatus;
 const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
@@ -14,7 +14,7 @@ const DriverRating = db.DriverRating;
 const admin_VerifPassengerRating = db.admin_VerifPassengerRating;
 const admin_VerifDriverRating = db.admin_VerifDriverRating;
 const Op = db.Sequelize.Op;
-const admin_VerifDriverInfo = db.admin_VerifDriverInfo;
+const admin_VerifDriverApplication = db.admin_VerifDriverApplication;
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates/");
 
@@ -338,11 +338,11 @@ module.exports = {
     })();
   },
 
-  adminAllDriversInfo(req, res) {
-    return DriverInfo.findAll({
+  adminAllDriversApplication(req, res) {
+    return DriverApplication.findAll({
       include: [
         {
-          model: admin_VerifDriverInfo,
+          model: admin_VerifDriverApplication,
         },
         {
           model: User,
@@ -368,16 +368,16 @@ module.exports = {
       });
   },
 
-  adminDriverInfo(req, res) {
-    const { driverInfoId } = req.query;
+  adminSingleDriverApplication(req, res) {
+    const { driverApplicationId } = req.query;
 
-    return DriverInfo.findOne({
+    return DriverApplication.findOne({
       where: {
-        id: driverInfoId,
+        id: driverApplicationId,
       },
       include: [
         {
-          model: admin_VerifDriverInfo,
+          model: admin_VerifDriverApplication,
           include: [
             {
               model: Admin,
@@ -408,13 +408,13 @@ module.exports = {
       });
   },
 
-  submitVerifDriverInfo(req, res) {
-    const { adminId, user, driverInfoId, comment, accepted } = req.body;
+  submitVerifDriverApplication(req, res) {
+    const { adminId, user, driverApplicationId, comment, accepted } = req.body;
 
-    return admin_VerifDriverInfo
+    return admin_VerifDriverApplication
       .create({
         AdminId: adminId,
-        DriverInfoId: driverInfoId,
+        DriverApplicationId: driverApplicationId,
         accepted,
         comment,
       })

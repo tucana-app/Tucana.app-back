@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("admin_VerifDriverInfos", {
+    await queryInterface.createTable("admin_VerifDriverApplications", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -13,7 +13,7 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      DriverInfoId: {
+      DriverApplicationId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -36,6 +36,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("admin_VerifDriverInfos");
+    await queryInterface.dropTable("admin_VerifDriverApplications");
   },
 };

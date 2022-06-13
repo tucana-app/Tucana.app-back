@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         through: "admins_roles",
       });
 
-      Admin.hasMany(models.admin_VerifDriverInfo, {
+      Admin.hasMany(models.admin_VerifDriverApplication, {
         onDelete: "NO ACTION",
       });
     }

@@ -5,11 +5,11 @@ const emailTemplates = require("./EmailTemplates");
 const validator = require("validator");
 const User = db.User;
 const Driver = db.Driver;
-const DriverInfo = db.DriverInfo;
+const DriverApplication = db.DriverApplication;
 const Op = db.Sequelize.Op;
 const ConfirmEmail = db.ConfirmEmail;
 const ForgotPassword = db.ForgotPassword;
-const admin_VerifDriverInfo = db.admin_VerifDriverInfo;
+const admin_VerifDriverApplication = db.admin_VerifDriverApplication;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -491,19 +491,19 @@ module.exports = {
   getApplicationsBecomeDriver(req, res) {
     const { userId } = req.query;
 
-    return DriverInfo.findAll({
+    return DriverApplication.findAll({
       where: {
         UserId: userId,
       },
       order: [["id", "ASC"]],
       include: [
         {
-          model: admin_VerifDriverInfo,
+          model: admin_VerifDriverApplication,
         },
       ],
     })
-      .then((submissions) => {
-        res.status(200).json(submissions);
+      .then((applications) => {
+        res.status(200).json(applications);
       })
       .catch((error) => {
         // console.log(error);
@@ -514,7 +514,7 @@ module.exports = {
   submitBecomeDriver(req, res) {
     const { user } = req.body;
 
-    return DriverInfo.create({
+    return DriverApplication.create({
       UserId: user.id,
     })
       .then((driver) => {

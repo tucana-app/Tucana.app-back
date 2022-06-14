@@ -1,45 +1,55 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("DriverApplications", {
+    await queryInterface.createTable("Cars", {
       id: {
-        type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      UserId: {
+      DriverId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
       },
-      idType: {
+      maker: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      idNumber: {
+      model: {
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-      idCountry: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      licenseNumber: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      licenseCountry: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      carMaker: {
-        type: Sequelize.STRING,
-        allowNull: false,
       },
       numberPlate: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      year: {
+        type: Sequelize.INTEGER,
+      },
+      color: {
+        type: Sequelize.STRING,
+      },
+      color: {
+        type: Sequelize.STRING,
+      },
+      marchamo: {
+        type: Sequelize.DATE,
+      },
+      riteve: {
+        type: Sequelize.DATE,
+      },
+      photo: {
+        type: Sequelize.STRING,
+      },
+      seats: {
+        type: Sequelize.INTEGER,
+      },
+      fuelType: {
+        type: Sequelize.STRING,
+      },
+      comment: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -52,6 +62,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("DriverApplications");
+    await queryInterface.dropTable("Cars");
   },
 };

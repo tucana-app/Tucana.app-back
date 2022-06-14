@@ -5,6 +5,7 @@ const emailTemplates = require("./EmailTemplates");
 const validator = require("validator");
 const User = db.User;
 const Driver = db.Driver;
+const Car = db.Car;
 const DriverApplication = db.DriverApplication;
 const Op = db.Sequelize.Op;
 const ConfirmEmail = db.ConfirmEmail;
@@ -171,6 +172,11 @@ module.exports = {
           attributes: {
             exclude: ["UserId", "createdAt", "updatedAt"],
           },
+          include: [
+            {
+              model: Car,
+            },
+          ],
         },
       ],
     })
@@ -178,7 +184,7 @@ module.exports = {
         if (!user) {
           res
             .status(404)
-            .send({ message: "User not found", flag: "GENERAL_ERROR" });
+            .send({ message: "User not found", flag: "USER_NOT_FOUND" });
         } else {
           var passwordIsValid = bcrypt.compareSync(password, user.password);
 
@@ -186,6 +192,7 @@ module.exports = {
             return res.status(401).send({
               accessToken: null,
               message: "Invalid Password",
+              flag: "INVALID_PASSWORD",
             });
           }
 
@@ -503,21 +510,30 @@ module.exports = {
       ],
     })
       .then((applications) => {
+        // console.log(applications);
         res.status(200).json(applications);
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
         res.status(400).json({ flag: "GENERAL_ERROR" });
       });
   },
 
   submitBecomeDriver(req, res) {
-    const { user } = req.body;
+    const { user, form } = req.body;
 
     return DriverApplication.create({
       UserId: user.id,
+      idType: form.id.type,
+      idNumber: form.id.number,
+      idCountry: form.id.country.value.name.common,
+      licenseNumber: form.license.number,
+      licenseCountry: form.license.country.value.name.common,
+      carMaker: form.car.maker,
+      numberPlate: form.car.numberPlate,
     })
-      .then((driver) => {
+      .then((application) => {
+        // console.log(application);
         res.status(200).send({});
 
         emailController.sendEmailToAdmin(emailTemplates.newFormBecomeDriver());
@@ -526,7 +542,6 @@ module.exports = {
         // console.log(error);
 
         res.status(400).json({
-          message: "A problem occured",
           flag: "GENERAL_ERROR",
         });
       });
@@ -539,12 +554,21 @@ module.exports = {
       where: {
         UserId: userId,
       },
+      include: [
+        {
+          model: Car,
+        },
+      ],
     })
       .then((driver) => {
-        res.status(200).send(driver);
+        if (driver) {
+          res.status(200).send(driver);
+        } else {
+          res.status(404).send();
+        }
       })
       .catch((error) => {
-        // console.log(error)
+        // console.log(error);
         res.status(400).json({
           message: "A problem occured",
           flag: "GENERAL_ERROR",

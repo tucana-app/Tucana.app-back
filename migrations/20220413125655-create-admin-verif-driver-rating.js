@@ -18,7 +18,7 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      accepted: {
+      isAccepted: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },

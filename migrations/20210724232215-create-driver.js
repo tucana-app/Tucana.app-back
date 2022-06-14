@@ -14,6 +14,26 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
+      idType: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      idNumber: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      idCountry: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      licenseNumber: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      licenseCountry: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

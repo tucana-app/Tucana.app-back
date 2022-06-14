@@ -5,6 +5,7 @@ const Admin = db.Admin;
 const User = db.User;
 const Ride = db.Ride;
 const Driver = db.Driver;
+const Car = db.Car;
 const DriverApplication = db.DriverApplication;
 const RideStatus = db.RideStatus;
 const Booking = db.Booking;
@@ -369,11 +370,11 @@ module.exports = {
   },
 
   adminSingleDriverApplication(req, res) {
-    const { driverApplicationId } = req.query;
+    const { applicationId } = req.query;
 
     return DriverApplication.findOne({
       where: {
-        id: driverApplicationId,
+        id: applicationId,
       },
       include: [
         {
@@ -409,30 +410,49 @@ module.exports = {
   },
 
   submitVerifDriverApplication(req, res) {
-    const { adminId, user, driverApplicationId, comment, accepted } = req.body;
+    const { adminId, application, comment, isAccepted } = req.body;
 
     return admin_VerifDriverApplication
       .create({
         AdminId: adminId,
-        DriverApplicationId: driverApplicationId,
-        accepted,
+        DriverApplicationId: application.id,
+        isAccepted,
         comment,
       })
       .then((response) => {
         // console.log(response);
 
-        if (accepted) {
+        if (isAccepted) {
           // Create the new driver
           return Driver.create({
-            UserId: user.id,
+            UserId: application.UserId,
+            idType: application.idType,
+            idNumber: application.idNumber,
+            idCountry: application.idCountry,
+            licenseNumber: application.licenseNumber,
+            licenseCountry: application.licenseCountry,
           })
             .then((response) => {
-              emailController.sendEmail(
-                user,
-                emailTemplates.becomeDriver(accepted, comment)
-              );
+              // console.log(response);
 
-              res.status(200).json({});
+              return Car.create({
+                DriverId: response.dataValues.id,
+                maker: application.carMaker,
+                numberPlate: application.numberPlate,
+              })
+                .then((response) => {
+                  // console.log(response);
+                  emailController.sendEmail(
+                    application.User,
+                    emailTemplates.becomeDriver(isAccepted, comment)
+                  );
+
+                  res.status(200).json({});
+                })
+                .catch((error) => {
+                  // console.log(error);
+                  res.status(400).json(errorMessage);
+                });
             })
             .catch((error) => {
               // console.log(error);
@@ -442,8 +462,8 @@ module.exports = {
           res.status(200).json({});
 
           emailController.sendEmail(
-            user,
-            emailTemplates.becomeDriver(accepted, comment)
+            application.User,
+            emailTemplates.becomeDriver(isAccepted, comment)
           );
         }
       })

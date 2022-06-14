@@ -20,7 +20,13 @@ module.exports = (sequelize, DataTypes) => {
   DriverApplication.init(
     {
       UserId: DataTypes.INTEGER,
-      document: DataTypes.STRING,
+      idType: DataTypes.STRING,
+      idNumber: DataTypes.STRING,
+      idCountry: DataTypes.STRING,
+      licenseNumber: DataTypes.STRING,
+      licenseCountry: DataTypes.STRING,
+      carMaker: DataTypes.STRING,
+      numberPlate: DataTypes.STRING,
     },
     {
       sequelize,

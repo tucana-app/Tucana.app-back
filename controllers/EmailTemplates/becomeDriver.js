@@ -1,9 +1,9 @@
 require("dotenv").config;
 
-module.exports = function becomeDriver(accepted, comment) {
+module.exports = function becomeDriver(isAccepted, comment) {
   var subject, text, html;
 
-  if (accepted) {
+  if (isAccepted) {
     subject = "You are now a driver | Tucána";
     text = `Tucána | Congratulations, you are now part of our community of drivers around Costa Rica. Please activate your driver's profile here: ${process.env.REACT_APP_URL_CLIENT}/become-driver`;
     html = `

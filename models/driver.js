@@ -23,11 +23,20 @@ module.exports = (sequelize, DataTypes) => {
       Driver.hasMany(models.Conversation, {
         onDelete: "NO ACTION",
       });
+
+      Driver.hasOne(models.Car, {
+        onDelete: "CASCADE",
+      });
     }
   }
   Driver.init(
     {
       UserId: DataTypes.INTEGER,
+      idType: DataTypes.STRING,
+      idNumber: DataTypes.STRING,
+      idCountry: DataTypes.STRING,
+      licenseNumber: DataTypes.STRING,
+      licenseCountry: DataTypes.STRING,
     },
     {
       sequelize,

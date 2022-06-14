@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "SenderId",
         onDelete: "NO ACTION",
       });
+
+      User.hasMany(models.DriverApplication, {
+        onDelete: "NO ACTION",
+      });
     }
   }
   User.init(

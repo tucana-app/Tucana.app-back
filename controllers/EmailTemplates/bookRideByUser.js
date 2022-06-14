@@ -7,10 +7,10 @@ module.exports = function bookRideByUser(ride, formValues) {
   } seats on the ride from ${ride.Driver.User.firstName} from ${
     ride.destination.city
   } to ${ride.origin.city} on the ${dateFormat(
-    ride.dateTime,
+    ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )} at ${dateFormat(
-    ride.dateTime,
+    ride.dateTimeOrigin,
     "hh:mm TT"
   )}. You can check the ride again here: ${
     process.env.REACT_APP_URL_CLIENT
@@ -23,9 +23,9 @@ module.exports = function bookRideByUser(ride, formValues) {
     <p>${formValues.seatsNeeded} seats on the ride by ${
     ride.Driver.User.firstName
   } from ${ride.destination.city} to ${ride.origin.city} on the ${dateFormat(
-    ride.dateTime,
+    ride.dateTimeOrigin,
     "dd/mm/yyyy"
-  )} at ${dateFormat(ride.dateTime, "hh:mm TT")}</p>
+  )} at ${dateFormat(ride.dateTimeOrigin, "hh:mm TT")}</p>
   </div>
   `;
 

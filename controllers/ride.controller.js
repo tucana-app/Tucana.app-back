@@ -6,6 +6,7 @@ const RideFeedback = db.RideFeedback;
 const RideStatus = db.RideStatus;
 const User = db.User;
 const Driver = db.Driver;
+const Car = db.Car;
 const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const Op = db.Sequelize.Op;
@@ -68,7 +69,10 @@ module.exports = {
       DriverId: user.id,
       origin: formOfferRide.origin,
       destination: formOfferRide.destination,
-      dateTime: formOfferRide.dateTime,
+      dateTimeOrigin: formOfferRide.dateTimeOrigin,
+      dateTimeDestination: formOfferRide.dateTimeDestination,
+      ETA: formOfferRide.ETAdata,
+      price: formOfferRide.price,
       seatsAvailable: formOfferRide.seats,
       seatsLeft: formOfferRide.seats,
       comment: commentConverted,
@@ -91,7 +95,7 @@ module.exports = {
       where: {
         id: req.params.rideId,
       },
-      order: [["dateTime", "ASC"]],
+      order: [["dateTimeOrigin", "ASC"]],
       include: [
         {
           model: Driver,
@@ -107,6 +111,9 @@ module.exports = {
                   "updatedAt",
                 ],
               },
+            },
+            {
+              model: Car,
             },
           ],
         },
@@ -245,11 +252,11 @@ module.exports = {
         seatsLeft: {
           [Op.gt]: 0,
         },
-        dateTime: {
+        dateTimeOrigin: {
           [Op.between]: [dateTimeZone, dateTimeZonePlusOne],
         },
       },
-      order: [["dateTime", "ASC"]],
+      order: [["dateTimeOrigin", "ASC"]],
       include: [
         {
           model: Driver,
@@ -584,7 +591,7 @@ module.exports = {
             seatsLeft: {
               [Op.gt]: 0,
             },
-            dateTime: {
+            dateTimeOrigin: {
               [Op.gt]: new Date(),
             },
           },
@@ -647,7 +654,7 @@ module.exports = {
         {
           model: Ride,
           where: {
-            dateTime: {
+            dateTimeOrigin: {
               [Op.gt]: new Date(),
             },
           },

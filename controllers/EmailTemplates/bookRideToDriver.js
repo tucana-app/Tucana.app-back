@@ -5,7 +5,7 @@ module.exports = function bookRideToDriver(ride, passenger, formValues) {
   const text = `Your ride from ${ride.origin.city} to ${
     ride.destination.city
   } (${dateFormat(
-    ride.dateTime,
+    ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )}) has a new booking! The passenger ${passenger.firstName} has requested ${
     formValues.seatsNeeded
@@ -16,7 +16,7 @@ module.exports = function bookRideToDriver(ride, passenger, formValues) {
     <h1>
     Your ride from ${ride.origin.city} to ${
     ride.destination.city
-  } (${dateFormat(ride.dateTime, "dd/mm/yyyy")}) has a new booking!</h1>
+  } (${dateFormat(ride.dateTimeOrigin, "dd/mm/yyyy")}) has a new booking!</h1>
     <p>
     The passenger ${passenger.firstName} has requested ${
     formValues.seatsNeeded

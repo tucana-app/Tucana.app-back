@@ -22,8 +22,20 @@ module.exports = {
         type: Sequelize.JSONB,
         allowNull: false,
       },
-      dateTime: {
+      dateTimeOrigin: {
         type: Sequelize.DATE,
+        allowNull: false,
+      },
+      dateTimeDestination: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      ETA: {
+        type: Sequelize.JSONB,
+        allowNull: false,
+      },
+      price: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       seatsAvailable: {

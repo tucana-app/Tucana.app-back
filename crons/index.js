@@ -29,7 +29,7 @@ async function checkRidesDone() {
 
   let ride = await Ride.findAll({
     where: {
-      dateTime: {
+      dateTimeOrigin: {
         [Op.lt]: new Date(),
       },
       // If the ride is NOT "Done" or greater

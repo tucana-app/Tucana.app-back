@@ -6,7 +6,7 @@ module.exports = function reminderRatingToDriver({ user, ride, booking }) {
   const text = `Tucána | We would like to know more about your ride from ${
     ride.origin.city
   } to ${ride.destination.city} on the ${dateFormat(
-    ride.dateTime,
+    ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )}. You can add your rating at ${process.env.REACT_APP_URL_CLIENT}/ratings/`;
   const html = `
@@ -15,7 +15,7 @@ module.exports = function reminderRatingToDriver({ user, ride, booking }) {
       <p>We would like to know more about your ride from ${
         ride.origin.city
       } to ${ride.destination.city} on the ${dateFormat(
-    ride.dateTime,
+    ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )}
       </p>

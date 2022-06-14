@@ -109,14 +109,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() - 5)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 5)
+          new Date(new Date().setDate(new Date().getDate() - 5)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "301 km",
+          distanceValue: 107484,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 16106,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",
@@ -239,14 +241,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() + 15)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 15)
+          new Date(new Date().setDate(new Date().getDate() + 15)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "402 km",
+          distanceValue: 307484,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 18106,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",
@@ -362,14 +366,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() + 2)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 2)
+          new Date(new Date().setDate(new Date().getDate() + 2)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "503 km",
+          distanceValue: 257484,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 9106,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",
@@ -498,12 +504,14 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() - 8)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 8)
+          new Date(new Date().setDate(new Date().getDate() - 8)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "604 km",
+          distanceValue: 157484,
           duration: "3 hours 38 mins",
           durationValue: 13106,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
@@ -626,14 +634,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() + 3)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 3)
+          new Date(new Date().setDate(new Date().getDate() + 3)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "705 km",
+          distanceValue: 57484,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 31106,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",
@@ -756,14 +766,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() + 16)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 16)
+          new Date(new Date().setDate(new Date().getDate() + 15)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "805 km",
+          distanceValue: 107484,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 10106,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",
@@ -886,14 +898,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() - 4)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 4)
+          new Date(new Date().setDate(new Date().getDate() - 4)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "101 km",
+          distanceValue: 101000,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 26106,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",
@@ -1015,14 +1029,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() + 7)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 7)
+          new Date(new Date().setDate(new Date().getDate() + 7)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "202 km",
+          distanceValue: 10499,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 20055,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",
@@ -1144,11 +1160,13 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() + 6)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 6)
+          new Date(new Date().setDate(new Date().getDate() + 6)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
+          distance: "303 km",
           distanceValue: 207484,
           duration: "3 hours 38 mins",
           durationValue: 13106,
@@ -1273,14 +1291,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() + 7)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 7)
+          new Date(new Date().setDate(new Date().getDate() + 7)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "50 km",
+          distanceValue: 50000,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 50000,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",
@@ -1403,14 +1423,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() + 7)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 7)
+          new Date(new Date().setDate(new Date().getDate() + 7)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "25 km",
+          distanceValue: 25000,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 15000,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",
@@ -1533,14 +1555,16 @@ module.exports = {
         }),
         dateTimeOrigin: new Date(new Date().setDate(new Date().getDate() + 7)),
         dateTimeDestination: new Date(
-          new Date().setHours(new Date().getHours() + 7)
+          new Date(new Date().setDate(new Date().getDate() + 7)).setHours(
+            new Date().getHours() + 5
+          )
         ),
         ETA: JSON.stringify({
           index: null,
-          distance: "207 km",
-          distanceValue: 207484,
+          distance: "88 km",
+          distanceValue: 88000,
           duration: "3 hours 38 mins",
-          durationValue: 13106,
+          durationValue: 23005,
           origin: "WWH5+6PC, Bolivar, San José, Costa Rica",
           destination:
             "4GVW+RQH, Santa Lucía, Guanacaste Province, Nicoya, Costa Rica",

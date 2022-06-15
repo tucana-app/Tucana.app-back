@@ -566,7 +566,7 @@ module.exports = {
         if (driver) {
           res.status(200).send(driver);
         } else {
-          res.status(200).send();
+          res.status(200).send(null);
         }
       })
       .catch((error) => {

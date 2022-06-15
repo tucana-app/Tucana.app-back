@@ -473,7 +473,7 @@ module.exports = {
       });
   },
 
-  adminGetPassengerRating(req, res) {
+  adminPassengerRating(req, res) {
     const { ratingId } = req.query;
 
     return PassengerRating.findOne({
@@ -483,6 +483,11 @@ module.exports = {
       include: [
         {
           model: admin_VerifPassengerRating,
+          include: [
+            {
+              model: Admin,
+            },
+          ],
         },
         {
           model: User,
@@ -495,6 +500,23 @@ module.exports = {
               "updatedAt",
             ],
           },
+        },
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
         },
       ],
     })
@@ -511,20 +533,33 @@ module.exports = {
   submitVerifPassengerRating(req, res) {
     const { adminId, rating, comment, isAccepted } = req.body;
 
-    // return admin_VerifPassengerRating
-    //   .create({
-    //     AdminId: adminId,
-    //     PassengerRatingId: application.id,
-    //     isAccepted,
-    //     comment,
-    //   })
-    //   .then((response) => {
-    //     // console.log(response);
-    //     res.status(200).json(response);
-    //   })
-    //   .catch((error) => {
-    //     // console.log(error);
-    //     res.status(400).json(errorMessage);
-    //   });
+    return admin_VerifPassengerRating
+      .create({
+        AdminId: adminId,
+        PassengerRatingId: rating.id,
+        isAccepted,
+        comment,
+      })
+      .then((response) => {
+        // console.log(response);
+
+        if (isAccepted) {
+          emailController.sendEmail(
+            rating.User,
+            emailTemplates.passengerReceivedRating(rating.Driver.User)
+          );
+        }
+
+        emailController.sendEmail(
+          rating.Driver.User,
+          emailTemplates.driverRatingStatus(isAccepted, rating.User, comment)
+        );
+
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json(errorMessage);
+      });
   },
 };

@@ -1,13 +1,15 @@
 require("dotenv").config;
 
 const db = require("../models");
-const PassengerRating = db.PassengerRating;
-const DriverRating = db.DriverRating;
 const User = db.User;
 const Driver = db.Driver;
 const Ride = db.Ride;
 const RideFeedback = db.RideFeedback;
 const Booking = db.Booking;
+const PassengerRating = db.PassengerRating;
+const DriverRating = db.DriverRating;
+const admin_VerifPassengerRating = db.admin_VerifPassengerRating;
+const admin_VerifDriverRating = db.admin_VerifDriverRating;
 const Op = db.Sequelize.Op;
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates/");
@@ -261,6 +263,11 @@ module.exports = {
       where: {
         DriverId: req.query.userId,
       },
+      include: [
+        {
+          model: admin_VerifPassengerRating,
+        },
+      ],
     })
       .then((ratings) => {
         // console.log(conversations);

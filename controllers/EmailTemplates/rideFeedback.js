@@ -21,7 +21,7 @@ module.exports = function rideFeedback(ride, isConfirmed) {
     html = `
         <div>
         <h1>Tucána</h1>
-        <p>We are sorry to hear that your ride didn't happened. Please contact us if you need to <a hre='${process.env.REACT_APP_URL_CLIENT}/contact'>start a dispute</a></p>
+        <p>We are sorry to hear that your ride didn't happened. Please contact us if you need to <a href='${process.env.REACT_APP_URL_CLIENT}/contact'>start a dispute</a></p>
         <p>In the meantime, consider <a href='${process.env.REACT_APP_URL_CLIENT}/ratings'>rating your ride</a>.
         </p>
         <p>Leave a feedback about Tucána <a href='https://forms.gle/Fi5ek3ZTATc1DcG36'>following this link</a> to help the community find out about the service we are offering.

@@ -17,6 +17,8 @@ const contactToUser = require("./contactToUser");
 const becomeDriver = require("./becomeDriver");
 const rideFeedback = require("./rideFeedback");
 const newRating = require("./newRating");
+const passengerReceivedRating = require("./passengerReceivedRating");
+const driverRatingStatus = require("./driverRatingStatus");
 
 // Admin emails
 const admin_newFormBecomeDriver = require("./admin_newFormBecomeDriver");
@@ -42,6 +44,8 @@ module.exports = {
   becomeDriver,
   rideFeedback,
   newRating,
+  passengerReceivedRating,
+  driverRatingStatus,
 
   // Admin emails
   admin_newFormBecomeDriver,

@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       RideId: DataTypes.INTEGER,
       BookingId: DataTypes.INTEGER,
       DriverId: DataTypes.INTEGER,
-      rideHappened: DataTypes.BOOLEAN,
+      isConfirmed: DataTypes.BOOLEAN,
     },
     {
       sequelize,

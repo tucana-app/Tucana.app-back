@@ -23,6 +23,14 @@ module.exports = (sequelize, DataTypes) => {
       Booking.belongsTo(models.BookingStatus, {
         onDelete: "NO ACTION",
       });
+
+      Booking.hasMany(models.PassengerRating, {
+        onDelete: "CASCADE",
+      });
+
+      Booking.hasMany(models.DriverRating, {
+        onDelete: "CASCADE",
+      });
     }
   }
   Booking.init(

@@ -27,6 +27,14 @@ module.exports = (sequelize, DataTypes) => {
       Driver.hasOne(models.Car, {
         onDelete: "CASCADE",
       });
+
+      Driver.hasMany(models.PassengerRating, {
+        onDelete: "CASCADE",
+      });
+
+      Driver.hasMany(models.DriverRating, {
+        onDelete: "CASCADE",
+      });
     }
   }
   Driver.init(

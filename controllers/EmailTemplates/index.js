@@ -15,7 +15,12 @@ const signupConfirmed = require("./signupConfirmed");
 const contactToCompany = require("./contactToCompany");
 const contactToUser = require("./contactToUser");
 const becomeDriver = require("./becomeDriver");
-const newFormBecomeDriver = require("./newFormBecomeDriver");
+const rideFeedback = require("./rideFeedback");
+const newRating = require("./newRating");
+
+// Admin emails
+const admin_newFormBecomeDriver = require("./admin_newFormBecomeDriver");
+const admin_newRating = require("./admin_newRating");
 
 module.exports = {
   confirmSignup,
@@ -35,5 +40,10 @@ module.exports = {
   contactToCompany,
   contactToUser,
   becomeDriver,
-  newFormBecomeDriver,
+  rideFeedback,
+  newRating,
+
+  // Admin emails
+  admin_newFormBecomeDriver,
+  admin_newRating,
 };

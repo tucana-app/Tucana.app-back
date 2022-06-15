@@ -30,17 +30,21 @@ module.exports = (app) => {
   app.get("/api/admin/get-drivers-ratings", controller.adminDriversRatings);
 
   app.get(
-    "/api/admin/user/all-drivers-application",
-    controller.adminAllDriversApplication
+    "/api/admin/all-drivers-applications",
+    controller.adminAllDriversApplications
   );
 
-  app.get(
-    "/api/admin/user/single-driver-application",
-    controller.adminSingleDriverApplication
-  );
+  app.get("/api/admin/driver-application", controller.adminDriverApplication);
 
   app.post(
-    "/api/admin/user/submit-verif-driver-application",
+    "/api/admin/submit-verif-driver-application",
     controller.submitVerifDriverApplication
+  );
+
+  app.get("/api/admin/rating-passenger", controller.adminGetRatingPassenger);
+
+  app.post(
+    "/api/admin/submit-verif-passenger-rating",
+    controller.submitVerifPassengerRating
   );
 };

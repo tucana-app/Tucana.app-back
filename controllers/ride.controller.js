@@ -466,6 +466,7 @@ module.exports = {
             booking.User,
             emailTemplates.refusedToUser(booking, formValues)
           );
+
           emailController.sendEmail(
             booking.Ride.Driver.User,
             emailTemplates.refusedByDriver(booking)
@@ -873,27 +874,29 @@ module.exports = {
   },
 
   confirmRide(req, res) {
-    const { ride, userId, isRideHappened } = req.body;
+    const { user, ride, isConfirmed } = req.body;
 
     return RideFeedback.create({
-      UserId: userId,
+      UserId: user.id,
       RideId: ride.id,
       BookingId: ride.Booking.id,
       DriverId: ride.DriverId,
-      rideHappened: isRideHappened,
+      isConfirmed,
     })
       .then((response) => {
         // console.log(response);
         res.status(201).json({
-          message: "Thank you for submitting your answer",
           flag: "SUCCESS",
         });
+
+        emailController.sendEmail(
+          user,
+          emailTemplates.rideFeedback(ride, isConfirmed)
+        );
       })
       .catch((error) => {
         // console.log(error);
-        res
-          .status(400)
-          .json({ message: "We couldn't confirm the ride", flag: "ERROR" });
+        res.status(400).json({ flag: "ERROR" });
       });
   },
 };

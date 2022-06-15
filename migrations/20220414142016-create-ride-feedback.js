@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         primaryKey: true,
       },
-      rideHappened: {
+      isConfirmed: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },

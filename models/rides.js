@@ -23,6 +23,14 @@ module.exports = (sequelize, DataTypes) => {
       Ride.hasMany(models.Conversation, {
         onDelete: "NO ACTION",
       });
+
+      Ride.hasMany(models.PassengerRating, {
+        onDelete: "CASCADE",
+      });
+
+      Ride.hasMany(models.DriverRating, {
+        onDelete: "CASCADE",
+      });
     }
   }
   Ride.init(

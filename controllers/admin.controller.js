@@ -339,7 +339,7 @@ module.exports = {
     })();
   },
 
-  adminAllDriversApplication(req, res) {
+  adminAllDriversApplications(req, res) {
     return DriverApplication.findAll({
       include: [
         {
@@ -369,7 +369,7 @@ module.exports = {
       });
   },
 
-  adminSingleDriverApplication(req, res) {
+  adminDriverApplication(req, res) {
     const { applicationId } = req.query;
 
     return DriverApplication.findOne({
@@ -471,5 +471,60 @@ module.exports = {
         // console.log(error);
         res.status(400).json(errorMessage);
       });
+  },
+
+  adminGetRatingPassenger(req, res) {
+    const { ratingId } = req.query;
+
+    return PassengerRating.findOne({
+      where: {
+        id: ratingId,
+      },
+      include: [
+        {
+          model: admin_VerifPassengerRating,
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  submitVerifPassengerRating(req, res) {
+    const { adminId, rating, comment, isAccepted } = req.body;
+
+    // return admin_VerifPassengerRating
+    //   .create({
+    //     AdminId: adminId,
+    //     PassengerRatingId: application.id,
+    //     isAccepted,
+    //     comment,
+    //   })
+    //   .then((response) => {
+    //     // console.log(response);
+    //     res.status(200).json(response);
+    //   })
+    //   .catch((error) => {
+    //     // console.log(error);
+    //     res.status(400).json(errorMessage);
+    //   });
   },
 };

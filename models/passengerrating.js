@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       PassengerRating.belongsTo(models.Booking, {
         onDelete: "NO ACTION",
       });
+
+      PassengerRating.hasOne(models.admin_VerifPassengerRating, {
+        onDelete: "NO ACTION",
+      });
     }
   }
   PassengerRating.init(

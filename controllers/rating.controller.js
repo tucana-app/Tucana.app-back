@@ -1,3 +1,5 @@
+require("dotenv").config;
+
 const db = require("../models");
 const PassengerRating = db.PassengerRating;
 const DriverRating = db.DriverRating;
@@ -7,7 +9,8 @@ const Ride = db.Ride;
 const RideFeedback = db.RideFeedback;
 const Booking = db.Booking;
 const Op = db.Sequelize.Op;
-require("dotenv").config;
+const emailController = require("./email.controller");
+const emailTemplates = require("./EmailTemplates/");
 
 const errorMessage = { message: "A problem occured with this request" };
 
@@ -77,7 +80,7 @@ module.exports = {
                   where: {
                     RideId: ride.id,
                     UserId: userId,
-                    rideHappened: true,
+                    isConfirmed: true,
                   },
                 }).then((feedback) => {
                   if (feedback) {
@@ -171,7 +174,7 @@ module.exports = {
                   where: {
                     RideId: ride.id,
                     UserId: userId,
-                    rideHappened: true,
+                    isConfirmed: true,
                   },
                 }).then((feedback) => {
                   if (feedback) {
@@ -192,7 +195,10 @@ module.exports = {
               }
             });
           })
-        ).catch((error) => res.status(400).json([]));
+        ).catch((error) => {
+          // console.log(error);
+          res.status(400).json([]);
+        });
 
         return res.status(200).json(ratingsToDoDriver);
       } else {
@@ -279,8 +285,14 @@ module.exports = {
     })
       .then((rating) => {
         // console.log(conversations);
+
+        emailController.sendEmailToAdmin(emailTemplates.admin_newRating());
+        emailController.sendEmail(
+          ride.Booking.User,
+          emailTemplates.newRating()
+        );
+
         res.status(201).json({
-          message: "Rating submitted for review by a moderator",
           flag: "SUCCESS",
         });
       })
@@ -303,8 +315,11 @@ module.exports = {
     })
       .then((rating) => {
         // console.log(conversations);
+
+        emailController.sendEmailToAdmin(emailTemplates.admin_newRating());
+        emailController.sendEmail(ride.Driver.User, emailTemplates.newRating());
+
         res.status(201).json({
-          message: "Rating submitted for review by a moderator",
           flag: "SUCCESS",
         });
       })

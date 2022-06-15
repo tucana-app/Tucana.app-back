@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       admin_VerifDriverApplication.belongsTo(models.Admin, {
         onDelete: "NO ACTION",
       });
+
+      admin_VerifDriverApplication.belongsTo(models.DriverApplication, {
+        onDelete: "NO ACTION",
+      });
     }
   }
   admin_VerifDriverApplication.init(

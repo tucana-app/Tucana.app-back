@@ -536,7 +536,9 @@ module.exports = {
         // console.log(application);
         res.status(200).send({});
 
-        emailController.sendEmailToAdmin(emailTemplates.newFormBecomeDriver());
+        emailController.sendEmailToAdmin(
+          emailTemplates.admin_newFormBecomeDriver()
+        );
       })
       .catch((error) => {
         // console.log(error);
@@ -564,7 +566,7 @@ module.exports = {
         if (driver) {
           res.status(200).send(driver);
         } else {
-          res.status(404).send();
+          res.status(200).send();
         }
       })
       .catch((error) => {

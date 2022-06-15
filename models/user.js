@@ -28,6 +28,14 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.DriverApplication, {
         onDelete: "NO ACTION",
       });
+
+      User.hasMany(models.PassengerRating, {
+        onDelete: "CASCADE",
+      });
+
+      User.hasMany(models.DriverRating, {
+        onDelete: "CASCADE",
+      });
     }
   }
   User.init(

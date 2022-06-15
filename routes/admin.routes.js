@@ -41,7 +41,7 @@ module.exports = (app) => {
     controller.submitVerifDriverApplication
   );
 
-  app.get("/api/admin/rating-passenger", controller.adminGetRatingPassenger);
+  app.get("/api/admin/passenger-rating", controller.adminGetPassengerRating);
 
   app.post(
     "/api/admin/submit-verif-passenger-rating",

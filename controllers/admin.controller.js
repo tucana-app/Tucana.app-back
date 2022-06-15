@@ -473,7 +473,7 @@ module.exports = {
       });
   },
 
-  adminGetRatingPassenger(req, res) {
+  adminGetPassengerRating(req, res) {
     const { ratingId } = req.query;
 
     return PassengerRating.findOne({

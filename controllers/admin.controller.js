@@ -525,7 +525,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         res.status(400).json(errorMessage);
       });
   },
@@ -548,11 +548,218 @@ module.exports = {
             rating.User,
             emailTemplates.passengerReceivedRating(rating.Driver.User)
           );
+
+          // Update the passenger's rating
+          PassengerRating.findAll({
+            where: {
+              UserId: rating.User.id,
+            },
+            include: [
+              {
+                model: admin_VerifPassengerRating,
+              },
+            ],
+          })
+            .then((ratings) => {
+              let notes, totalNotes, average;
+
+              // Find all accepted ratings
+              notes = ratings.filter((rating) => {
+                if (rating.admin_VerifPassengerRating) {
+                  return rating.admin_VerifPassengerRating.dataValues
+                    .isAccepted;
+                }
+              });
+
+              // This is the first rating
+              if (notes.length === 0 || notes.length === 1) {
+                average = rating.value;
+              } else {
+                // If the passenger has already been reviewed
+                totalNotes = notes.reduce(
+                  (total, item) => item.dataValues.value + total,
+                  0
+                );
+
+                average = +(totalNotes / notes.length).toFixed(2);
+              }
+
+              User.update(
+                {
+                  passengerRating: average,
+                },
+                {
+                  where: {
+                    id: rating.User.id,
+                  },
+                }
+              )
+                .then((response) => {
+                  // console.log(response)
+                })
+                .catch((error) => {
+                  // console.log(error);
+                });
+            })
+            .catch((error) => {
+              // console.log(error);
+              res.status(400).json(errorMessage);
+            });
         }
 
         emailController.sendEmail(
           rating.Driver.User,
           emailTemplates.driverRatingStatus(isAccepted, rating.User, comment)
+        );
+
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminDriverRating(req, res) {
+    const { ratingId } = req.query;
+
+    return DriverRating.findOne({
+      where: {
+        id: ratingId,
+      },
+      include: [
+        {
+          model: admin_VerifDriverRating,
+          include: [
+            {
+              model: Admin,
+            },
+          ],
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  submitVerifDriverRating(req, res) {
+    const { adminId, rating, comment, isAccepted } = req.body;
+
+    return admin_VerifDriverRating
+      .create({
+        AdminId: adminId,
+        DriverRatingId: rating.id,
+        isAccepted,
+        comment,
+      })
+      .then((response) => {
+        // console.log(response);
+
+        if (isAccepted) {
+          emailController.sendEmail(
+            rating.Driver.User,
+            emailTemplates.passengerReceivedRating(rating.User)
+          );
+
+          // Update the driver's rating
+          DriverRating.findAll({
+            where: {
+              UserId: rating.Driver.User.id,
+            },
+            include: [
+              {
+                model: admin_VerifDriverRating,
+              },
+            ],
+          })
+            .then((ratings) => {
+              let notes, totalNotes, average;
+
+              // Find all accepted ratings
+              notes = ratings.filter((rating) => {
+                if (rating.admin_VerifDriverRating) {
+                  return rating.admin_VerifDriverRating.dataValues.isAccepted;
+                }
+              });
+
+              // This is the first rating
+              if (notes.length === 0 || notes.length === 1) {
+                average = rating.value;
+              } else {
+                // If the driver has already been reviewed
+                totalNotes = notes.reduce(
+                  (total, item) => item.dataValues.value + total,
+                  0
+                );
+
+                average = +(totalNotes / notes.length).toFixed(2);
+              }
+
+              User.update(
+                {
+                  driverRating: average,
+                },
+                {
+                  where: {
+                    id: rating.Driver.User.id,
+                  },
+                }
+              )
+                .then((response) => {
+                  // console.log(response)
+                })
+                .catch((error) => {
+                  // console.log(error);
+                });
+            })
+            .catch((error) => {
+              // console.log(error);
+              res.status(400).json(errorMessage);
+            });
+        }
+
+        emailController.sendEmail(
+          rating.User,
+          emailTemplates.driverRatingStatus(
+            isAccepted,
+            rating.Driver.User,
+            comment
+          )
         );
 
         res.status(200).json(response);

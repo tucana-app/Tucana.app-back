@@ -199,6 +199,7 @@ module.exports = {
           var token = jwt.sign({ id: user.id }, config.secret, {
             expiresIn: 604800, // 7 days
           });
+
           if (user.emailConfirmed) {
             res.status(200).send({
               id: user.id,
@@ -211,8 +212,10 @@ module.exports = {
               createdAt: user.createdAt,
               emailConfirmed: user.emailConfirmed,
               phoneConfirmed: user.phoneConfirmed,
-              accessToken: token,
               Driver: user.Driver,
+              passengerRating: user.passengerRating,
+              driverRating: user.driverRating,
+              accessToken: token,
             });
           } else {
             // User hasn't confirmed the email yet

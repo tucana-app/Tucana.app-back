@@ -47,4 +47,11 @@ module.exports = (app) => {
     "/api/admin/submit-verif-passenger-rating",
     controller.submitVerifPassengerRating
   );
+
+  app.get("/api/admin/driver-rating", controller.adminDriverRating);
+
+  app.post(
+    "/api/admin/submit-verif-driver-rating",
+    controller.submitVerifDriverRating
+  );
 };

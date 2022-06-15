@@ -215,6 +215,28 @@ module.exports = {
       where: {
         UserId: req.query.userId,
       },
+      include: [
+        {
+          model: admin_VerifPassengerRating,
+        },
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
+        },
+      ],
     })
       .then((ratings) => {
         // console.log(conversations);
@@ -231,6 +253,40 @@ module.exports = {
       where: {
         UserId: req.query.userId,
       },
+      include: [
+        {
+          model: admin_VerifDriverRating,
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
+        },
+      ],
     })
       .then((ratings) => {
         // console.log(ratings);
@@ -247,6 +303,40 @@ module.exports = {
       where: {
         DriverId: req.query.userId,
       },
+      include: [
+        {
+          model: admin_VerifDriverRating,
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
+        },
+      ],
     })
       .then((ratings) => {
         // console.log(conversations);
@@ -266,6 +356,35 @@ module.exports = {
       include: [
         {
           model: admin_VerifPassengerRating,
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
         },
       ],
     })

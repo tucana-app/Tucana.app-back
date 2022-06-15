@@ -47,6 +47,16 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      passengerRating: {
+        type: Sequelize.FLOAT,
+        defaultValue: 0,
+        allowNull: false,
+      },
+      driverRating: {
+        type: Sequelize.FLOAT,
+        defaultValue: 0,
+        allowNull: false,
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

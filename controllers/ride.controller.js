@@ -239,13 +239,8 @@ module.exports = {
       date,
     } = req.query;
 
-    // Convert the date submitted back to UTC
-    const dateTimeZone = new Date(
-      `${date.slice(0, 4)},${date.slice(5, 7)},${date.slice(8, 10)}`
-    );
-
-    const dateTimeZonePlusOne = new Date(dateTimeZone);
-    dateTimeZonePlusOne.setDate(dateTimeZonePlusOne.getDate() + 1);
+    const datePlusOne = new Date(date);
+    datePlusOne.setDate(datePlusOne.getDate() + 1);
 
     return Ride.findAll({
       where: {
@@ -253,7 +248,7 @@ module.exports = {
           [Op.gt]: 0,
         },
         dateTimeOrigin: {
-          [Op.between]: [dateTimeZone, dateTimeZonePlusOne],
+          [Op.between]: [date, datePlusOne],
         },
       },
       order: [["dateTimeOrigin", "ASC"]],

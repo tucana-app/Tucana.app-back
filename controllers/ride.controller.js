@@ -212,6 +212,11 @@ module.exports = {
         },
         {
           model: Ride,
+          include: [
+            {
+              model: RideStatus,
+            },
+          ],
         },
         {
           model: BookingStatus,

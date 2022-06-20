@@ -7,6 +7,7 @@ const RideStatus = db.RideStatus;
 const User = db.User;
 const Driver = db.Driver;
 const Car = db.Car;
+const Rating = db.Rating;
 const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const Op = db.Sequelize.Op;
@@ -111,6 +112,11 @@ module.exports = {
                   "updatedAt",
                 ],
               },
+              include: [
+                {
+                  model: Rating,
+                },
+              ],
             },
             {
               model: Car,
@@ -150,6 +156,11 @@ module.exports = {
               "updatedAt",
             ],
           },
+          include: [
+            {
+              model: Rating,
+            },
+          ],
         },
         {
           model: Ride,
@@ -168,6 +179,11 @@ module.exports = {
                       "updatedAt",
                     ],
                   },
+                  include: [
+                    {
+                      model: Rating,
+                    },
+                  ],
                 },
               ],
             },

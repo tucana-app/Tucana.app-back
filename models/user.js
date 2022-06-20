@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.DriverRating, {
         onDelete: "CASCADE",
       });
+
+      User.hasOne(models.Rating, {
+        onDelete: "CASCADE",
+      });
     }
   }
   User.init(
@@ -49,8 +53,6 @@ module.exports = (sequelize, DataTypes) => {
       phoneNumber: DataTypes.STRING,
       emailConfirmed: DataTypes.BOOLEAN,
       phoneConfirmed: DataTypes.BOOLEAN,
-      passengerRating: DataTypes.FLOAT,
-      driverRating: DataTypes.FLOAT,
     },
     {
       sequelize,

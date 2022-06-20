@@ -5,6 +5,7 @@ const emailTemplates = require("./EmailTemplates");
 const validator = require("validator");
 const User = db.User;
 const Driver = db.Driver;
+const Rating = db.Rating;
 const Car = db.Car;
 const DriverApplication = db.DriverApplication;
 const Op = db.Sequelize.Op;
@@ -42,6 +43,16 @@ module.exports = {
               user,
               emailTemplates.confirmSignup(confirmEmailLine.UUID)
             );
+
+            return Rating.create({
+              UserId: user.id,
+            })
+              .then((response) => {
+                // console.log(response)
+              })
+              .catch((error) => {
+                // console.log(error);
+              });
           })
           .catch((error) => {
             // console.log(error);
@@ -178,6 +189,9 @@ module.exports = {
             },
           ],
         },
+        {
+          model: Rating,
+        },
       ],
     })
       .then((user) => {
@@ -213,8 +227,7 @@ module.exports = {
               emailConfirmed: user.emailConfirmed,
               phoneConfirmed: user.phoneConfirmed,
               Driver: user.Driver,
-              passengerRating: user.passengerRating,
-              driverRating: user.driverRating,
+              Rating: user.Rating,
               accessToken: token,
             });
           } else {

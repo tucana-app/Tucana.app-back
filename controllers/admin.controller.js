@@ -12,6 +12,7 @@ const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const PassengerRating = db.PassengerRating;
 const DriverRating = db.DriverRating;
+const Rating = db.Rating;
 const admin_VerifPassengerRating = db.admin_VerifPassengerRating;
 const admin_VerifDriverRating = db.admin_VerifDriverRating;
 const Op = db.Sequelize.Op;
@@ -561,7 +562,7 @@ module.exports = {
             ],
           })
             .then((ratings) => {
-              let notes, totalNotes, average;
+              let notes, totalNotes, average, nbRatings;
 
               // Find all accepted ratings
               notes = ratings.filter((rating) => {
@@ -574,6 +575,7 @@ module.exports = {
               // This is the first rating
               if (notes.length === 0 || notes.length === 1) {
                 average = rating.value;
+                nbRatings = 1;
               } else {
                 // If the passenger has already been reviewed
                 totalNotes = notes.reduce(
@@ -581,12 +583,15 @@ module.exports = {
                   0
                 );
 
-                average = +(totalNotes / notes.length).toFixed(2);
+                nbRatings = notes.length;
+
+                average = +(totalNotes / nbRatings).toFixed(2);
               }
 
-              User.update(
+              return Rating.update(
                 {
                   passengerRating: average,
+                  nbPassengerRating: notes.length,
                 },
                 {
                   where: {
@@ -708,7 +713,7 @@ module.exports = {
             ],
           })
             .then((ratings) => {
-              let notes, totalNotes, average;
+              let notes, totalNotes, average, nbRatings;
 
               // Find all accepted ratings
               notes = ratings.filter((rating) => {
@@ -720,6 +725,7 @@ module.exports = {
               // This is the first rating
               if (notes.length === 0 || notes.length === 1) {
                 average = rating.value;
+                nbRatings = 1;
               } else {
                 // If the driver has already been reviewed
                 totalNotes = notes.reduce(
@@ -727,12 +733,15 @@ module.exports = {
                   0
                 );
 
-                average = +(totalNotes / notes.length).toFixed(2);
+                nbRatings = notes.length;
+
+                average = +(totalNotes / nbRatings).toFixed(2);
               }
 
-              User.update(
+              return Rating.update(
                 {
                   driverRating: average,
+                  nbDriverRating: nbRatings,
                 },
                 {
                   where: {

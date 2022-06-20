@@ -32,6 +32,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      totalPaidPassenger: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      totalReceivedDriver: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       commentPassenger: {
         type: Sequelize.STRING,
       },

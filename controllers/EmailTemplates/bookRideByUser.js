@@ -1,12 +1,10 @@
 const dateFormat = require("dateformat");
 
-module.exports = function bookRideByUser(ride, formValues) {
+module.exports = function bookRideByUser(ride, seats) {
   const subject = "Summary of your booking | Tucána";
-  const text = `You have made a booking request for ${
-    formValues.seatsNeeded
-  } seats on the ride from ${ride.Driver.User.firstName} from ${
-    ride.destination.city
-  } to ${ride.origin.city} on the ${dateFormat(
+  const text = `You have made a booking request for ${seats} seats on the ride from ${
+    ride.Driver.User.firstName
+  } from ${ride.destination.city} to ${ride.origin.city} on the ${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )} at ${dateFormat(
@@ -20,9 +18,9 @@ module.exports = function bookRideByUser(ride, formValues) {
   <p>Now you just have to wait for a reply if the booking is confirmed</p>
   <div>
     <h3>Booking details</h3>
-    <p>${formValues.seatsNeeded} seats on the ride by ${
-    ride.Driver.User.firstName
-  } from ${ride.destination.city} to ${ride.origin.city} on the ${dateFormat(
+    <p>${seats} seats on the ride by ${ride.Driver.User.firstName} from ${
+    ride.destination.city
+  } to ${ride.origin.city} on the ${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )} at ${dateFormat(ride.dateTimeOrigin, "hh:mm TT")}</p>

@@ -1,15 +1,15 @@
 const dateFormat = require("dateformat");
 
-module.exports = function bookRideToDriver(ride, passenger, formValues) {
+module.exports = function bookRideToDriver(ride, passenger) {
   const subject = "You have a new booking | Tucána";
   const text = `Your ride from ${ride.origin.city} to ${
     ride.destination.city
   } (${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
-  )}) has a new booking! The passenger ${passenger.firstName} has requested ${
-    formValues.seatsNeeded
-  } seat(s). Accept or refuse the booking by clicking here: ${
+  )}) has a new booking! The passenger ${
+    passenger.firstName
+  } has requested ${seats} seat(s). Accept or refuse the booking by clicking here: ${
     process.env.REACT_APP_URL_CLIENT
   }/ride/${ride.id}`;
   const html = `<div>
@@ -18,9 +18,9 @@ module.exports = function bookRideToDriver(ride, passenger, formValues) {
     ride.destination.city
   } (${dateFormat(ride.dateTimeOrigin, "dd/mm/yyyy")}) has a new booking!</h1>
     <p>
-    The passenger ${passenger.firstName} has requested ${
-    formValues.seatsNeeded
-  } seat(s). Accept or refuse the booking by <a href="${
+    The passenger ${
+      passenger.firstName
+    } has requested ${seats} seat(s). Accept or refuse the booking by <a href="${
     process.env.REACT_APP_URL_CLIENT
   }/ride/${ride.id}">clicking here</a> or visiting ${
     process.env.REACT_APP_URL_CLIENT

@@ -375,37 +375,39 @@ module.exports = {
   },
 
   bookRide(req, res) {
-    const { passenger, ride, formValues } = req.body;
+    const { passenger, ride, seats, totalPaidPassenger, totalReceivedDriver } =
+      req.body;
 
-    if (formValues.seatsNeeded === 0) {
-      res.status(400).json({ message: "How many seats do you need?" });
-    } else {
-      return Booking.create({
-        UserId: passenger.id,
-        RideId: ride.id,
-        DriverId: ride.DriverId,
-        seatsBooked: formValues.seatsNeeded,
-      })
-        .then((booking) => {
-          // console.log(response);
-          res
-            .status(201)
-            .json({ message: "Your booking has been submitted to the driver" });
-
-          emailController.sendEmail(
-            passenger,
-            emailTemplates.bookRideByUser(ride, formValues)
-          );
-          emailController.sendEmail(
-            ride.Driver.User,
-            emailTemplates.bookRideToDriver(ride, passenger, formValues)
-          );
-        })
-        .catch((error) => {
-          // console.log(error);
-          res.status(400).json(errorMessage);
+    return Booking.create({
+      UserId: passenger.id,
+      RideId: ride.id,
+      DriverId: ride.DriverId,
+      seatsBooked: seats,
+      totalPaidPassenger,
+      totalReceivedDriver,
+    })
+      .then((booking) => {
+        // console.log(response);
+        res.status(201).json({
+          bookingId: booking.dataValues.id,
+          rideId: booking.dataValues.RideId,
+          flag: "SUCCESS",
         });
-    }
+
+        emailController.sendEmail(
+          passenger,
+          emailTemplates.bookRideByUser(ride, seats)
+        );
+
+        emailController.sendEmail(
+          ride.Driver.User,
+          emailTemplates.bookRideToDriver(ride, passenger, seats)
+        );
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json(errorMessage);
+      });
   },
 
   driverResponseBooking(req, res) {

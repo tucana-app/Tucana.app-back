@@ -288,6 +288,11 @@ module.exports = {
                   "updatedAt",
                 ],
               },
+              include: [
+                {
+                  model: Rating,
+                },
+              ],
             },
           ],
         },

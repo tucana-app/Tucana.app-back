@@ -545,7 +545,8 @@ module.exports = {
       idCountry: form.id.country.value.name.common,
       licenseNumber: form.license.number,
       licenseCountry: form.license.country.value.name.common,
-      carMaker: form.car.maker,
+      carMaker: form.car.maker.value,
+      carModel: form.car.model,
       numberPlate: form.car.numberPlate,
     })
       .then((application) => {

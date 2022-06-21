@@ -37,6 +37,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      carModel: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       numberPlate: {
         type: Sequelize.STRING,
         allowNull: false,

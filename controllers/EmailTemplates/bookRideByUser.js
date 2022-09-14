@@ -19,8 +19,8 @@ module.exports = function bookRideByUser(ride, seats) {
   <div>
     <h3>Booking details</h3>
     <p>${seats} seats on the ride by ${ride.Driver.User.firstName} from ${
-    ride.destination.city
-  } to ${ride.origin.city} on the ${dateFormat(
+    ride.origin.city
+  } to ${ride.destination.city} on the ${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )} at ${dateFormat(ride.dateTimeOrigin, "hh:mm TT")}</p>

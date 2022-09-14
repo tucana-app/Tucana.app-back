@@ -614,7 +614,7 @@ module.exports = {
     companyInfo = {
       firstName: "Tucána",
       lastName: "App",
-      email: process.env.EMAIL_ADDRESS,
+      email: process.env.SUPPORT_EMAIL,
     };
 
     emailController.sendEmail(

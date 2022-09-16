@@ -538,6 +538,11 @@ module.exports = {
   submitBecomeDriver(req, res) {
     const { user, form } = req.body;
 
+    const riteve = {
+      month: form.car.riteve.month.value,
+      year: form.car.riteve.year,
+    };
+
     return DriverApplication.create({
       UserId: user.id,
       idType: form.id.type,
@@ -548,6 +553,10 @@ module.exports = {
       carMaker: form.car.maker.value,
       carModel: form.car.model,
       numberPlate: form.car.numberPlate,
+      carYear: form.car.year,
+      carColor: form.car.color,
+      carMarchamo: form.car.marchamo,
+      carRiteve: riteve,
     })
       .then((application) => {
         // console.log(application);
@@ -558,7 +567,7 @@ module.exports = {
         );
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
 
         res.status(400).json({
           flag: "GENERAL_ERROR",

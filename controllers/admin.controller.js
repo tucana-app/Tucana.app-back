@@ -439,7 +439,12 @@ module.exports = {
               return Car.create({
                 DriverId: response.dataValues.id,
                 maker: application.carMaker,
+                model: application.carModel,
                 numberPlate: application.numberPlate,
+                year: application.carYear,
+                color: application.carColor,
+                marchamo: application.carMarchamo,
+                riteve: application.carRiteve,
               })
                 .then((response) => {
                   // console.log(response);

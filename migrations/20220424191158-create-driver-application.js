@@ -45,13 +45,29 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      createdAt: {
+      carYear: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      carColor: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      carMarchamo: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      carRiteve: {
+        type: Sequelize.JSONB,
+        allowNull: false,
+      },
+      createdAt: {
         type: Sequelize.DATE,
+        allowNull: false,
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
     });
   },

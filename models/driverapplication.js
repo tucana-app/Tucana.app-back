@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       carMaker: DataTypes.STRING,
       carModel: DataTypes.STRING,
       numberPlate: DataTypes.STRING,
+      carYear: DataTypes.INTEGER,
+      carColor: DataTypes.STRING,
+      carMarchamo: DataTypes.INTEGER,
+      carRiteve: DataTypes.JSONB,
     },
     {
       sequelize,

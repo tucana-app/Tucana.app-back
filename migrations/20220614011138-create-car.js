@@ -34,10 +34,10 @@ module.exports = {
         type: Sequelize.STRING,
       },
       marchamo: {
-        type: Sequelize.DATE,
+        type: Sequelize.INTEGER,
       },
       riteve: {
-        type: Sequelize.DATE,
+        type: Sequelize.JSONB,
       },
       photo: {
         type: Sequelize.STRING,

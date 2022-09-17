@@ -226,6 +226,7 @@ module.exports = {
               createdAt: user.createdAt,
               emailConfirmed: user.emailConfirmed,
               phoneConfirmed: user.phoneConfirmed,
+              firstSetUp: user.firstSetUp,
               Driver: user.Driver,
               Rating: user.Rating,
               accessToken: token,

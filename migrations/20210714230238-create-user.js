@@ -53,7 +53,7 @@ module.exports = {
       },
       avatar: {
         type: Sequelize.STRING,
-        default: "none",
+        defaultValue: "none",
       },
       createdAt: {
         type: Sequelize.DATE,

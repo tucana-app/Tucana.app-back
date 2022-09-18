@@ -227,6 +227,7 @@ module.exports = {
               emailConfirmed: user.emailConfirmed,
               phoneConfirmed: user.phoneConfirmed,
               firstSetUp: user.firstSetUp,
+              avatar: user.avatar,
               Driver: user.Driver,
               Rating: user.Rating,
               accessToken: token,
@@ -247,6 +248,48 @@ module.exports = {
           message: "It looks like we can't log you in right now",
           flag: "GENERAL_ERROR",
         });
+      });
+  },
+
+  setUserAvatar(req, res) {
+    const { user, avatar } = req.body;
+
+    return User.update(
+      {
+        avatar,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+      }
+    )
+      .then((response) => {
+        res.status(200).send({ message: "OK", flag: "SUCCESS" });
+      })
+      .catch((error) => {
+        res.status(400).json({ message: "NOK", flag: "FAIL" });
+      });
+  },
+
+  setUserFirstSetup(req, res) {
+    const { user } = req.body;
+
+    return User.update(
+      {
+        firstSetUp: false,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+      }
+    )
+      .then((response) => {
+        res.status(200).send({ message: "OK", flag: "SUCCESS" });
+      })
+      .catch((error) => {
+        res.status(400).json({ message: "NOK", flag: "FAIL" });
       });
   },
 

@@ -51,6 +51,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
       },
+      avatar: {
+        type: Sequelize.STRING,
+        default: "none",
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

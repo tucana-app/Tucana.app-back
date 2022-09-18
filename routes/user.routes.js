@@ -20,6 +20,10 @@ module.exports = function (app) {
 
   app.post("/api/user/signin", controller.signin);
 
+  app.post("/api/user/set-user-avatar", controller.setUserAvatar);
+
+  app.post("/api/user/set-user-first-setup", controller.setUserFirstSetup);
+
   app.get(
     "/api/user/send-email-forgot-password",
     controller.sendForgotPasswordEmail

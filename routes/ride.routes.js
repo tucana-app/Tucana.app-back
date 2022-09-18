@@ -47,5 +47,7 @@ module.exports = (app) => {
 
   app.get("/api/ride/:rideId", controller.getRide);
 
+  app.get("/api/driver/:username", controller.getDriverProfile);
+
   app.get("/api/booking/:bookingId", controller.getBooking);
 };

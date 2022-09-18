@@ -922,4 +922,63 @@ module.exports = {
         res.status(400).json({ flag: "ERROR" });
       });
   },
+
+  getDriverProfile(req, res) {
+    return User.findOne({
+      where: {
+        username: req.params.username,
+      },
+      attributes: {
+        exclude: ["password", "phoneNumber"],
+      },
+      include: [
+        {
+          model: Rating,
+        },
+      ],
+    })
+      .then((user) => {
+        // console.log(user);
+        if (user) {
+          return Driver.findOne({
+            where: {
+              UserId: user.id,
+            },
+          })
+            .then((driver) => {
+              if (driver) {
+                return Ride.findAndCountAll({
+                  where: {
+                    DriverId: user.id,
+                  },
+                })
+                  .then((rides) => {
+                    res.status(200).json({ user, ridesCount: rides.count });
+                  })
+                  .catch((error) => {
+                    // console.log(error);
+                    res.status(400).json(errorMessage);
+                  });
+              } else {
+                res.status(404).json({
+                  message: "User not a driver",
+                  flag: "USER_NOT_DRIVER",
+                });
+              }
+            })
+            .catch((error) => {
+              // console.log(error);
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res
+            .status(404)
+            .json({ message: "User not found", flag: "USER_NOT_FOUND" });
+        }
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json(errorMessage);
+      });
+  },
 };

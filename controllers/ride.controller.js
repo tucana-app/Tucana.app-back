@@ -532,7 +532,7 @@ module.exports = {
         DriverId: req.query.driverId,
         RideId: req.query.rideId,
       },
-      order: [["createdAt", "ASC"]],
+      order: [[BookingStatus, "id", "ASC"]],
       include: [
         {
           model: BookingStatus,
@@ -732,7 +732,7 @@ module.exports = {
       where: {
         UserId: req.query.userId,
       },
-      order: [["BookingStatusId", "ASC"]],
+      order: [[Ride, "dateTimeOrigin", "ASC"]],
       include: [
         {
           model: Ride,

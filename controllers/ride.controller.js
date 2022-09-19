@@ -755,6 +755,9 @@ module.exports = {
                 },
               ],
             },
+            {
+              model: RideStatus,
+            },
           ],
         },
         {

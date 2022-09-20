@@ -31,9 +31,9 @@ module.exports = (app) => {
 
   app.put("/api/booking/driver-response", controller.driverResponseBooking);
 
-  app.get("/api/ride/user-booking-ride", controller.getUserBookingRide);
+  app.get("/api/ride/user-bookings-ride", controller.getUserBookingsRide);
 
-  app.get("/api/ride/driver-booking-ride", controller.getDriverBookingRide);
+  app.get("/api/ride/driver-bookings-ride", controller.getDriverBookingsRide);
 
   app.get("/api/ride/user-bookings", controller.getUserBookings);
 

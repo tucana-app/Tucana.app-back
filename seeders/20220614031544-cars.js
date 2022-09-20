@@ -7,6 +7,10 @@ module.exports = {
         DriverId: 1,
         maker: "Toyota",
         numberPlate: "112233",
+        riteve: {
+          year: "2024",
+          month: "3",
+        },
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -14,6 +18,10 @@ module.exports = {
         DriverId: 2,
         maker: "Hyundai",
         numberPlate: "BCN260",
+        riteve: {
+          year: "2023",
+          month: "4",
+        },
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -21,6 +29,10 @@ module.exports = {
         DriverId: 3,
         maker: "Renault",
         numberPlate: "AAA333",
+        riteve: {
+          year: "2021",
+          month: "1",
+        },
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -28,6 +40,10 @@ module.exports = {
         DriverId: 4,
         maker: "Suzuki",
         numberPlate: "BBB999",
+        riteve: {
+          year: "2025",
+          month: "2",
+        },
         createdAt: new Date(),
         updatedAt: new Date(),
       },

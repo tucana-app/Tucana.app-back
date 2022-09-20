@@ -504,7 +504,7 @@ module.exports = {
     }
   },
 
-  getUserBookingRide(req, res) {
+  getUserBookingsRide(req, res) {
     return Booking.findAll({
       where: {
         UserId: req.query.userId,
@@ -512,7 +512,43 @@ module.exports = {
       },
       include: [
         {
+          model: Ride,
+          include: [
+            {
+              model: Driver,
+              include: [
+                {
+                  model: User,
+                  attributes: {
+                    exclude: [
+                      "biography",
+                      "password",
+                      "phoneNumber",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
           model: BookingStatus,
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "lastName",
+              "email",
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
         },
       ],
     })
@@ -526,7 +562,7 @@ module.exports = {
       });
   },
 
-  getDriverBookingRide(req, res) {
+  getDriverBookingsRide(req, res) {
     return Booking.findAll({
       where: {
         DriverId: req.query.driverId,
@@ -901,6 +937,7 @@ module.exports = {
 
   confirmRide(req, res) {
     const { user, ride, isConfirmed } = req.body;
+    console.log(ride);
 
     return RideFeedback.create({
       UserId: user.id,

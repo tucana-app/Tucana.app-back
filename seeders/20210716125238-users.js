@@ -18,6 +18,7 @@ module.exports = {
         updatedAt: new Date(),
         emailConfirmed: true,
         phoneConfirmed: false,
+        avatar: "toucan",
       },
       {
         firstName: "Alex",
@@ -30,6 +31,8 @@ module.exports = {
         updatedAt: new Date(),
         emailConfirmed: true,
         phoneConfirmed: false,
+        firstSetUp: false,
+        avatar: "sloth",
       },
       {
         firstName: "Peter",
@@ -42,6 +45,8 @@ module.exports = {
         updatedAt: new Date(),
         emailConfirmed: true,
         phoneConfirmed: false,
+        firstSetUp: false,
+        avatar: "toucan",
       },
       {
         firstName: "Gabriel",
@@ -54,6 +59,8 @@ module.exports = {
         updatedAt: new Date(),
         emailConfirmed: true,
         phoneConfirmed: false,
+        firstSetUp: false,
+        avatar: "dolphin",
       },
       {
         firstName: "Benjamin",

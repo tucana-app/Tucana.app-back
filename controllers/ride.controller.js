@@ -937,7 +937,6 @@ module.exports = {
 
   confirmRide(req, res) {
     const { user, ride, isConfirmed } = req.body;
-    console.log(ride);
 
     return RideFeedback.create({
       UserId: user.id,
@@ -956,6 +955,12 @@ module.exports = {
           user,
           emailTemplates.rideFeedback(ride, isConfirmed)
         );
+
+        if (!isConfirmed) {
+          emailController.sendEmailToAdmin(
+            emailTemplates.admin_newRideRejected()
+          );
+        }
       })
       .catch((error) => {
         // console.log(error);

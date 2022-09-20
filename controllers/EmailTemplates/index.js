@@ -23,6 +23,7 @@ const driverRatingStatus = require("./driverRatingStatus");
 // Admin emails
 const admin_newFormBecomeDriver = require("./admin_newFormBecomeDriver");
 const admin_newRating = require("./admin_newRating");
+const admin_newRideRejected = require("./admin_newRideRejected");
 
 module.exports = {
   confirmSignup,
@@ -50,4 +51,5 @@ module.exports = {
   // Admin emails
   admin_newFormBecomeDriver,
   admin_newRating,
+  admin_newRideRejected,
 };

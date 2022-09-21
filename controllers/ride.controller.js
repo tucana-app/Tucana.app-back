@@ -81,7 +81,7 @@ module.exports = {
       .then((ride) => {
         // console.log(ride);
 
-        res.status(200).json({ flag: "SUCCESS" });
+        res.status(200).json({ ride, flag: "SUCCESS" });
 
         emailController.sendEmail(user, emailTemplates.offerRide(ride));
       })

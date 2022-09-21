@@ -6,7 +6,7 @@ module.exports = function confirmSignup(UUID) {
   const html = `
       <div>
       <h1>Tucána</h1>
-      <p>To access our platform, please confirm your email address following this link: <a href='${process.env.REACT_APP_URL_CLIENT}/confirm/${UUID}'>
+      <p>To access our platform, please confirm your email address following this link: <a href='${process.env.REACT_APP_URL_CLIENT}/confirm/${UUID}' target="_blank">
       confirm your email</a> or copy-past the link ${process.env.REACT_APP_URL_CLIENT}/confirm/${UUID}
       </p>
       </div>

@@ -166,7 +166,9 @@ module.exports = {
   },
 
   signin(req, res) {
-    const { credential, password } = req.body.formLogin;
+    let { credential, password } = req.body.formLogin;
+
+    credential = credential.replace(" ", "");
 
     return User.findOne({
       where: {

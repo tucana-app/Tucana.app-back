@@ -28,7 +28,7 @@ module.exports = {
       lastName,
       email,
       phoneNumber,
-      username: username.toLowerCase(),
+      username: username.toLowerCase().replace(" ", ""),
       password: bcrypt.hashSync(password, 10),
     })
       .then((user) => {

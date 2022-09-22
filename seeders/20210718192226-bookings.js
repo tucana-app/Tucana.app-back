@@ -12,8 +12,6 @@ module.exports = {
         BookingStatusId: 3,
         totalPaidPassenger: 5000,
         totalReceivedDriver: 4000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #2
       {
@@ -24,8 +22,6 @@ module.exports = {
         BookingStatusId: 1,
         totalPaidPassenger: 6000,
         totalReceivedDriver: 5000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #3
       {
@@ -36,8 +32,6 @@ module.exports = {
         BookingStatusId: 1,
         totalPaidPassenger: 7000,
         totalReceivedDriver: 6000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #4
       {
@@ -48,8 +42,6 @@ module.exports = {
         BookingStatusId: 3,
         totalPaidPassenger: 8000,
         totalReceivedDriver: 7000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #5
       {
@@ -60,8 +52,6 @@ module.exports = {
         BookingStatusId: 4,
         totalPaidPassenger: 9000,
         totalReceivedDriver: 8000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #6
       {
@@ -72,8 +62,6 @@ module.exports = {
         BookingStatusId: 1,
         totalPaidPassenger: 10000,
         totalReceivedDriver: 9000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #7
       {
@@ -84,8 +72,6 @@ module.exports = {
         BookingStatusId: 3,
         totalPaidPassenger: 11000,
         totalReceivedDriver: 10000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #8
       {
@@ -96,8 +82,6 @@ module.exports = {
         BookingStatusId: 4,
         totalPaidPassenger: 12000,
         totalReceivedDriver: 11000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #9
       {
@@ -108,8 +92,6 @@ module.exports = {
         BookingStatusId: 1,
         totalPaidPassenger: 13000,
         totalReceivedDriver: 12000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #10
       {
@@ -120,8 +102,6 @@ module.exports = {
         BookingStatusId: 3,
         totalPaidPassenger: 14000,
         totalReceivedDriver: 13000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #11
       {
@@ -132,8 +112,6 @@ module.exports = {
         BookingStatusId: 1,
         totalPaidPassenger: 15000,
         totalReceivedDriver: 14000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Booking #12
       {
@@ -144,8 +122,6 @@ module.exports = {
         BookingStatusId: 1,
         totalPaidPassenger: 16000,
         totalReceivedDriver: 15000,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

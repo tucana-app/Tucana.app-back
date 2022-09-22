@@ -11,8 +11,6 @@ module.exports = {
           year: "2024",
           month: "3",
         }),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         DriverId: 2,
@@ -22,8 +20,6 @@ module.exports = {
           year: "2023",
           month: "4",
         }),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         DriverId: 3,
@@ -33,8 +29,6 @@ module.exports = {
           year: "2021",
           month: "1",
         }),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         DriverId: 4,
@@ -44,8 +38,6 @@ module.exports = {
           year: "2025",
           month: "2",
         }),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

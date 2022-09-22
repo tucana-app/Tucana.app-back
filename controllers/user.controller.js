@@ -650,6 +650,30 @@ module.exports = {
       });
   },
 
+  updateUserRatings(req, res) {
+    const { userId } = req.query;
+
+    return Rating.findOne({
+      where: {
+        UserId: userId,
+      },
+    })
+      .then((rating) => {
+        if (rating) {
+          res.status(200).send(rating);
+        } else {
+          res.status(200).send(null);
+        }
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json({
+          message: "A problem occured",
+          flag: "GENERAL_ERROR",
+        });
+      });
+  },
+
   submitContactForm(req, res) {
     const { user, values } = req.body;
     var userInfo = {};

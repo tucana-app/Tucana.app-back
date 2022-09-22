@@ -80,7 +80,9 @@ module.exports = {
   },
 
   adminListUsers(req, res) {
-    return User.findAll()
+    return User.findAll({
+      order: [["id", "ASC"]],
+    })
       .then((response) => {
         // console.log(response);
         res.status(200).json(response);

@@ -14,8 +14,7 @@ module.exports = {
         email: "info@tucana.app",
         password: bcrypt.hashSync(process.env.USER_PASSWORD, 10),
         phoneNumber: "+50625213256",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+
         emailConfirmed: true,
         phoneConfirmed: false,
         avatar: "toucan",
@@ -27,8 +26,7 @@ module.exports = {
         email: "benjamin.jaume@gmail.com",
         password: bcrypt.hashSync(process.env.USER_PASSWORD, 10),
         phoneNumber: "+33605040302",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+
         emailConfirmed: true,
         phoneConfirmed: false,
         firstSetUp: false,
@@ -41,8 +39,7 @@ module.exports = {
         email: "jorustyron@outlook.com",
         password: bcrypt.hashSync(process.env.USER_PASSWORD, 10),
         phoneNumber: "+50680706050",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+
         emailConfirmed: true,
         phoneConfirmed: false,
         firstSetUp: false,
@@ -55,8 +52,7 @@ module.exports = {
         email: "jorustyron@gmail.com",
         password: bcrypt.hashSync(process.env.USER_PASSWORD, 10),
         phoneNumber: "+50687956231",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+
         emailConfirmed: true,
         phoneConfirmed: false,
         firstSetUp: false,
@@ -69,8 +65,7 @@ module.exports = {
         email: "ride.cr.app@gmail.com",
         password: bcrypt.hashSync(process.env.USER_PASSWORD, 10),
         phoneNumber: "+33607897833",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+
         emailConfirmed: true,
         phoneConfirmed: false,
       },

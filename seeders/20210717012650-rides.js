@@ -132,8 +132,6 @@ module.exports = {
         seatsAvailable: 2,
         seatsLeft: 2,
         comment: "Passing by Ruta 27 and San Jose",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #2
       {
@@ -264,8 +262,6 @@ module.exports = {
         seatsAvailable: 6,
         seatsLeft: 6,
         comment: "Diamante valley",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #3
       {
@@ -389,8 +385,6 @@ module.exports = {
         seatsAvailable: 3,
         seatsLeft: 1,
         comment: "Excited to meet you on my way!",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #4
       {
@@ -526,8 +520,6 @@ module.exports = {
         price: 4000,
         seatsAvailable: 4,
         seatsLeft: 4,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #5
       {
@@ -657,8 +649,6 @@ module.exports = {
         seatsAvailable: 5,
         seatsLeft: 5,
         comment: "I have a lot of seats available if you need",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #6
       {
@@ -789,8 +779,6 @@ module.exports = {
         seatsAvailable: 1,
         seatsLeft: 0,
         comment: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #7
       {
@@ -921,8 +909,6 @@ module.exports = {
         seatsAvailable: 1,
         seatsLeft: 0,
         comment: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #8
       {
@@ -1052,8 +1038,6 @@ module.exports = {
         seatsAvailable: 3,
         seatsLeft: 0,
         comment: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #9
       {
@@ -1183,8 +1167,6 @@ module.exports = {
         seatsAvailable: 5,
         seatsLeft: 5,
         comment: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #10
       {
@@ -1314,8 +1296,6 @@ module.exports = {
         seatsAvailable: 5,
         seatsLeft: 5,
         comment: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #11
       {
@@ -1446,8 +1426,6 @@ module.exports = {
         seatsAvailable: 2,
         seatsLeft: 2,
         comment: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       // Ride #12
       {
@@ -1578,8 +1556,6 @@ module.exports = {
         seatsAvailable: 2,
         seatsLeft: 2,
         comment: "Passing by Ruta 27 and San Jose",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

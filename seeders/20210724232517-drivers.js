@@ -10,8 +10,6 @@ module.exports = {
         idCountry: "France",
         licenseNumber: "11223344",
         licenseCountry: "France",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         UserId: 2,
@@ -20,8 +18,6 @@ module.exports = {
         idCountry: "Costa Rica",
         licenseNumber: "22334455",
         licenseCountry: "Costa Rica",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         UserId: 3,
@@ -30,8 +26,6 @@ module.exports = {
         idCountry: "United Sates of America",
         licenseNumber: "33445566",
         licenseCountry: "United Sates of America",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         UserId: 4,
@@ -40,8 +34,6 @@ module.exports = {
         idCountry: "France",
         licenseNumber: "44556677",
         licenseCountry: "France",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

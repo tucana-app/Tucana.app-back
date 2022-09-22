@@ -6,20 +6,14 @@ module.exports = {
       {
         code: "sent",
         name: "Sent",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         code: "received",
         name: "Received",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         code: "seen",
         name: "Seen",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

@@ -9,8 +9,6 @@ module.exports = {
         body: "Test",
         ConversationId: 1,
         MessageStatusId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         SenderId: 2,
@@ -18,8 +16,6 @@ module.exports = {
         body: "How are you?",
         ConversationId: 2,
         MessageStatusId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

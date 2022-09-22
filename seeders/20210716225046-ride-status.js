@@ -6,26 +6,18 @@ module.exports = {
       {
         code: "planned",
         name: "Planned",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         code: "on_going",
         name: "On going",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         code: "done",
         name: "Done",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         code: "canceled",
         name: "Canceled",
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

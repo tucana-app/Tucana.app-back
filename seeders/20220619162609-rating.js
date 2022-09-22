@@ -9,8 +9,6 @@ module.exports = {
         driverRating: 0,
         nbPassengerRating: 6,
         nbDriverRating: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         UserId: 2,
@@ -18,8 +16,6 @@ module.exports = {
         driverRating: 4.96,
         nbPassengerRating: 0,
         nbDriverRating: 15,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         UserId: 3,
@@ -27,8 +23,6 @@ module.exports = {
         driverRating: 0,
         nbPassengerRating: 4,
         nbDriverRating: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         UserId: 4,
@@ -36,8 +30,6 @@ module.exports = {
         driverRating: 4.56,
         nbPassengerRating: 10,
         nbDriverRating: 13,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         UserId: 5,
@@ -45,8 +37,6 @@ module.exports = {
         driverRating: 0,
         nbPassengerRating: 0,
         nbDriverRating: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

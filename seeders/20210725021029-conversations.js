@@ -11,8 +11,6 @@ module.exports = {
         RideId: 6,
         archived: false,
         UUID: uuidv4(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         DriverId: 3,
@@ -20,8 +18,6 @@ module.exports = {
         RideId: 1,
         archived: false,
         UUID: uuidv4(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

@@ -12,8 +12,6 @@ module.exports = {
         username: process.env.ADMIN_USERNAME,
         email: process.env.ADMIN_EMAIL,
         password: bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         firstName: process.env.MODO_FIRSTNAME,
@@ -21,8 +19,6 @@ module.exports = {
         username: process.env.MODO_USERNAME,
         email: process.env.MODO_EMAIL,
         password: bcrypt.hashSync(process.env.MODO_PASSWORD, 10),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         firstName: process.env.SUPPORT_FIRSTNAME,
@@ -30,8 +26,6 @@ module.exports = {
         username: process.env.SUPPORT_USERNAME,
         email: process.env.SUPPORT_EMAIL,
         password: bcrypt.hashSync(process.env.SUPPORT_PASSWORD, 10),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       {
         firstName: process.env.SALES_FIRSTNAME,
@@ -39,8 +33,6 @@ module.exports = {
         username: process.env.SALES_USERNAME,
         email: process.env.SALES_EMAIL,
         password: bcrypt.hashSync(process.env.SALES_PASSWORD, 10),
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     ]);
   },

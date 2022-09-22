@@ -50,5 +50,7 @@ module.exports = function (app) {
 
   app.get("/api/user/driver-state", controller.updateDriverState);
 
+  app.get("/api/user/update-ratings", controller.updateUserRatings);
+
   app.post("/api/user/submit-contact-form", controller.submitContactForm);
 };

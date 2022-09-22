@@ -256,6 +256,9 @@ module.exports = {
       include: [
         {
           model: admin_VerifDriverRating,
+          where: {
+            isAccepted: true,
+          },
         },
         {
           model: User,
@@ -306,6 +309,9 @@ module.exports = {
       include: [
         {
           model: admin_VerifDriverRating,
+          where: {
+            isAccepted: true,
+          },
         },
         {
           model: User,

@@ -3,7 +3,7 @@ const forgotPassword = require("./forgotPassword");
 const resetPasswordSuccess = require("./resetPasswordSuccess");
 const reminderRatingToDriver = require("./reminderRatingToDriver");
 const reminderRatingToPassenger = require("./reminderRatingToPassenger");
-const offerRide = require("./offerRide");
+const publishRide = require("./publishRide");
 const newMessage = require("./newMessage");
 const acceptedByDriver = require("./acceptedByDriver");
 const acceptedToUser = require("./acceptedToUser");
@@ -31,7 +31,7 @@ module.exports = {
   resetPasswordSuccess,
   reminderRatingToDriver,
   reminderRatingToPassenger,
-  offerRide,
+  publishRide,
   newMessage,
   acceptedByDriver,
   acceptedToUser,

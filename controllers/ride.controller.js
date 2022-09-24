@@ -62,20 +62,20 @@ module.exports = {
   },
 
   addRide(req, res) {
-    const { user, formOfferRide } = req.body;
+    const { user, formPublishRide } = req.body;
 
-    commentConverted = convert(formOfferRide.comment);
+    commentConverted = convert(formPublishRide.comment);
 
     return Ride.create({
       DriverId: user.Driver.id,
-      origin: formOfferRide.origin,
-      destination: formOfferRide.destination,
-      dateTimeOrigin: formOfferRide.dateTimeOrigin,
-      dateTimeDestination: formOfferRide.dateTimeDestination,
-      ETA: formOfferRide.ETAdata,
-      price: formOfferRide.price,
-      seatsAvailable: formOfferRide.seats,
-      seatsLeft: formOfferRide.seats,
+      origin: formPublishRide.origin,
+      destination: formPublishRide.destination,
+      dateTimeOrigin: formPublishRide.dateTimeOrigin,
+      dateTimeDestination: formPublishRide.dateTimeDestination,
+      ETA: formPublishRide.ETAdata,
+      price: formPublishRide.price,
+      seatsAvailable: formPublishRide.seats,
+      seatsLeft: formPublishRide.seats,
       comment: commentConverted,
     })
       .then((ride) => {
@@ -83,7 +83,7 @@ module.exports = {
 
         res.status(200).json({ ride, flag: "SUCCESS" });
 
-        emailController.sendEmail(user, emailTemplates.offerRide(ride));
+        emailController.sendEmail(user, emailTemplates.publishRide(ride));
       })
       .catch((error) => {
         // console.log(error);

@@ -1,6 +1,6 @@
 require("dotenv").config;
 
-module.exports = function offerRide(ride) {
+module.exports = function publishRide(ride) {
   const subject = "Your ride is online | Tucána";
   const text = `Your ride from ${ride.origin.city} to ${ride.destination.city} with ${ride.seatsAvailable} seat(s) available is already online!`;
   const html = `

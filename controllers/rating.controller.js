@@ -113,13 +113,13 @@ module.exports = {
   },
 
   getRatingsToDoAsDriver(req, res) {
-    const { userId } = req.query;
+    const { userId, driverId } = req.query;
     let ratingsToDoDriver = [];
 
     (async function () {
       let bookings = await Booking.findAll({
         where: {
-          DriverId: userId,
+          DriverId: driverId,
           BookingStatusId: 3, // accepted
         },
       });
@@ -184,7 +184,7 @@ module.exports = {
                     return PassengerRating.findOne({
                       where: {
                         RideId: ride.id,
-                        DriverId: userId,
+                        DriverId: driverId,
                       },
                     }).then((rating) => {
                       if (!rating) {

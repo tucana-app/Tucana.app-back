@@ -9,7 +9,7 @@ module.exports = function becomeDriver(isAccepted, comment) {
     html = `
         <div>
         <h1>Tucána</h1>
-        <p>Congratulations, you are now part of our community of drivers around Costa Rica. Please activate your driver's profile</p>
+        <p>Congratulations, you are now part of our community of drivers around Costa Rica. You can now publish rides and making money & friends!</p>
         </div>
       `;
   } else {

@@ -846,15 +846,16 @@ module.exports = {
   },
 
   getRidesToConfirm(req, res) {
-    const { userId } = req.query;
+    const user = JSON.parse(req.query.user);
+    const driverId = user.Driver ? user.Driver.id : 0;
     let ridesToFeedback = [];
 
     (async function () {
       let bookings = await Booking.findAll({
         where: {
           [Op.or]: {
-            UserId: userId,
-            DriverId: userId,
+            UserId: user.id,
+            DriverId: driverId,
           },
           BookingStatusId: 3, // accepted
         },
@@ -910,7 +911,7 @@ module.exports = {
                 // A feedback need to be given
                 return RideFeedback.findOne({
                   where: {
-                    UserId: userId,
+                    UserId: user.id,
                     RideId: ride.id,
                     BookingId: booking.id,
                   },

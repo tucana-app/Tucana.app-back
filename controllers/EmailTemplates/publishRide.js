@@ -5,8 +5,7 @@ module.exports = function publishRide(ride) {
   const text = `Your ride from ${ride.origin.city} to ${ride.destination.city} with ${ride.seatsAvailable} seat(s) available is already online!`;
   const html = `
     <div>
-    <p>Thank you!</p>
-    <p>Yes, you are helping the community by sharing your seats</p>
+    <p>Thank you for helping the community by sharing your seats</p>
     <p>Your ride from ${ride.origin.city} to ${ride.destination.city} with ${ride.seatsAvailable} seat(s) available is already online!</p>
     </div>
     `;

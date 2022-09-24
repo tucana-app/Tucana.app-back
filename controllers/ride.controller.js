@@ -911,6 +911,7 @@ module.exports = {
                 // A feedback need to be given
                 return RideFeedback.findOne({
                   where: {
+                    UserId: user.id,
                     RideId: ride.id,
                     BookingId: booking.id,
                   },

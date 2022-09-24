@@ -60,7 +60,7 @@ module.exports = {
           });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         res.status(400).send({ message: error.message });
       });
   },
@@ -245,7 +245,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         res.status(500).send({
           message: "It looks like we can't log you in right now",
           flag: "GENERAL_ERROR",
@@ -666,7 +666,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         res.status(400).json({
           message: "A problem occured",
           flag: "GENERAL_ERROR",

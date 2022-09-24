@@ -67,7 +67,7 @@ module.exports = {
     commentConverted = convert(formOfferRide.comment);
 
     return Ride.create({
-      DriverId: user.id,
+      DriverId: user.Driver.id,
       origin: formOfferRide.origin,
       destination: formOfferRide.destination,
       dateTimeOrigin: formOfferRide.dateTimeOrigin,

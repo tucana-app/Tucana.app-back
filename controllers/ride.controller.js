@@ -210,7 +210,7 @@ module.exports = {
   getDriverBookings(req, res) {
     return Booking.findAll({
       where: {
-        DriverId: req.query.userId,
+        DriverId: req.query.driverId,
       },
       include: [
         {

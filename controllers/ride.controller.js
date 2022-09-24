@@ -25,7 +25,7 @@ module.exports = {
   getDriverRides(req, res) {
     return Ride.findAll({
       where: {
-        DriverId: req.query.userId,
+        DriverId: req.query.driverId,
       },
       include: [
         {

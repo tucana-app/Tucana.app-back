@@ -12,7 +12,7 @@ require("dotenv").config;
 
 const { v4: uuidv4 } = require("uuid");
 
-const errorMessage = { message: "A problem occured with this request" };
+const errorMessage = "A problem occured with this request";
 
 module.exports = {
   getAllUserMessages(req, res) {
@@ -21,11 +21,10 @@ module.exports = {
 
     return Conversation.findAll({
       where: {
-        [Op.or]: [
-          // Look for one of the combinaison for driver/user
-          { DriverId: driverId },
-          { UserId: user.id },
-        ],
+        [Op.or]: {
+          UserId: user.id,
+          DriverId: driverId,
+        },
       },
       order: [[Message, "createdAt", "ASC"]],
       include: [

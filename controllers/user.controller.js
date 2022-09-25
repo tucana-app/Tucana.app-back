@@ -705,4 +705,25 @@ module.exports = {
 
     return res.status(200).json({});
   },
+
+  submitEditBio(req, res) {
+    const { userId, values } = req.body;
+
+    return User.update(
+      {
+        biography: values.bio,
+      },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    )
+      .then((response) => {
+        res.status(200).send({ message: "OK", flag: "SUCCESS" });
+      })
+      .catch((error) => {
+        res.status(400).json({ message: "NOK", flag: "FAIL" });
+      });
+  },
 };

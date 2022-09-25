@@ -16,12 +16,15 @@ const errorMessage = { message: "A problem occured with this request" };
 
 module.exports = {
   getAllUserMessages(req, res) {
+    const user = JSON.parse(req.query.user);
+    const driverId = user.Driver ? user.Driver.id : 0;
+
     return Conversation.findAll({
       where: {
         [Op.or]: [
           // Look for one of the combinaison for driver/user
-          { DriverId: req.query.userId },
-          { UserId: req.query.userId },
+          { DriverId: driverId },
+          { UserId: user.id },
         ],
       },
       order: [[Message, "createdAt", "ASC"]],

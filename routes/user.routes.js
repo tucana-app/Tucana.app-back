@@ -60,4 +60,6 @@ module.exports = function (app) {
   app.post("/api/user/submit-contact-form", controller.submitContactForm);
 
   app.post("/api/user/submit-edit-bio", controller.submitEditBio);
+
+  app.post("/api/user/submit-edit-password", controller.submitEditPassword);
 };

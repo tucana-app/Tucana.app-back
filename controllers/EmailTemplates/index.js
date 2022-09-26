@@ -19,6 +19,7 @@ const rideFeedback = require("./rideFeedback");
 const newRating = require("./newRating");
 const passengerReceivedRating = require("./passengerReceivedRating");
 const driverRatingStatus = require("./driverRatingStatus");
+const passwordUpdated = require("./passwordUpdated");
 
 // Admin emails
 const admin_newFormBecomeDriver = require("./admin_newFormBecomeDriver");
@@ -47,6 +48,7 @@ module.exports = {
   newRating,
   passengerReceivedRating,
   driverRatingStatus,
+  passwordUpdated,
 
   // Admin emails
   admin_newFormBecomeDriver,

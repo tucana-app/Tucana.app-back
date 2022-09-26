@@ -205,11 +205,11 @@ module.exports = {
     )
       .then((response) => {
         // console.log(response);
-        return res.status(200).send({ message: "Success" });
+        res.status(200).send({ message: "Success" });
       })
       .catch((error) => {
         // console.log(error);
-        return res.status(400).send({ message: "Fail", errorCode: 1 });
+        res.status(400).send({ message: "Fail", errorCode: 1 });
       });
   },
 };

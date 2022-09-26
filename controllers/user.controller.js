@@ -205,42 +205,42 @@ module.exports = {
           var passwordIsValid = bcrypt.compareSync(password, user.password);
 
           if (!passwordIsValid) {
-            return res.status(401).send({
+            res.status(401).send({
               accessToken: null,
               message: "Invalid Password",
               flag: "INVALID_PASSWORD",
             });
-          }
-
-          var token = jwt.sign({ id: user.id }, config.secret, {
-            expiresIn: 604800, // 7 days
-          });
-
-          if (user.emailConfirmed) {
-            res.status(200).send({
-              id: user.id,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              username: user.username,
-              email: user.email,
-              biography: user.biography,
-              phoneNumber: user.phoneNumber,
-              createdAt: user.createdAt,
-              emailConfirmed: user.emailConfirmed,
-              phoneConfirmed: user.phoneConfirmed,
-              firstSetUp: user.firstSetUp,
-              avatar: user.avatar,
-              Driver: user.Driver,
-              Rating: user.Rating,
-              accessToken: token,
-            });
           } else {
-            // User hasn't confirmed the email yet
-            res.status(403).json({
-              message: "Email not confirmed yet",
-              flag: "NOT_CONFIRMED",
-              userId: user.id,
+            var token = jwt.sign({ id: user.id }, config.secret, {
+              expiresIn: 604800, // 7 days
             });
+
+            if (user.emailConfirmed) {
+              res.status(200).send({
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                username: user.username,
+                email: user.email,
+                biography: user.biography,
+                phoneNumber: user.phoneNumber,
+                createdAt: user.createdAt,
+                emailConfirmed: user.emailConfirmed,
+                phoneConfirmed: user.phoneConfirmed,
+                firstSetUp: user.firstSetUp,
+                avatar: user.avatar,
+                Driver: user.Driver,
+                Rating: user.Rating,
+                accessToken: token,
+              });
+            } else {
+              // User hasn't confirmed the email yet
+              res.status(403).json({
+                message: "Email not confirmed yet",
+                flag: "NOT_CONFIRMED",
+                userId: user.id,
+              });
+            }
           }
         }
       })
@@ -307,7 +307,7 @@ module.exports = {
       .then((user) => {
         if (!user) {
           // Email not found
-          return res.status(200).json({
+          res.status(200).json({
             message:
               "If your email address exists, please verify your inbox for a password reset link email",
           });
@@ -751,10 +751,84 @@ module.exports = {
       }
     )
       .then((response) => {
-        res.status(200).send({ message: "OK", flag: "SUCCESS" });
+        res
+          .status(200)
+          .send({ message: "OK", flag: "SUCCESS", bio: values.bio });
       })
       .catch((error) => {
         res.status(400).json({ message: "NOK", flag: "FAIL" });
+      });
+  },
+
+  submitEditPassword(req, res) {
+    const { user, values } = req.body;
+
+    return User.findOne({
+      where: {
+        id: user.id,
+      },
+    })
+      .then((user) => {
+        let passwordIsValid = bcrypt.compareSync(
+          values.currentPassword,
+          user.password
+        );
+
+        let isPasswordsSame = bcrypt.compareSync(
+          values.password1,
+          user.password
+        );
+
+        if (!passwordIsValid) {
+          res.status(401).send({
+            accessToken: null,
+            message: "Your current password is incorrect",
+            flag: "INVALID_PASSWORD",
+          });
+        } else if (isPasswordsSame) {
+          res.status(401).send({
+            accessToken: null,
+            message:
+              "Your new password needs to be different than your current password",
+            flag: "SAME_PASSWORD",
+          });
+        } else if (values.password1 !== values.password2) {
+          res.status(401).send({
+            accessToken: null,
+            message: "The passwords must match",
+            flag: "PASSWORD_MUST_MATCH",
+          });
+        } else {
+          return User.update(
+            {
+              password: bcrypt.hashSync(values.password1, 10),
+            },
+            {
+              where: {
+                id: user.id,
+              },
+            }
+          )
+            .then((response) => {
+              res.status(200).send({ message: "OK", flag: "SUCCESS" });
+
+              emailController.sendEmail(user, emailTemplates.passwordUpdated());
+            })
+            .catch((error) => {
+              // console.log(error);
+              res.status(400).json({
+                message: "Failed to update the password",
+                flag: "FAIL_UPDATE",
+              });
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(400).json({
+          message: "There is an error with this request",
+          flag: "DB_ERROR",
+        });
       });
   },
 };

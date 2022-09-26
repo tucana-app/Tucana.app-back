@@ -581,6 +581,37 @@ module.exports = {
       });
   },
 
+  getApplicationBecomeDriver(req, res) {
+    const { userId, applicationId } = req.query;
+
+    return DriverApplication.findOne({
+      where: {
+        id: applicationId,
+        UserId: userId,
+      },
+      order: [["id", "ASC"]],
+      include: [
+        {
+          model: admin_VerifDriverApplication,
+        },
+      ],
+    })
+      .then((application) => {
+        // console.log(application);
+        if (application) {
+          res.status(200).json(application);
+        } else {
+          res
+            .status(400)
+            .json({ message: "No application found", flag: "NOT_FOUND" });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(400).json({ flag: "GENERAL_ERROR" });
+      });
+  },
+
   submitBecomeDriver(req, res) {
     const { user, form } = req.body;
 

@@ -46,6 +46,11 @@ module.exports = function (app) {
     controller.getApplicationsBecomeDriver
   );
 
+  app.get(
+    "/api/user/application-become-driver",
+    controller.getApplicationBecomeDriver
+  );
+
   app.post("/api/user/submit-become-driver", controller.submitBecomeDriver);
 
   app.get("/api/user/driver-state", controller.updateDriverState);

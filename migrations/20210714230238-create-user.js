@@ -28,7 +28,6 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       password: {
         type: Sequelize.STRING,
@@ -37,7 +36,6 @@ module.exports = {
       phoneNumber: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       emailConfirmed: {
         type: Sequelize.BOOLEAN,
@@ -54,6 +52,13 @@ module.exports = {
       avatar: {
         type: Sequelize.STRING,
         defaultValue: "none",
+      },
+      isClosed: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      isClosedDate: {
+        type: Sequelize.DATE,
       },
       createdAt: {
         type: Sequelize.DATE,

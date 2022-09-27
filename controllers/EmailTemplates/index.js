@@ -20,6 +20,7 @@ const newRating = require("./newRating");
 const passengerReceivedRating = require("./passengerReceivedRating");
 const driverRatingStatus = require("./driverRatingStatus");
 const passwordUpdated = require("./passwordUpdated");
+const accountClosed = require("./accountClosed");
 
 // Admin emails
 const admin_newFormBecomeDriver = require("./admin_newFormBecomeDriver");
@@ -49,6 +50,7 @@ module.exports = {
   passengerReceivedRating,
   driverRatingStatus,
   passwordUpdated,
+  accountClosed,
 
   // Admin emails
   admin_newFormBecomeDriver,

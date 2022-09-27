@@ -175,79 +175,107 @@ module.exports = {
         [Op.or]: {
           username: credential,
           username: credential.toLowerCase(),
-          email: credential,
-          email: credential.toLowerCase(),
         },
       },
-      include: [
-        {
-          model: Driver,
-          attributes: {
-            exclude: ["UserId", "createdAt", "updatedAt"],
-          },
-          include: [
-            {
-              model: Car,
-            },
-          ],
-        },
-        {
-          model: Rating,
-        },
-      ],
     })
       .then((user) => {
-        if (!user) {
-          res
-            .status(404)
-            .send({ message: "User not found", flag: "USER_NOT_FOUND" });
+        if (user.isClosed) {
+          res.status(401).send({
+            accessToken: null,
+            message: "This account has been closed",
+            flag: "ACCOUNT_CLOSED",
+          });
         } else {
-          var passwordIsValid = bcrypt.compareSync(password, user.password);
+          return User.findOne({
+            where: {
+              [Op.or]: {
+                username: credential,
+                username: credential.toLowerCase(),
+                email: credential,
+                email: credential.toLowerCase(),
+              },
+            },
+            include: [
+              {
+                model: Driver,
+                attributes: {
+                  exclude: ["UserId", "createdAt", "updatedAt"],
+                },
+                include: [
+                  {
+                    model: Car,
+                  },
+                ],
+              },
+              {
+                model: Rating,
+              },
+            ],
+          })
+            .then((user) => {
+              if (!user) {
+                res
+                  .status(404)
+                  .send({ message: "User not found", flag: "USER_NOT_FOUND" });
+              } else {
+                var passwordIsValid = bcrypt.compareSync(
+                  password,
+                  user.password
+                );
 
-          if (!passwordIsValid) {
-            res.status(401).send({
-              accessToken: null,
-              message: "Invalid Password",
-              flag: "INVALID_PASSWORD",
-            });
-          } else {
-            var token = jwt.sign({ id: user.id }, config.secret, {
-              expiresIn: 604800, // 7 days
-            });
+                if (!passwordIsValid) {
+                  res.status(401).send({
+                    accessToken: null,
+                    message: "Invalid Password",
+                    flag: "INVALID_PASSWORD",
+                  });
+                } else {
+                  var token = jwt.sign({ id: user.id }, config.secret, {
+                    expiresIn: 604800, // 7 days
+                  });
 
-            if (user.emailConfirmed) {
-              res.status(200).send({
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                username: user.username,
-                email: user.email,
-                biography: user.biography,
-                phoneNumber: user.phoneNumber,
-                createdAt: user.createdAt,
-                emailConfirmed: user.emailConfirmed,
-                phoneConfirmed: user.phoneConfirmed,
-                firstSetUp: user.firstSetUp,
-                avatar: user.avatar,
-                Driver: user.Driver,
-                Rating: user.Rating,
-                accessToken: token,
+                  if (user.emailConfirmed) {
+                    res.status(200).send({
+                      id: user.id,
+                      firstName: user.firstName,
+                      lastName: user.lastName,
+                      username: user.username,
+                      email: user.email,
+                      biography: user.biography,
+                      phoneNumber: user.phoneNumber,
+                      createdAt: user.createdAt,
+                      emailConfirmed: user.emailConfirmed,
+                      phoneConfirmed: user.phoneConfirmed,
+                      firstSetUp: user.firstSetUp,
+                      avatar: user.avatar,
+                      Driver: user.Driver,
+                      Rating: user.Rating,
+                      accessToken: token,
+                    });
+                  } else {
+                    // User hasn't confirmed the email yet
+                    res.status(403).json({
+                      message: "Email not confirmed yet",
+                      flag: "NOT_CONFIRMED",
+                      userId: user.id,
+                    });
+                  }
+                }
+              }
+            })
+            .catch((error) => {
+              // console.log(error);
+              res.status(500).send({
+                message: "We can't log you in right now",
+                flag: "GENERAL_ERROR",
               });
-            } else {
-              // User hasn't confirmed the email yet
-              res.status(403).json({
-                message: "Email not confirmed yet",
-                flag: "NOT_CONFIRMED",
-                userId: user.id,
-              });
-            }
-          }
+            });
         }
       })
       .catch((error) => {
         // console.log(error);
         res.status(500).send({
-          message: "It looks like we can't log you in right now",
+          message: "We can't log you in right now",
           flag: "GENERAL_ERROR",
         });
       });
@@ -781,7 +809,6 @@ module.exports = {
 
         if (!passwordIsValid) {
           res.status(401).send({
-            accessToken: null,
             message: "Your current password is incorrect",
             flag: "INVALID_PASSWORD",
           });
@@ -829,6 +856,78 @@ module.exports = {
           message: "There is an error with this request",
           flag: "DB_ERROR",
         });
+      });
+  },
+
+  submitCloseAccount(req, res) {
+    const { user, values } = req.body;
+
+    return User.findOne({
+      where: {
+        id: user.id,
+      },
+    })
+      .then((user) => {
+        let passwordIsValid = bcrypt.compareSync(
+          values.password,
+          user.password
+        );
+
+        if (!passwordIsValid) {
+          res.status(401).send({
+            accessToken: null,
+            message: "The password is incorrect",
+            flag: "INVALID_PASSWORD",
+          });
+        } else {
+          return User.update(
+            {
+              password: "-",
+              isClosed: true,
+              isClosedDate: new Date(),
+            },
+            {
+              where: {
+                id: user.id,
+              },
+            }
+          )
+            .then((response) => {
+              res.status(200).send({ message: "OK", flag: "SUCCESS" });
+
+              emailController.sendEmail(user, emailTemplates.accountClosed());
+            })
+            .catch((error) => {
+              // console.log(error);
+              res.status(400).json({
+                message: "Failed to update the password",
+                flag: "FAIL_UPDATE",
+              });
+            });
+        }
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(500).json({
+          message: "There is an error with this request",
+          flag: "DB_ERROR",
+        });
+      });
+  },
+
+  isAccountClosed(req, res) {
+    const { userId } = req.query;
+
+    return User.findOne({
+      where: {
+        id: userId,
+      },
+    })
+      .then((user) => {
+        res.status(200).send({ isClosed: user.isClosed });
+      })
+      .catch((error) => {
+        res.status(400).json({ message: "NOK", flag: "FAIL" });
       });
   },
 };

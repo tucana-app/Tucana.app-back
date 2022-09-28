@@ -298,7 +298,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
         res.status(500).send({
           message: "We can't log you in right now",
           flag: "GENERAL_ERROR",

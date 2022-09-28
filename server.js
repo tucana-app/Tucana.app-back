@@ -42,6 +42,10 @@ if (!isDev && cluster.isMaster) {
   require("./crons");
 
   app.all("*", function (req, res) {
+    res.setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+    );
     res.redirect(process.env.REACT_APP_URL_CLIENT);
   });
 

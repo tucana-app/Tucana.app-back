@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   Constant.init(
     {
       key: DataTypes.STRING,
-      value: DataTypes.STRING,
+      value: DataTypes.STRING(9999),
     },
     {
       sequelize,

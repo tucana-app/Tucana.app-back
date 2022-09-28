@@ -1063,4 +1063,30 @@ module.exports = {
         res.status(400).json(errorMessage);
       });
   },
+
+  nbRidesOnline(req, res) {
+    return Ride.findAndCountAll({
+      where: {
+        [Op.and]: {
+          dateTimeOrigin: {
+            [Op.gte]: new Date(),
+          },
+          RideStatusId: {
+            [Op.lt]: 4,
+          },
+          seatsLeft: {
+            [Op.gt]: 0,
+          },
+        },
+      },
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response.count);
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json(errorMessage);
+      });
+  },
 };

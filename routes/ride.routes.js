@@ -45,6 +45,8 @@ module.exports = (app) => {
 
   app.post("/api/ride/form-confirm-ride", controller.confirmRide);
 
+  app.get("/api/ride/nb-rides-online", controller.nbRidesOnline);
+
   app.get("/api/ride/:rideId", controller.getRide);
 
   app.get("/api/driver/:username", controller.getDriverProfile);

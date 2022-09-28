@@ -51,7 +51,6 @@ module.exports = {
       },
       avatar: {
         type: Sequelize.STRING,
-        defaultValue: "none",
       },
       isClosed: {
         type: Sequelize.BOOLEAN,

@@ -43,8 +43,8 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("Ratings", {
-      id: {
-        [Sequelize.Op.in]: [1, 2, 3, 4],
+      UserId: {
+        [Sequelize.Op.in]: [1, 2, 3, 4, 5],
       },
     });
   },

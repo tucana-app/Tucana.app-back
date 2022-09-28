@@ -3,11 +3,15 @@ const config = require("../config/user.config");
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates");
 const validator = require("validator");
+const { updateExperienceUser, pointsGrid } = require("./helpers");
+
 const User = db.User;
 const Driver = db.Driver;
 const Rating = db.Rating;
 const Car = db.Car;
 const DriverApplication = db.DriverApplication;
+const ExperienceUser = db.ExperienceUser;
+const ExperienceUserLevel = db.ExperienceUserLevel;
 const Op = db.Sequelize.Op;
 const ConfirmEmail = db.ConfirmEmail;
 const ForgotPassword = db.ForgotPassword;
@@ -37,21 +41,33 @@ module.exports = {
           UUID: uuidv4(),
         })
           .then((confirmEmailLine) => {
-            res.status(201).send({ message: "Sign up successful" });
-
-            emailController.sendEmail(
-              user,
-              emailTemplates.confirmSignup(confirmEmailLine.UUID)
-            );
-
             return Rating.create({
               UserId: user.id,
             })
               .then((response) => {
                 // console.log(response)
+                return ExperienceUser.create({
+                  UserId: user.id,
+                })
+                  .then((response) => {
+                    // console.log(response)
+                    res.status(201).send({ message: "Sign up successful" });
+
+                    emailController.sendEmail(
+                      user,
+                      emailTemplates.confirmSignup(confirmEmailLine.UUID)
+                    );
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    res
+                      .status(400)
+                      .send({ message: "An error occured (Experience)" });
+                  });
               })
               .catch((error) => {
                 // console.log(error);
+                res.status(400).send({ message: "An error occured (Ratings)" });
               });
           })
           .catch((error) => {
@@ -210,6 +226,14 @@ module.exports = {
               {
                 model: Rating,
               },
+              {
+                model: ExperienceUser,
+                include: [
+                  {
+                    model: ExperienceUserLevel,
+                  },
+                ],
+              },
             ],
           })
             .then((user) => {
@@ -250,6 +274,7 @@ module.exports = {
                       avatar: user.avatar,
                       Driver: user.Driver,
                       Rating: user.Rating,
+                      ExperienceUser: user.ExperienceUser,
                       accessToken: token,
                     });
                   } else {
@@ -733,6 +758,35 @@ module.exports = {
       });
   },
 
+  updateUserExperience(req, res) {
+    const { userId } = req.query;
+
+    return ExperienceUser.findOne({
+      where: {
+        UserId: userId,
+      },
+      include: [
+        {
+          model: ExperienceUserLevel,
+        },
+      ],
+    })
+      .then((experience) => {
+        if (experience) {
+          res.status(200).send(experience);
+        } else {
+          res.status(200).send(null);
+        }
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json({
+          message: "A problem occured",
+          flag: "GENERAL_ERROR",
+        });
+      });
+  },
+
   submitContactForm(req, res) {
     const { user, values } = req.body;
     var userInfo = {};
@@ -768,22 +822,42 @@ module.exports = {
   submitEditBio(req, res) {
     const { userId, values } = req.body;
 
-    return User.update(
-      {
-        biography: values.bio,
+    return User.findOne({
+      where: {
+        id: userId,
       },
-      {
-        where: {
-          id: userId,
-        },
-      }
-    )
-      .then((response) => {
-        res
-          .status(200)
-          .send({ message: "OK", flag: "SUCCESS", bio: values.bio });
+    })
+      .then((user) => {
+        if (user.biography === "" || user.biography === null) {
+          updateExperienceUser(userId, pointsGrid.ADD_BIO);
+        }
+
+        return User.update(
+          {
+            biography: values.bio,
+          },
+          {
+            where: {
+              id: userId,
+            },
+          }
+        )
+          .then((response) => {
+            if (user.biography || user.biography !== "") {
+              updateExperienceUser(userId, pointsGrid.UPDATE_BIO);
+            }
+
+            res
+              .status(200)
+              .send({ message: "OK", flag: "SUCCESS", bio: values.bio });
+          })
+          .catch((error) => {
+            // console.log(error);
+            res.status(400).json({ message: "NOK", flag: "FAIL" });
+          });
       })
       .catch((error) => {
+        // console.log(error);
         res.status(400).json({ message: "NOK", flag: "FAIL" });
       });
   },

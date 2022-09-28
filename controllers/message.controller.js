@@ -1,14 +1,16 @@
+require("dotenv").config;
 const db = require("../models");
 const emailController = require("./email.controller");
 const emailTemplate = require("./EmailTemplates/");
+const { convert } = require("html-to-text");
+const { updateExperienceUser, pointsGrid } = require("./helpers");
+
 const User = db.User;
 const Driver = db.Driver;
 const Conversation = db.Conversation;
 const Message = db.Message;
 const MessageStatus = db.MessageStatus;
 const Op = db.Sequelize.Op;
-const { convert } = require("html-to-text");
-require("dotenv").config;
 
 const { v4: uuidv4 } = require("uuid");
 
@@ -160,6 +162,9 @@ module.exports = {
           })
             .then((user) => {
               emailController.sendEmail(user, emailTemplate.newMessage());
+
+              // Update points
+              updateExperienceUser(senderId, pointsGrid.NEW_MESSAGE);
             })
             .catch((error) => {
               // Couldn't find user
@@ -192,20 +197,27 @@ module.exports = {
   },
 
   setMessagesSeen(req, res) {
+    const { viewerId, conversationId } = req.body;
+
     return Message.update(
       {
         MessageStatusId: 3,
       },
       {
         where: {
-          ReceiverId: req.body.viewerId,
-          ConversationId: req.body.conversationId,
+          MessageStatusId: {
+            [Op.ne]: 3,
+          },
+          ReceiverId: viewerId,
+          ConversationId: conversationId,
         },
       }
     )
       .then((response) => {
-        // console.log(response);
         res.status(200).send({ message: "Success" });
+
+        // response[0] === number of messages updated
+        updateExperienceUser(viewerId, pointsGrid.READ_MESSAGE * response[0]);
       })
       .catch((error) => {
         // console.log(error);

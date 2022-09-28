@@ -57,6 +57,8 @@ module.exports = function (app) {
 
   app.get("/api/user/update-ratings", controller.updateUserRatings);
 
+  app.get("/api/user/update-experience", controller.updateUserExperience);
+
   app.post("/api/user/submit-contact-form", controller.submitContactForm);
 
   app.post("/api/user/submit-edit-bio", controller.submitEditBio);

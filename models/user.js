@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Rating, {
         onDelete: "CASCADE",
       });
+
+      User.hasOne(models.ExperienceUser, {
+        onDelete: "CASCADE",
+      });
     }
   }
   User.init(

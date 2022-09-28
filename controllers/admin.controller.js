@@ -1,6 +1,10 @@
 const db = require("../models");
 const config = require("../config/user.config");
 
+const emailController = require("./email.controller");
+const emailTemplates = require("./EmailTemplates/");
+const { updateExperienceUser, pointsGrid } = require("./helpers");
+
 const Admin = db.Admin;
 const User = db.User;
 const Ride = db.Ride;
@@ -17,8 +21,6 @@ const admin_VerifPassengerRating = db.admin_VerifPassengerRating;
 const admin_VerifDriverRating = db.admin_VerifDriverRating;
 const Op = db.Sequelize.Op;
 const admin_VerifDriverApplication = db.admin_VerifDriverApplication;
-const emailController = require("./email.controller");
-const emailTemplates = require("./EmailTemplates/");
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -455,6 +457,11 @@ module.exports = {
                     emailTemplates.becomeDriver(isAccepted, comment)
                   );
 
+                  updateExperienceUser(
+                    application.UserId,
+                    pointsGrid.BECOME_DRIVER
+                  );
+
                   res.status(200).json({});
                 })
                 .catch((error) => {
@@ -556,6 +563,8 @@ module.exports = {
             rating.User,
             emailTemplates.passengerReceivedRating(rating.Driver.User)
           );
+
+          updateExperienceUser(rating.User.id, pointsGrid.ADD_REVIEW);
 
           // Update the passenger's rating
           PassengerRating.findAll({
@@ -707,6 +716,8 @@ module.exports = {
             rating.Driver.User,
             emailTemplates.passengerReceivedRating(rating.User)
           );
+
+          updateExperienceUser(rating.User.id, pointsGrid.ADD_REVIEW);
 
           // Update the driver's rating
           DriverRating.findAll({

@@ -1,3 +1,5 @@
+const updateExperienceUser = require("./updateExperienceUser");
+
 const { findPhoneNumbersInText } = require("libphonenumber-js");
 
 // Returns an array of phone numbers if founds
@@ -19,6 +21,25 @@ const findLinks = (string) => {
   );
 };
 
-exports.findPhones = findPhones;
-exports.findEmails = findEmails;
-exports.findLinks = findLinks;
+const pointsGrid = {
+  READ_MESSAGE: 1,
+  NEW_MESSAGE: 2,
+  ADD_BIO: 15,
+  UPDATE_BIO: 5,
+  BOOK_RIDE: 10,
+  PUBLISH_RIDE: 20,
+  ANSWER_BOOKING: 10,
+  BECOME_DRIVER: 20,
+  ADD_REVIEW: 10,
+  CONFIRM_RIDE: 10,
+  SET_CAR_FUEL: 2,
+  SET_CAR_SEATS: 2,
+};
+
+module.exports = {
+  updateExperienceUser,
+  pointsGrid,
+  findPhones,
+  findEmails,
+  findLinks,
+};

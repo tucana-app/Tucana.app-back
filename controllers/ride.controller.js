@@ -1,20 +1,23 @@
 require("dotenv").config;
-
 const db = require("../models");
+
+const emailController = require("./email.controller");
+const emailTemplates = require("./EmailTemplates/");
+const { convert } = require("html-to-text");
+const { updateExperienceUser, pointsGrid } = require("./helpers");
+
 const Ride = db.Ride;
 const RideFeedback = db.RideFeedback;
 const RideStatus = db.RideStatus;
 const User = db.User;
+const ExperienceUser = db.ExperienceUser;
+const ExperienceUserLevel = db.ExperienceUserLevel;
 const Driver = db.Driver;
 const Car = db.Car;
 const Rating = db.Rating;
 const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const Op = db.Sequelize.Op;
-
-const emailController = require("./email.controller");
-const emailTemplates = require("./EmailTemplates/");
-const { convert } = require("html-to-text");
 
 var distance = require("hpsweb-google-distance");
 distance.apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -84,6 +87,8 @@ module.exports = {
         res.status(200).json({ ride, flag: "SUCCESS" });
 
         emailController.sendEmail(user, emailTemplates.publishRide(ride));
+
+        updateExperienceUser(user.id, pointsGrid.PUBLISH_RIDE);
       })
       .catch((error) => {
         // console.log(error);
@@ -403,6 +408,8 @@ module.exports = {
           ride.Driver.User,
           emailTemplates.bookRideToDriver(ride, passenger, seats)
         );
+
+        updateExperienceUser(passenger.id, pointsGrid.BOOK_RIDE);
       })
       .catch((error) => {
         // console.log(error);
@@ -455,6 +462,11 @@ module.exports = {
                 booking.Ride.Driver.User,
                 emailTemplates.acceptedByDriver(booking)
               );
+
+              updateExperienceUser(
+                booking.Ride.Driver.User.id,
+                pointsGrid.ANSWER_BOOKING
+              );
             })
             .catch((error) => {
               // console.log(error);
@@ -493,6 +505,11 @@ module.exports = {
           emailController.sendEmail(
             booking.Ride.Driver.User,
             emailTemplates.refusedByDriver(booking)
+          );
+
+          updateExperienceUser(
+            booking.Ride.Driver.User.id,
+            pointsGrid.ANSWER_BOOKING
           );
         })
         .catch((error) => {
@@ -957,6 +974,8 @@ module.exports = {
           emailTemplates.rideFeedback(ride, isConfirmed)
         );
 
+        updateExperienceUser(UserId, pointsGrid.CONFIRM_RIDE);
+
         if (!isConfirmed) {
           emailController.sendEmailToAdmin(
             emailTemplates.admin_newRideRejected()
@@ -975,11 +994,28 @@ module.exports = {
         username: req.params.username,
       },
       attributes: {
-        exclude: ["password", "phoneNumber"],
+        exclude: [
+          "password",
+          "phoneNumber",
+          "phoneConfirmed",
+          "firstSetUp",
+          "email",
+          "emailConfirmed",
+          "isClosed",
+          "isClosedDate",
+        ],
       },
       include: [
         {
           model: Rating,
+        },
+        {
+          model: ExperienceUser,
+          include: [
+            {
+              model: ExperienceUserLevel,
+            },
+          ],
         },
       ],
     })

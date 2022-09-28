@@ -1,9 +1,12 @@
+const path = require("path");
+const fileName = path.basename(__filename);
+
 const db = require("../models");
 const config = require("../config/user.config");
 
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates/");
-const { updateExperienceUser, pointsGrid } = require("./helpers");
+const { updateExperienceUser, pointsGrid, consoleError } = require("./helpers");
 
 const Admin = db.Admin;
 const User = db.User;
@@ -73,7 +76,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(500).send({
           message: "It looks like we can't log you in right now",
           flag: "GENERAL_ERROR",
@@ -90,7 +93,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -126,7 +129,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -164,7 +167,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -197,7 +200,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -369,7 +372,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -409,7 +412,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -465,12 +468,22 @@ module.exports = {
                   res.status(200).json({});
                 })
                 .catch((error) => {
-                  // console.log(error);
+                  consoleError(
+                    fileName,
+                    arguments.callee.name,
+                    Error().stack,
+                    error
+                  );
                   res.status(400).json(errorMessage);
                 });
             })
             .catch((error) => {
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(400).json(errorMessage);
             });
         } else {
@@ -483,7 +496,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -540,7 +553,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -619,11 +632,21 @@ module.exports = {
                   // console.log(response)
                 })
                 .catch((error) => {
-                  // console.log(error);
+                  consoleError(
+                    fileName,
+                    arguments.callee.name,
+                    Error().stack,
+                    error
+                  );
                 });
             })
             .catch((error) => {
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(400).json(errorMessage);
             });
         }
@@ -636,7 +659,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -693,7 +716,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -771,11 +794,21 @@ module.exports = {
                   // console.log(response)
                 })
                 .catch((error) => {
-                  // console.log(error);
+                  consoleError(
+                    fileName,
+                    arguments.callee.name,
+                    Error().stack,
+                    error
+                  );
                 });
             })
             .catch((error) => {
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(400).json(errorMessage);
             });
         }
@@ -792,7 +825,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },

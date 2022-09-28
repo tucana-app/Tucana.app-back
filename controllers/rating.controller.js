@@ -1,4 +1,8 @@
+const path = require("path");
+const fileName = path.basename(__filename);
 require("dotenv").config;
+
+const { consoleError } = require("./helpers");
 
 const db = require("../models");
 const User = db.User;
@@ -198,7 +202,7 @@ module.exports = {
             });
           })
         ).catch((error) => {
-          // console.log(error);
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
           res.status(400).json([]);
         });
 
@@ -243,7 +247,7 @@ module.exports = {
         res.status(200).json(ratings);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -296,7 +300,7 @@ module.exports = {
         res.status(200).json(ratings);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -349,7 +353,7 @@ module.exports = {
         res.status(200).json(ratings);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -399,7 +403,7 @@ module.exports = {
         res.status(200).json(ratings);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -429,7 +433,7 @@ module.exports = {
         });
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -456,7 +460,7 @@ module.exports = {
         });
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },

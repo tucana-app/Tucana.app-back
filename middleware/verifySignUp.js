@@ -1,6 +1,11 @@
+const path = require("path");
+const fileName = path.basename(__filename);
+
 const db = require("../models");
 const User = db.User;
 const Admin = db.Admin;
+
+const { consoleError } = require("../controllers/helpers");
 
 const arrayUserReserved = [
   "about",
@@ -382,78 +387,98 @@ checkDuplicate = (req, res, next) => {
     where: {
       username,
     },
-  }).then((user) => {
-    if (user) {
-      res.status(400).send({
-        message: "Username already in use",
-      });
-    } else {
-      // Username in Admin
-      return Admin.findOne({
-        where: {
-          username,
-        },
-      }).then((admin) => {
-        if (admin) {
-          res.status(400).send({
-            message: "Username already in use",
-          });
-        } else {
-          // Email
-          return User.findOne({
-            where: {
-              email: email,
-            },
-          }).then((user) => {
-            if (user) {
-              // Email already exist, maybe user hasn't confirmed
-
-              if (user.emailConfirmed) {
-                // Email already confirmed, so is already in use
-
-                res.status(400).send({
-                  message: "Email already in use",
-                  flag: "CONFIRMED",
-                });
-              } else {
-                // Email already confirmed, so is already in use
-                res.status(403).send({
-                  message: "Email already in use, but not confirmed yet",
-                  flag: "NOT_CONFIRMED",
-                  userId: user.id,
-                });
-              }
+  })
+    .then((user) => {
+      if (user) {
+        res.status(400).send({
+          message: "Username already in use",
+        });
+      } else {
+        // Username in Admin
+        return Admin.findOne({
+          where: {
+            username,
+          },
+        })
+          .then((admin) => {
+            if (admin) {
+              res.status(400).send({
+                message: "Username already in use",
+              });
             } else {
-              // Phone number
+              // Email
               return User.findOne({
                 where: {
-                  phoneNumber,
+                  email: email,
                 },
-              }).then((phoneNumber) => {
-                if (phoneNumber) {
-                  res.status(400).send({
-                    message: "Phone number already in use",
-                  });
-                } else {
-                  let found = arrayUserReserved.find(
-                    (usrnm) => usrnm === username
-                  );
+              })
+                .then((user) => {
+                  if (user) {
+                    // Email already exist, maybe user hasn't confirmed
 
-                  if (found) {
-                    res.status(400).send({
-                      message: "Choose another username",
-                    });
+                    if (user.emailConfirmed) {
+                      // Email already confirmed, so is already in use
+
+                      res.status(400).send({
+                        message: "Email already in use",
+                        flag: "CONFIRMED",
+                      });
+                    } else {
+                      // Email already confirmed, so is already in use
+                      res.status(403).send({
+                        message: "Email already in use, but not confirmed yet",
+                        flag: "NOT_CONFIRMED",
+                        userId: user.id,
+                      });
+                    }
                   } else {
-                    next();
+                    // Phone number
+                    return User.findOne({
+                      where: {
+                        phoneNumber,
+                      },
+                    })
+                      .then((phoneNumber) => {
+                        if (phoneNumber) {
+                          res.status(400).send({
+                            message: "Phone number already in use",
+                          });
+                        } else {
+                          let found = arrayUserReserved.find(
+                            (usrnm) => usrnm === username
+                          );
+
+                          if (found) {
+                            res.status(400).send({
+                              message: "Choose another username",
+                            });
+                          } else {
+                            next();
+                          }
+                        }
+                      })
+                      .catch((error) => {
+                        consoleError(fileName, arguments.callee.name, error);
+                        res.status(400).send({ message: error.message });
+                      });
                   }
-                }
-              });
+                })
+                .catch((error) => {
+                  consoleError(fileName, arguments.callee.name, error);
+                  res.status(400).send({ message: error.message });
+                });
             }
+          })
+          .catch((error) => {
+            consoleError(fileName, arguments.callee.name, error);
+            res.status(400).send({ message: error.message });
           });
-        }
-      });
-    }
-  });
+      }
+    })
+    .catch((error) => {
+      consoleError(fileName, arguments.callee.name, error);
+      res.status(400).send({ message: error.message });
+    });
 };
 
 const verifySignUp = {

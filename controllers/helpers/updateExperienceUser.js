@@ -1,7 +1,12 @@
+const path = require("path");
+const fileName = path.basename(__filename);
+
 const db = require("../../models");
 
 const ExperienceUser = db.ExperienceUser;
 const ExperienceUserLevel = db.ExperienceUserLevel;
+
+const { consoleError } = require("./index");
 
 module.exports = function updateExperienceUser(userId, points) {
   return ExperienceUser.findOne({
@@ -47,15 +52,20 @@ module.exports = function updateExperienceUser(userId, points) {
                 // console.log(response);
               })
               .catch((error) => {
-                console.log(error);
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
               });
           }
         })
         .catch((error) => {
-          console.log(error);
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
         });
     })
     .catch((error) => {
-      console.log(error);
+      consoleError(fileName, arguments.callee.name, Error().stack, error);
     });
 };

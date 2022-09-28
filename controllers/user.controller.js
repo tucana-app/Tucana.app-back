@@ -1,9 +1,12 @@
+const path = require("path");
+const fileName = path.basename(__filename);
+
 const db = require("../models");
 const config = require("../config/user.config");
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates");
 const validator = require("validator");
-const { updateExperienceUser, pointsGrid } = require("./helpers");
+const { updateExperienceUser, pointsGrid, consoleError } = require("./helpers");
 
 const User = db.User;
 const Driver = db.Driver;
@@ -59,24 +62,34 @@ module.exports = {
                     );
                   })
                   .catch((error) => {
-                    console.log(error);
+                    consoleError(
+                      fileName,
+                      arguments.callee.name,
+                      Error().stack,
+                      error
+                    );
                     res
                       .status(400)
                       .send({ message: "An error occured (Experience)" });
                   });
               })
               .catch((error) => {
-                // console.log(error);
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
                 res.status(400).send({ message: "An error occured (Ratings)" });
               });
           })
           .catch((error) => {
-            // console.log(error);
+            consoleError(fileName, arguments.callee.name, Error().stack, error);
             res.status(400).send({ message: "An error occured" });
           });
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).send({ message: error.message });
       });
   },
@@ -139,7 +152,12 @@ module.exports = {
                         });
                     })
                     .catch((error) => {
-                      // console.log(error);
+                      consoleError(
+                        fileName,
+                        arguments.callee.name,
+                        Error().stack,
+                        error
+                      );
                       res.status(400).json({
                         flag: "FAIL_UPDATE_CONFIRM",
                         message: "We couldn't confirm your email address",
@@ -154,7 +172,12 @@ module.exports = {
                 }
               })
               .catch((error) => {
-                // console.log(error);
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
                 res.status(400).json({
                   flag: "FAIL_FIND_UUID",
                   message: "We couldn't confirm your email address",
@@ -167,7 +190,7 @@ module.exports = {
           }
         })
         .catch((error) => {
-          // console.log(error);
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
           res.status(400).json({
             flag: "ERROR_DB",
             message: "There is a problem with the database",
@@ -289,7 +312,12 @@ module.exports = {
               }
             })
             .catch((error) => {
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(500).send({
                 message: "We can't log you in right now",
                 flag: "GENERAL_ERROR",
@@ -298,7 +326,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(500).send({
           message: "We can't log you in right now",
           flag: "GENERAL_ERROR",
@@ -402,7 +430,12 @@ module.exports = {
                       );
                     })
                     .catch((error) => {
-                      // console.log(error);
+                      consoleError(
+                        fileName,
+                        arguments.callee.name,
+                        Error().stack,
+                        error
+                      );
                       res.status(400).json({
                         message: "There is an error with this request",
                         flag: "DB_ERROR",
@@ -427,7 +460,12 @@ module.exports = {
                     );
                   })
                   .catch((error) => {
-                    // console.log(error);
+                    consoleError(
+                      fileName,
+                      arguments.callee.name,
+                      Error().stack,
+                      error
+                    );
                     res.status(400).json({
                       message: "There is an error with this request",
                       flag: "DB_ERROR",
@@ -441,7 +479,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(500).send({
           message: "There is an error with your request",
           flag: "GENERAL_ERROR",
@@ -516,7 +554,12 @@ module.exports = {
                         );
                       })
                       .catch((error) => {
-                        // console.log(error);
+                        consoleError(
+                          fileName,
+                          arguments.callee.name,
+                          Error().stack,
+                          error
+                        );
                         res.status(400).json({
                           message: "There is an error with this request",
                           flag: "DB_ERROR",
@@ -524,7 +567,12 @@ module.exports = {
                       });
                   })
                   .catch((error) => {
-                    // console.log(error);
+                    consoleError(
+                      fileName,
+                      arguments.callee.name,
+                      Error().stack,
+                      error
+                    );
                     res.status(400).json({
                       message: "There is an error with this request",
                       flag: "DB_ERROR",
@@ -532,7 +580,12 @@ module.exports = {
                   });
               })
               .catch((error) => {
-                // console.log(error);
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
                 res.status(400).json({
                   message: "There is an error with this request",
                   flag: "DB_ERROR",
@@ -629,7 +682,7 @@ module.exports = {
         res.status(200).json(applications);
       })
       .catch((error) => {
-        console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({ flag: "GENERAL_ERROR" });
       });
   },
@@ -660,7 +713,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({ flag: "GENERAL_ERROR" });
       });
   },
@@ -697,7 +750,7 @@ module.exports = {
         );
       })
       .catch((error) => {
-        console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
 
         res.status(400).json({
           flag: "GENERAL_ERROR",
@@ -726,7 +779,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({
           message: "A problem occured",
           flag: "GENERAL_ERROR",
@@ -750,7 +803,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({
           message: "A problem occured",
           flag: "GENERAL_ERROR",
@@ -779,7 +832,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({
           message: "A problem occured",
           flag: "GENERAL_ERROR",
@@ -839,7 +892,7 @@ module.exports = {
         });
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({
           message: "A problem occured",
           flag: "GENERAL_ERROR",
@@ -912,12 +965,12 @@ module.exports = {
               .send({ message: "OK", flag: "SUCCESS", bio: values.bio });
           })
           .catch((error) => {
-            // console.log(error);
+            consoleError(fileName, arguments.callee.name, Error().stack, error);
             res.status(400).json({ message: "NOK", flag: "FAIL" });
           });
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({ message: "NOK", flag: "FAIL" });
       });
   },
@@ -976,7 +1029,12 @@ module.exports = {
               emailController.sendEmail(user, emailTemplates.passwordUpdated());
             })
             .catch((error) => {
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(400).json({
                 message: "Failed to update the password",
                 flag: "FAIL_UPDATE",
@@ -985,7 +1043,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({
           message: "There is an error with this request",
           flag: "DB_ERROR",
@@ -1032,7 +1090,12 @@ module.exports = {
               emailController.sendEmail(user, emailTemplates.accountClosed());
             })
             .catch((error) => {
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(400).json({
                 message: "Failed to update the password",
                 flag: "FAIL_UPDATE",
@@ -1041,7 +1104,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(500).json({
           message: "There is an error with this request",
           flag: "DB_ERROR",

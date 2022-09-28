@@ -1,5 +1,9 @@
-var nodemailer = require("nodemailer");
+const path = require("path");
+const fileName = path.basename(__filename);
+const nodemailer = require("nodemailer");
 require("dotenv").config;
+
+const { consoleError } = require("./helpers");
 
 const transporter = nodemailer.createTransport({
   host: "mail.privateemail.com",
@@ -39,7 +43,7 @@ module.exports = {
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        // console.log("Error:", error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
       } else {
         // console.log("Email sent: ", info.response);
       }
@@ -57,7 +61,7 @@ module.exports = {
 
     transporterAdmin.sendMail(mailOptions, function (error, info) {
       if (error) {
-        // console.log("Error:", error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
       } else {
         // console.log("Email sent: ", info.response);
       }

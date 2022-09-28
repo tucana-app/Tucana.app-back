@@ -1,5 +1,10 @@
 // https://www.npmjs.com/package/cron
 
+const path = require("path");
+const fileName = path.basename(__filename);
+
+const { consoleError } = require("../controllers/helpers");
+
 const db = require("../models");
 const User = db.User;
 const Driver = db.Driver;
@@ -84,7 +89,12 @@ async function checkRidesDone() {
                 // to rate the app and the other user
               })
               .catch((error) => {
-                console.log(error);
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
                 console.log(messageCronStop);
               });
           })
@@ -92,7 +102,7 @@ async function checkRidesDone() {
       }
     })
     .catch((error) => {
-      console.log(error);
+      consoleError(fileName, arguments.callee.name, Error().stack, error);
       console.log(messageCronStop);
     });
 }

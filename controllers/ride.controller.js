@@ -1,10 +1,13 @@
+const path = require("path");
+const fileName = path.basename(__filename);
 require("dotenv").config;
+
 const db = require("../models");
 
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates/");
 const { convert } = require("html-to-text");
-const { updateExperienceUser, pointsGrid } = require("./helpers");
+const { updateExperienceUser, pointsGrid, consoleError } = require("./helpers");
 
 const Ride = db.Ride;
 const RideFeedback = db.RideFeedback;
@@ -44,7 +47,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -91,7 +94,7 @@ module.exports = {
         updateExperienceUser(user.id, pointsGrid.PUBLISH_RIDE);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -138,7 +141,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -207,7 +210,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -249,7 +252,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -412,7 +415,7 @@ module.exports = {
         updateExperienceUser(passenger.id, pointsGrid.BOOK_RIDE);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -469,12 +472,17 @@ module.exports = {
               );
             })
             .catch((error) => {
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(400).json(error);
             });
         })
         .catch((error) => {
-          // console.log(error);
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
           res.status(400).json(error);
         });
     } else if (formValues.newStatus === 4) {
@@ -513,7 +521,7 @@ module.exports = {
           );
         })
         .catch((error) => {
-          // console.log(error);
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
           res.status(400).json(error);
         });
     } else {
@@ -574,7 +582,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -635,7 +643,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -702,7 +710,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -775,7 +783,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -826,7 +834,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -857,7 +865,7 @@ module.exports = {
         res.status(200).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -983,7 +991,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({ flag: "ERROR" });
       });
   },
@@ -1038,7 +1046,12 @@ module.exports = {
                     res.status(200).json({ user, ridesCount: rides.count });
                   })
                   .catch((error) => {
-                    // console.log(error);
+                    consoleError(
+                      fileName,
+                      arguments.callee.name,
+                      Error().stack,
+                      error
+                    );
                     res.status(400).json(errorMessage);
                   });
               } else {
@@ -1049,7 +1062,12 @@ module.exports = {
               }
             })
             .catch((error) => {
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(400).json(errorMessage);
             });
         } else {
@@ -1059,7 +1077,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -1085,7 +1103,7 @@ module.exports = {
         res.status(200).json(response.count);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },

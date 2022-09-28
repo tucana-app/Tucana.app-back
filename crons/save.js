@@ -1,3 +1,8 @@
+const path = require("path");
+const fileName = path.basename(__filename);
+
+const { consoleError } = require("../controllers/helpers");
+
 // Function
 const checkRideStatus = () => {
   console.log(`\n\n
@@ -39,7 +44,7 @@ const checkRideStatus = () => {
             }
           ).catch((error) => {
             // An error occured
-            console.log(error);
+            consoleError(fileName, arguments.callee.name, Error().stack, error);
           });
 
           // If no booking were made on the ride
@@ -119,7 +124,12 @@ const checkRideStatus = () => {
                                         })
                                         .catch((error) => {
                                           // An error occured
-                                          console.log(error);
+                                          consoleError(
+                                            fileName,
+                                            arguments.callee.name,
+                                            Error().stack,
+                                            error
+                                          );
                                           console.log(messageCronStop);
                                         });
                                     } else {
@@ -128,7 +138,12 @@ const checkRideStatus = () => {
                                   })
                                   .catch((error) => {
                                     // An error occured
-                                    console.log(error);
+                                    consoleError(
+                                      fileName,
+                                      arguments.callee.name,
+                                      Error().stack,
+                                      error
+                                    );
                                     console.log(messageCronStop);
                                   });
                               } else {
@@ -138,14 +153,24 @@ const checkRideStatus = () => {
                             })
                             .catch((error) => {
                               // An error occured
-                              console.log(error);
+                              consoleError(
+                                fileName,
+                                arguments.callee.name,
+                                Error().stack,
+                                error
+                              );
                               console.log(messageCronStop);
                             });
                         }
                       })
                       .catch((error) => {
                         // An error occured
-                        console.log(error);
+                        consoleError(
+                          fileName,
+                          arguments.callee.name,
+                          Error().stack,
+                          error
+                        );
                         console.log(messageCronStop);
                       });
 
@@ -209,7 +234,12 @@ const checkRideStatus = () => {
                                         })
                                         .catch((error) => {
                                           // An error occured
-                                          console.log(error);
+                                          consoleError(
+                                            fileName,
+                                            arguments.callee.name,
+                                            Error().stack,
+                                            error
+                                          );
                                           console.log(messageCronStop);
                                         });
                                     } else {
@@ -218,7 +248,12 @@ const checkRideStatus = () => {
                                   })
                                   .catch((error) => {
                                     // An error occured
-                                    console.log(error);
+                                    consoleError(
+                                      fileName,
+                                      arguments.callee.name,
+                                      Error().stack,
+                                      error
+                                    );
                                     console.log(messageCronStop);
                                   });
                               } else {
@@ -228,21 +263,36 @@ const checkRideStatus = () => {
                             })
                             .catch((error) => {
                               // An error occured
-                              console.log(error);
+                              consoleError(
+                                fileName,
+                                arguments.callee.name,
+                                Error().stack,
+                                error
+                              );
                               console.log(messageCronStop);
                             });
                         }
                       })
                       .catch((error) => {
                         // An error occured
-                        console.log(error);
+                        consoleError(
+                          fileName,
+                          arguments.callee.name,
+                          Error().stack,
+                          error
+                        );
                         console.log(messageCronStop);
                       });
                   });
                 }
               })
               .catch((error) => {
-                console.log(error);
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
               });
           }
         });
@@ -251,7 +301,7 @@ const checkRideStatus = () => {
       }
     })
     .catch((error) => {
-      console.log(error);
+      consoleError(fileName, arguments.callee.name, Error().stack, error);
       console.log(messageCronStop);
     });
 };

@@ -21,6 +21,12 @@ const findLinks = (string) => {
   );
 };
 
+const consoleError = (file, fn, stack, error) => {
+  return console.log(
+    `\n\n #########\n\nERROR\n\n${file} - ${fn}()\n\nStack:\n${stack}\n\nError:\n${error}\n\n#########`
+  );
+};
+
 const pointsGrid = {
   READ_MESSAGE: 1,
   NEW_MESSAGE: 2,
@@ -39,6 +45,7 @@ const pointsGrid = {
 module.exports = {
   updateExperienceUser,
   pointsGrid,
+  consoleError,
   findPhones,
   findEmails,
   findLinks,

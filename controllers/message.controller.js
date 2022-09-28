@@ -1,9 +1,12 @@
+const path = require("path");
+const fileName = path.basename(__filename);
 require("dotenv").config;
+
 const db = require("../models");
 const emailController = require("./email.controller");
 const emailTemplate = require("./EmailTemplates/");
 const { convert } = require("html-to-text");
-const { updateExperienceUser, pointsGrid } = require("./helpers");
+const { updateExperienceUser, pointsGrid, consoleError } = require("./helpers");
 
 const User = db.User;
 const Driver = db.Driver;
@@ -76,7 +79,7 @@ module.exports = {
         res.status(200).json(conversations);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({
           errorMessage,
           errorCode: 1,
@@ -116,7 +119,12 @@ module.exports = {
               res.status(201).json({ conversationId: conversation.id, uuid });
             })
             .catch((error) => {
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(400).json({
                 errorMessage,
                 errorCode: 3,
@@ -125,7 +133,7 @@ module.exports = {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({
           errorMessage,
           errorCode: 1,
@@ -168,12 +176,17 @@ module.exports = {
             })
             .catch((error) => {
               // Couldn't find user
-              // console.log(error);
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
               res.status(400).json(errorMessage);
             });
         })
         .catch((error) => {
-          // console.log(error);
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
           res.status(400).json(errorMessage);
         });
     }
@@ -191,7 +204,7 @@ module.exports = {
         res.status(201).json(response);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
       });
   },
@@ -220,7 +233,7 @@ module.exports = {
         updateExperienceUser(viewerId, pointsGrid.READ_MESSAGE * response[0]);
       })
       .catch((error) => {
-        // console.log(error);
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).send({ message: "Fail", errorCode: 1 });
       });
   },

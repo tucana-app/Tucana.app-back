@@ -787,6 +787,66 @@ module.exports = {
       });
   },
 
+  updateUser(req, res) {
+    const { userId } = req.query;
+
+    return User.findOne({
+      where: {
+        id: userId,
+      },
+      include: [
+        {
+          model: Driver,
+          attributes: {
+            exclude: ["UserId", "createdAt", "updatedAt"],
+          },
+          include: [
+            {
+              model: Car,
+            },
+          ],
+        },
+        {
+          model: Rating,
+        },
+        {
+          model: ExperienceUser,
+          include: [
+            {
+              model: ExperienceUserLevel,
+            },
+          ],
+        },
+      ],
+    })
+      .then((user) => {
+        res.status(200).send({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          username: user.username,
+          email: user.email,
+          biography: user.biography,
+          phoneNumber: user.phoneNumber,
+          createdAt: user.createdAt,
+          emailConfirmed: user.emailConfirmed,
+          phoneConfirmed: user.phoneConfirmed,
+          firstSetUp: user.firstSetUp,
+          avatar: user.avatar,
+          Driver: user.Driver,
+          Rating: user.Rating,
+          ExperienceUser: user.ExperienceUser,
+        });
+      })
+      .catch((error) => {
+        // console.log(error);
+        res.status(400).json({
+          message: "A problem occured",
+          flag: "GENERAL_ERROR",
+        });
+      });
+  },
+
   submitContactForm(req, res) {
     const { user, values } = req.body;
     var userInfo = {};

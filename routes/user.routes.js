@@ -59,6 +59,8 @@ module.exports = function (app) {
 
   app.get("/api/user/update-experience", controller.updateUserExperience);
 
+  app.get("/api/user/update", controller.updateUser);
+
   app.post("/api/user/submit-contact-form", controller.submitContactForm);
 
   app.post("/api/user/submit-edit-bio", controller.submitEditBio);

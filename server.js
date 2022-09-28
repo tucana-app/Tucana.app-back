@@ -37,6 +37,8 @@ if (!isDev && cluster.isMaster) {
   require("./routes/email.routes")(app);
   require("./routes/message.routes")(app);
   require("./routes/rating.routes")(app);
+  require("./routes/booking.routes")(app);
+  require("./routes/global.routes")(app);
 
   // Crons
   require("./crons");

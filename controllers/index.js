@@ -4,6 +4,8 @@ const ride = require("./ride.controller");
 const email = require("./email.controller");
 const message = require("./message.controller");
 const rating = require("./rating.controller");
+const booking = require("./booking.controller");
+const global = require("./global.controller");
 
 module.exports = {
   user,
@@ -12,4 +14,6 @@ module.exports = {
   email,
   message,
   rating,
+  booking,
+  global,
 };

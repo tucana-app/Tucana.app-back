@@ -1,7 +1,7 @@
 const path = require("path");
 const fileName = path.basename(__filename);
 
-const db = require("../../models");
+const db = require("../models");
 
 const ExperienceUser = db.ExperienceUser;
 const ExperienceUserLevel = db.ExperienceUserLevel;

@@ -29,9 +29,9 @@ const consoleError = (file, fn, stack, error) => {
 
 const consoleCronStop = (fileName) => {
   console.log(`\n\n
-  ###########################
-  # CRON END : ${fileName}  #
-  ###########################\n\n`);
+      ###########################
+      # CRON END : ${fileName}  #
+      ###########################\n\n`);
 };
 
 const pointsGrid = {
@@ -49,11 +49,39 @@ const pointsGrid = {
   SET_CAR_SEATS: 2,
 };
 
+// https://stackoverflow.com/questions/10804042/-time-difference-with-javascript/59793084#59793084
+
+const DateDiff = (d1, d2) => {
+  const diff = Math.max(d1, d2) - Math.min(d1, d2);
+  const SEC = 1000,
+    MIN = 60 * SEC,
+    HRS = 60 * MIN,
+    DYS = 24 * HRS;
+
+  const dys = Math.floor(diff / DYS);
+  const hrs = Math.floor(diff / HRS) - dys * 24;
+  const min = Math.floor((diff % HRS) / MIN).toLocaleString("en-US", {
+    minimumIntegerDigits: 2,
+  });
+
+  //   const sec = Math.floor((diff % MIN) / SEC).toLocaleString("en-US", {
+  //     minimumIntegerDigits: 2,
+  //   });
+  //   const ms = Math.floor(diff % SEC).toLocaleString("en-US", {
+  //     minimumIntegerDigits: 4,
+  //     useGrouping: false,
+  //   });
+
+  //   return `${hrs}:${min}:${sec}.${ms}`
+  return { dys, hrs, min };
+};
+
 module.exports = {
   updateExperienceUser,
   pointsGrid,
   consoleError,
   consoleCronStop,
+  DateDiff,
   findPhones,
   findEmails,
   findLinks,

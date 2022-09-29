@@ -3,7 +3,7 @@ const fileName = path.basename(__filename);
 const nodemailer = require("nodemailer");
 require("dotenv").config;
 
-const { consoleError } = require("./helpers");
+const { consoleError } = require("../helpers");
 
 const transporter = nodemailer.createTransport({
   host: "mail.privateemail.com",
@@ -43,7 +43,7 @@ module.exports = {
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        consoleError(fileName, "sendEmail", Error().stack, error);
       } else {
         // console.log("Email sent: ", info.response);
       }
@@ -61,7 +61,7 @@ module.exports = {
 
     transporterAdmin.sendMail(mailOptions, function (error, info) {
       if (error) {
-        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        consoleError(fileName, "sendEmailToAdmin", Error().stack, error);
       } else {
         // console.log("Email sent: ", info.response);
       }

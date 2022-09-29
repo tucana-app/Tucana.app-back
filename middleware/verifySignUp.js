@@ -5,7 +5,7 @@ const db = require("../models");
 const User = db.User;
 const Admin = db.Admin;
 
-const { consoleError } = require("../controllers/helpers");
+const { consoleError } = require("../helpers");
 
 const arrayUserReserved = [
   "about",

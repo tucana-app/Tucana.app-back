@@ -7,7 +7,11 @@ const db = require("../models");
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates/");
 const { convert } = require("html-to-text");
-const { updateExperienceUser, pointsGrid, consoleError } = require("./helpers");
+const {
+  updateExperienceUser,
+  pointsGrid,
+  consoleError,
+} = require("../helpers");
 
 const Ride = db.Ride;
 const RideFeedback = db.RideFeedback;
@@ -982,7 +986,7 @@ module.exports = {
           emailTemplates.rideFeedback(ride, isConfirmed)
         );
 
-        updateExperienceUser(UserId, pointsGrid.CONFIRM_RIDE);
+        updateExperienceUser(user.id, pointsGrid.CONFIRM_RIDE);
 
         if (!isConfirmed) {
           emailController.sendEmailToAdmin(

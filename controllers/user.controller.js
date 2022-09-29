@@ -6,7 +6,11 @@ const config = require("../config/user.config");
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates");
 const validator = require("validator");
-const { updateExperienceUser, pointsGrid, consoleError } = require("./helpers");
+const {
+  updateExperienceUser,
+  pointsGrid,
+  consoleError,
+} = require("../helpers");
 
 const User = db.User;
 const Driver = db.Driver;

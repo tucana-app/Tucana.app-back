@@ -6,7 +6,11 @@ const db = require("../models");
 const emailController = require("./email.controller");
 const emailTemplate = require("./EmailTemplates/");
 const { convert } = require("html-to-text");
-const { updateExperienceUser, pointsGrid, consoleError } = require("./helpers");
+const {
+  updateExperienceUser,
+  pointsGrid,
+  consoleError,
+} = require("../helpers");
 
 const User = db.User;
 const Driver = db.Driver;

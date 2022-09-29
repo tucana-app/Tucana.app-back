@@ -1,5 +1,6 @@
-const updateRidesDone = require("./updateRidesDone");
 const afterRide = require("./afterRide");
+const beforeRide = require("./beforeRide");
+const reminderConfirm = require("./reminderConfirm");
 
 var CronJob = require("cron").CronJob;
 
@@ -13,8 +14,9 @@ var job = new CronJob(
       #        CRONs START      #
       ############################\n\n`);
 
-    updateRidesDone();
-    // afterRide();
+    beforeRide();
+    afterRide();
+    // reminderConfirm();
   },
   null,
   true,
@@ -25,13 +27,5 @@ var job = new CronJob(
 // setTimeout(() => {
 //   job.stop();
 // }, 1000);
-
-// var job = new CronJob(
-//   "* * * * * *",
-//   updateRidesDone,
-//   null,
-//   true,
-//   "America/Costa_Rica"
-// );
 
 job.start();

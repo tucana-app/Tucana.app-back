@@ -6,7 +6,7 @@ const db = require("../models");
 const Constant = db.Constant;
 const ExperienceUserLevel = db.ExperienceUserLevel;
 
-const { consoleError } = require("./helpers");
+const { consoleError } = require("../helpers");
 
 const errorMessage = { message: "A problem occured with this request" };
 

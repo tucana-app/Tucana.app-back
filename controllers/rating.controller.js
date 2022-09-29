@@ -2,7 +2,7 @@ const path = require("path");
 const fileName = path.basename(__filename);
 require("dotenv").config;
 
-const { consoleError } = require("./helpers");
+const { consoleError } = require("../helpers");
 
 const db = require("../models");
 const User = db.User;

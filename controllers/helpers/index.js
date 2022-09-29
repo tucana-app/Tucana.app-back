@@ -23,7 +23,7 @@ const findLinks = (string) => {
 
 const consoleError = (file, fn, stack, error) => {
   return console.log(
-    `\n\n #########\n\nERROR\n\n${file} - ${fn}()\n\nStack:\n${stack}\n\nError:\n${error}\n\n#########`
+    `\n\n #########\n\nERROR\n\n${file} - ${fn}()\n\nStack:\n${stack}\n\n${error}\n\n#########`
   );
 };
 

@@ -6,7 +6,11 @@ const db = require("../../models");
 const ExperienceUser = db.ExperienceUser;
 const ExperienceUserLevel = db.ExperienceUserLevel;
 
-const { consoleError } = require("./index");
+const consoleError = (file, fn, stack, error) => {
+  return console.log(
+    `\n\n #########\n\nERROR\n\n${file} - ${fn}()\n\nStack:\n${stack}\n\n${error}\n\n#########`
+  );
+};
 
 module.exports = function updateExperienceUser(userId, points) {
   return ExperienceUser.findOne({

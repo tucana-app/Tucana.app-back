@@ -27,6 +27,13 @@ const consoleError = (file, fn, stack, error) => {
   );
 };
 
+const consoleCronStop = (fileName) => {
+  console.log(`\n\n
+  ###########################
+  # CRON END : ${fileName}  #
+  ###########################\n\n`);
+};
+
 const pointsGrid = {
   READ_MESSAGE: 1,
   NEW_MESSAGE: 2,
@@ -46,6 +53,7 @@ module.exports = {
   updateExperienceUser,
   pointsGrid,
   consoleError,
+  consoleCronStop,
   findPhones,
   findEmails,
   findLinks,

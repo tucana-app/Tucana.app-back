@@ -214,115 +214,88 @@ module.exports = {
         [Op.or]: {
           username: credential,
           username: credential.toLowerCase(),
+          email: credential,
+          email: credential.toLowerCase(),
         },
       },
+      include: [
+        {
+          model: Driver,
+          attributes: {
+            exclude: ["UserId", "createdAt", "updatedAt"],
+          },
+          include: [
+            {
+              model: Car,
+            },
+          ],
+        },
+        {
+          model: Rating,
+        },
+        {
+          model: ExperienceUser,
+          include: [
+            {
+              model: ExperienceUserLevel,
+            },
+          ],
+        },
+      ],
     })
       .then((user) => {
-        if (user.isClosed) {
+        if (!user) {
+          res
+            .status(404)
+            .send({ message: "User not found", flag: "USER_NOT_FOUND" });
+        } else if (user.isClosed) {
           res.status(401).send({
             accessToken: null,
             message: "This account has been closed",
             flag: "ACCOUNT_CLOSED",
           });
         } else {
-          return User.findOne({
-            where: {
-              [Op.or]: {
-                username: credential,
-                username: credential.toLowerCase(),
-                email: credential,
-                email: credential.toLowerCase(),
-              },
-            },
-            include: [
-              {
-                model: Driver,
-                attributes: {
-                  exclude: ["UserId", "createdAt", "updatedAt"],
-                },
-                include: [
-                  {
-                    model: Car,
-                  },
-                ],
-              },
-              {
-                model: Rating,
-              },
-              {
-                model: ExperienceUser,
-                include: [
-                  {
-                    model: ExperienceUserLevel,
-                  },
-                ],
-              },
-            ],
-          })
-            .then((user) => {
-              if (!user) {
-                res
-                  .status(404)
-                  .send({ message: "User not found", flag: "USER_NOT_FOUND" });
-              } else {
-                var passwordIsValid = bcrypt.compareSync(
-                  password,
-                  user.password
-                );
+          var passwordIsValid = bcrypt.compareSync(password, user.password);
 
-                if (!passwordIsValid) {
-                  res.status(401).send({
-                    accessToken: null,
-                    message: "Invalid Password",
-                    flag: "INVALID_PASSWORD",
-                  });
-                } else {
-                  var token = jwt.sign({ id: user.id }, config.secret, {
-                    expiresIn: 604800, // 7 days
-                  });
-
-                  if (user.emailConfirmed) {
-                    res.status(200).send({
-                      id: user.id,
-                      firstName: user.firstName,
-                      lastName: user.lastName,
-                      username: user.username,
-                      email: user.email,
-                      biography: user.biography,
-                      phoneNumber: user.phoneNumber,
-                      createdAt: user.createdAt,
-                      emailConfirmed: user.emailConfirmed,
-                      phoneConfirmed: user.phoneConfirmed,
-                      firstSetUp: user.firstSetUp,
-                      avatar: user.avatar,
-                      Driver: user.Driver,
-                      Rating: user.Rating,
-                      ExperienceUser: user.ExperienceUser,
-                      accessToken: token,
-                    });
-                  } else {
-                    // User hasn't confirmed the email yet
-                    res.status(403).json({
-                      message: "Email not confirmed yet",
-                      flag: "NOT_CONFIRMED",
-                      userId: user.id,
-                    });
-                  }
-                }
-              }
-            })
-            .catch((error) => {
-              consoleError(
-                fileName,
-                arguments.callee.name,
-                Error().stack,
-                error
-              );
-              res.status(500).send({
-                message: "We can't log you in right now",
-                flag: "GENERAL_ERROR",
-              });
+          if (!passwordIsValid) {
+            res.status(401).send({
+              accessToken: null,
+              message: "Invalid Password",
+              flag: "INVALID_PASSWORD",
             });
+          } else {
+            var token = jwt.sign({ id: user.id }, config.secret, {
+              expiresIn: 604800, // 7 days
+            });
+
+            if (user.emailConfirmed) {
+              res.status(200).send({
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                username: user.username,
+                email: user.email,
+                biography: user.biography,
+                phoneNumber: user.phoneNumber,
+                createdAt: user.createdAt,
+                emailConfirmed: user.emailConfirmed,
+                phoneConfirmed: user.phoneConfirmed,
+                firstSetUp: user.firstSetUp,
+                avatar: user.avatar,
+                Driver: user.Driver,
+                Rating: user.Rating,
+                ExperienceUser: user.ExperienceUser,
+                accessToken: token,
+              });
+            } else {
+              // User hasn't confirmed the email yet
+              res.status(403).json({
+                message: "Email not confirmed yet",
+                flag: "NOT_CONFIRMED",
+                userId: user.id,
+              });
+            }
+          }
         }
       })
       .catch((error) => {

@@ -1,8 +1,7 @@
 const confirmSignup = require("./signup");
 const forgotPassword = require("./forgotPassword");
 const resetPasswordSuccess = require("./resetPasswordSuccess");
-const reminderRatingToDriver = require("./reminderRatingToDriver");
-const reminderRatingToPassenger = require("./reminderRatingToPassenger");
+const reminderRating = require("./reminderRating");
 const publishRide = require("./publishRide");
 const newMessage = require("./newMessage");
 const acceptedByDriver = require("./acceptedByDriver");
@@ -31,8 +30,7 @@ module.exports = {
   confirmSignup,
   forgotPassword,
   resetPasswordSuccess,
-  reminderRatingToDriver,
-  reminderRatingToPassenger,
+  reminderRating,
   publishRide,
   newMessage,
   acceptedByDriver,

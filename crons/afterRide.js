@@ -1,21 +1,25 @@
 const path = require("path");
 const fileName = path.basename(__filename);
 
-const { consoleError } = require("../controllers/helpers");
+const db = require("../models");
+const User = db.User;
+const Driver = db.Driver;
+const Ride = db.Ride;
+const Op = db.Sequelize.Op;
+
+// Not in use yet
+const emailController = require("../controllers/email.controller");
+const emailTemplates = require("../controllers/EmailTemplates");
+const PassengerRating = db.PassengerRating;
+const DriverRating = db.DriverRating;
+const Booking = db.Booking;
+const emailReminderRating = db.emailReminderRating;
+
+const { consoleError, consoleCronStop } = require("../controllers/helpers");
 
 // Function
-const checkRideStatus = () => {
-  console.log(`\n\n
-      ####################
-      # CRON IN PROGRESS #
-      ####################\n\n`);
-
-  const messageCronStop = `\n\n
-    ####################
-    # END OF THE CRON  #
-    ####################\n\n`;
-
-  return Ride.findAll({
+module.exports = async function afterRide() {
+  const promise = await Ride.findAll({
     where: {
       dateTimeOrigin: {
         [Op.lt]: new Date(),
@@ -61,7 +65,12 @@ const checkRideStatus = () => {
 
                 // If no bookings, a problem happens
                 if (!bookings) {
-                  console.log("No bookings found");
+                  consoleError(
+                    fileName,
+                    arguments.callee.name,
+                    Error().stack,
+                    "No bookings found"
+                  );
                 } else {
                   bookings.map((booking) => {
                     // First, the passenger's rating
@@ -76,8 +85,6 @@ const checkRideStatus = () => {
                         // If there is no passenger's rating yet
                         if (passengerRating) {
                           // The passenger has rated already
-                          // JOB DONE
-                          console.log(messageCronStop);
                         } else {
                           // Check if we already have sent an email
                           return emailReminderRating
@@ -101,15 +108,14 @@ const checkRideStatus = () => {
                                   .then((user) => {
                                     if (user) {
                                       // Send the reminder email
+
                                       emailController.sendEmail(
                                         user,
-                                        templateReminderRatingToPassenger.reminderRatingToPassenger(
-                                          {
-                                            user,
-                                            ride,
-                                            booking,
-                                          }
-                                        )
+                                        emailTemplates.reminderRating({
+                                          user,
+                                          ride,
+                                          booking,
+                                        })
                                       );
 
                                       // Creating the reminder
@@ -130,10 +136,10 @@ const checkRideStatus = () => {
                                             Error().stack,
                                             error
                                           );
-                                          console.log(messageCronStop);
+                                          consoleCronStop(fileName);
                                         });
                                     } else {
-                                      console.log(messageCronStop);
+                                      consoleCronStop(fileName);
                                     }
                                   })
                                   .catch((error) => {
@@ -144,11 +150,10 @@ const checkRideStatus = () => {
                                       Error().stack,
                                       error
                                     );
-                                    console.log(messageCronStop);
+                                    consoleCronStop(fileName);
                                   });
                               } else {
                                 // A reminder has already being sent out to the passenger
-                                console.log(messageCronStop);
                               }
                             })
                             .catch((error) => {
@@ -159,7 +164,7 @@ const checkRideStatus = () => {
                                 Error().stack,
                                 error
                               );
-                              console.log(messageCronStop);
+                              consoleCronStop(fileName);
                             });
                         }
                       })
@@ -171,7 +176,7 @@ const checkRideStatus = () => {
                           Error().stack,
                           error
                         );
-                        console.log(messageCronStop);
+                        consoleCronStop(fileName);
                       });
 
                     // Second, the driver's rating
@@ -185,8 +190,6 @@ const checkRideStatus = () => {
                       .then((driverRating) => {
                         if (driverRating) {
                           // The driver has rated already
-                          // JOB DONE
-                          console.log(messageCronStop);
                         } else {
                           // Check if we already have sent an email
                           return emailReminderRating
@@ -210,15 +213,14 @@ const checkRideStatus = () => {
                                   .then((user) => {
                                     if (user) {
                                       // Send the reminder email
+
                                       emailController.sendEmail(
                                         user,
-                                        templateReminderRatingToDriver.reminderRatingToDriver(
-                                          {
-                                            user,
-                                            ride,
-                                            booking,
-                                          }
-                                        )
+                                        emailTemplates.reminderRating({
+                                          user,
+                                          ride,
+                                          booking,
+                                        })
                                       );
 
                                       // Creating the reminder
@@ -230,7 +232,6 @@ const checkRideStatus = () => {
                                         })
                                         .then((response) => {
                                           // Done
-                                          console.log(messageCronStop);
                                         })
                                         .catch((error) => {
                                           // An error occured
@@ -240,10 +241,10 @@ const checkRideStatus = () => {
                                             Error().stack,
                                             error
                                           );
-                                          console.log(messageCronStop);
+                                          consoleCronStop(fileName);
                                         });
                                     } else {
-                                      console.log(messageCronStop);
+                                      // User not found
                                     }
                                   })
                                   .catch((error) => {
@@ -254,11 +255,10 @@ const checkRideStatus = () => {
                                       Error().stack,
                                       error
                                     );
-                                    console.log(messageCronStop);
+                                    consoleCronStop(fileName);
                                   });
                               } else {
                                 // A reminder has already being sent out to the driver
-                                console.log(messageCronStop);
                               }
                             })
                             .catch((error) => {
@@ -269,7 +269,7 @@ const checkRideStatus = () => {
                                 Error().stack,
                                 error
                               );
-                              console.log(messageCronStop);
+                              consoleCronStop(fileName);
                             });
                         }
                       })
@@ -281,7 +281,7 @@ const checkRideStatus = () => {
                           Error().stack,
                           error
                         );
-                        console.log(messageCronStop);
+                        consoleCronStop(fileName);
                       });
                   });
                 }
@@ -293,15 +293,16 @@ const checkRideStatus = () => {
                   Error().stack,
                   error
                 );
+                consoleCronStop(fileName);
               });
           }
         });
       } else {
-        console.log(messageCronStop);
+        consoleCronStop(fileName);
       }
     })
     .catch((error) => {
       consoleError(fileName, arguments.callee.name, Error().stack, error);
-      console.log(messageCronStop);
+      consoleCronStop(fileName);
     });
 };

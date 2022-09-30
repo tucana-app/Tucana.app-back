@@ -274,21 +274,7 @@ module.exports = {
 
             if (user.emailConfirmed) {
               res.status(200).send({
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                username: user.username,
-                email: user.email,
-                biography: user.biography,
-                phoneNumber: user.phoneNumber,
-                createdAt: user.createdAt,
-                emailConfirmed: user.emailConfirmed,
-                phoneConfirmed: user.phoneConfirmed,
-                firstSetUp: user.firstSetUp,
-                avatar: user.avatar,
-                Driver: user.Driver,
-                Rating: user.Rating,
-                ExperienceUser: user.ExperienceUser,
+                ...user.dataValues,
                 accessToken: token,
               });
             } else {
@@ -851,21 +837,7 @@ module.exports = {
     })
       .then((user) => {
         res.status(200).send({
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          username: user.username,
-          email: user.email,
-          biography: user.biography,
-          phoneNumber: user.phoneNumber,
-          createdAt: user.createdAt,
-          emailConfirmed: user.emailConfirmed,
-          phoneConfirmed: user.phoneConfirmed,
-          firstSetUp: user.firstSetUp,
-          avatar: user.avatar,
-          Driver: user.Driver,
-          Rating: user.Rating,
-          ExperienceUser: user.ExperienceUser,
+          ...user.dataValues,
         });
       })
       .catch((error) => {
@@ -1025,6 +997,33 @@ module.exports = {
           message: "There is an error with this request",
           flag: "DB_ERROR",
         });
+      });
+  },
+
+  submitEditEateOfBirth(req, res) {
+    const { userId, values } = req.body;
+    const { day, month, year } = values;
+    const date = new Date(year, month - 1, day);
+
+    return User.update(
+      {
+        dateOfBirth: date,
+      },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    )
+      .then((response) => {
+        updateExperienceUser(userId, pointsGrid.ADD_DATE_OF_BIRTH);
+        res
+          .status(200)
+          .send({ message: "OK", flag: "SUCCESS", dateOfBirth: date });
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json({ message: "NOK", flag: "FAIL" });
       });
   },
 

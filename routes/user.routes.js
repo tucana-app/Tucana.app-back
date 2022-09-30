@@ -67,6 +67,11 @@ module.exports = function (app) {
 
   app.post("/api/user/submit-edit-password", controller.submitEditPassword);
 
+  app.post(
+    "/api/user/submit-edit-date-of-birth",
+    controller.submitEditEateOfBirth
+  );
+
   app.post("/api/user/submit-close-account", controller.submitCloseAccount);
 
   app.get("/api/user/is-account-closed", controller.isAccountClosed);

@@ -18,7 +18,7 @@ module.exports = async function afterRide() {
   const promise = await Ride.findAll({
     where: {
       dateTimeDestination: {
-        [Op.gte]: new Date(),
+        [Op.lte]: new Date(),
       },
       RideStatusId: {
         [Op.lt]: 3,

@@ -1,6 +1,7 @@
 const afterRide = require("./afterRide");
 const beforeRide = require("./beforeRide");
 const reminderConfirm = require("./reminderConfirm");
+const dateFormat = require("dateFormat");
 
 var CronJob = require("cron").CronJob;
 
@@ -12,7 +13,11 @@ var job = new CronJob(
     console.log(`\n\n
       ###########################
       #        CRONs START      #
-      ############################\n\n`);
+      #                         #
+      # Date: ${dateFormat(new Date(), "dd/mm/yyyy")}        #
+      # Time: ${dateFormat(new Date(), "hh:MM TT")}          #
+      #                         #
+      ###########################\n\n`);
 
     beforeRide();
     afterRide();

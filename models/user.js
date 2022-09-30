@@ -61,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       avatar: DataTypes.STRING,
       isClosed: DataTypes.BOOLEAN,
       isClosedDate: DataTypes.DATE,
+      dateOfBirth: DataTypes.DATE,
     },
     {
       sequelize,

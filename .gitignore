@@ -129,8 +129,6 @@ tmp/
 temp/
 
 # Others
-heroku.md
-sequelize.md
-cmd-lines.md
+z-cmd/
 
 # End of https://www.toptal.com/developers/gitignore/api/node

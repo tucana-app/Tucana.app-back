@@ -1,4 +1,5 @@
 const updateExperienceUser = require("./updateExperienceUser");
+const dateFormat = require("dateFormat");
 
 const { findPhoneNumbersInText } = require("libphonenumber-js");
 
@@ -30,7 +31,14 @@ const consoleError = (file, fn, stack, error) => {
 const consoleCronStop = (fileName) => {
   console.log(`\n\n
       ###########################
-      # CRON END : ${fileName}  #
+      #                         #
+      #         CRON END        #
+      #                         #
+      # ${fileName}
+      #                         #
+      # Date: ${dateFormat(new Date(), "dd/mm/yyyy")}        #
+      # Time: ${dateFormat(new Date(), "hh:MM TT")}          #
+      #                         #
       ###########################\n\n`);
 };
 
@@ -47,6 +55,7 @@ const pointsGrid = {
   CONFIRM_RIDE: 10,
   SET_CAR_FUEL: 2,
   SET_CAR_SEATS: 2,
+  ADD_DATE_OF_BIRTH: 15,
 };
 
 // https://stackoverflow.com/questions/10804042/-time-difference-with-javascript/59793084#59793084

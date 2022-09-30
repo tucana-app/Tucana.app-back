@@ -18,7 +18,7 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cron": "^1.8.2",
-    "dateformat": "^5.0.3",
+    "dateformat": "^4.5.1",
     "dotenv": "^8.6.0",
     "eslint": "^7.30.0",
     "express": "^4.17.1",

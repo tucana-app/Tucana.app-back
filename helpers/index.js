@@ -1,5 +1,5 @@
 const updateExperienceUser = require("./updateExperienceUser");
-const dateFormat = require("dateFormat");
+const dateFormat = require("dateformat");
 
 const { findPhoneNumbersInText } = require("libphonenumber-js");
 

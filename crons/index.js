@@ -1,7 +1,7 @@
 const afterRide = require("./afterRide");
 const beforeRide = require("./beforeRide");
 const reminderConfirm = require("./reminderConfirm");
-const dateFormat = require("dateFormat");
+const dateFormat = require("dateformat");
 
 var CronJob = require("cron").CronJob;
 

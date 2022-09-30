@@ -15,7 +15,7 @@ module.exports = {
       },
       {
         UserId: 3,
-        ExperienceUserLevelId: 7,
+        ExperienceUserLevelId: 6,
         points: 333,
       },
       {

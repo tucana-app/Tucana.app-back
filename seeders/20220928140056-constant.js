@@ -118,6 +118,10 @@ module.exports = {
             label: "Confirm a ride",
             value: 10,
           },
+          ADD_DATE_OF_BIRTH: {
+            label: "Add your date of birth",
+            value: 15,
+          },
           SET_CAR_FUEL: {
             label: "Set your car's fuel type",
             value: 2,

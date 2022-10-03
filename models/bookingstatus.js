@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
   BookingStatus.init(
     {
       code: DataTypes.STRING,
-      name: DataTypes.STRING,
     },
     {
       sequelize,

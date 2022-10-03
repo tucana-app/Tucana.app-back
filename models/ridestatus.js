@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
   RideStatus.init(
     {
       code: DataTypes.STRING,
-      name: DataTypes.STRING,
     },
     {
       sequelize,

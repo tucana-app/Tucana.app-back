@@ -5,19 +5,15 @@ module.exports = {
     return queryInterface.bulkInsert("RideStatuses", [
       {
         code: "planned",
-        name: "Planned",
       },
       {
         code: "on_going",
-        name: "On going",
       },
       {
         code: "done",
-        name: "Done",
       },
       {
         code: "canceled",
-        name: "Canceled",
       },
     ]);
   },

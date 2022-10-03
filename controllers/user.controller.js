@@ -685,7 +685,7 @@ module.exports = {
     const { user, form } = req.body;
 
     const riteve = {
-      month: form.car.riteve.month.value,
+      month: form.car.riteve.month,
       year: form.car.riteve.year,
     };
 

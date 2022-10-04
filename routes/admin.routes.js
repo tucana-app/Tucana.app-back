@@ -2,11 +2,7 @@ const { authJwt } = require("../middleware");
 const controller = require("../controllers").admin;
 
 module.exports = (app) => {
-  app.post(
-    "/api/admin/user/signin",
-    [authJwt.verifyToken],
-    controller.adminSignin
-  );
+  app.post("/api/admin/user/signin", controller.adminSignin);
 
   app.get(
     "/api/admin/list-users",

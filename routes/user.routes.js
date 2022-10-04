@@ -61,7 +61,7 @@ module.exports = function (app) {
 
   app.post(
     "/api/user/submit-edit-date-of-birth",
-    controller.submitEditEateOfBirth
+    controller.submitEditDateOfBirth
   );
 
   app.post("/api/user/submit-close-account", controller.submitCloseAccount);

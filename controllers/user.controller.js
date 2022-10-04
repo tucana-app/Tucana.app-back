@@ -1000,10 +1000,8 @@ module.exports = {
       });
   },
 
-  submitEditEateOfBirth(req, res) {
-    const { userId, values } = req.body;
-    const { day, month, year } = values;
-    const date = new Date(year, month - 1, day);
+  submitEditDateOfBirth(req, res) {
+    const { userId, date } = req.body;
 
     return User.update(
       {

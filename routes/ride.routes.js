@@ -1,47 +1,102 @@
+const { authJwt } = require("../middleware");
 const controller = require("../controllers").ride;
 
 module.exports = (app) => {
   app.get(
     "/api/ride/driver-new-rides-requests",
+    [authJwt.verifyToken],
     controller.getDriverNewRidesRequests
   );
 
   app.get(
     "/api/ride/passenger-bookings-responses",
+    [authJwt.verifyToken],
     controller.getPassengerBookingsResponses
   );
 
-  app.get("/api/ride/driver-rides", controller.getDriverRides);
+  app.get(
+    "/api/ride/driver-rides",
+    [authJwt.verifyToken],
+    controller.getDriverRides
+  );
 
-  app.get("/api/ride/filtered-rides", controller.getFilteredRides);
+  app.get(
+    "/api/ride/filtered-rides",
+    [authJwt.verifyToken],
+    controller.getFilteredRides
+  );
 
-  app.get("/api/ride/get-eta", controller.getETA);
+  app.get("/api/ride/get-eta", [authJwt.verifyToken], controller.getETA);
 
-  app.post("/api/ride/add-ride", controller.addRide);
+  app.post("/api/ride/add-ride", [authJwt.verifyToken], controller.addRide);
 
-  app.post("/api/ride/book", controller.bookRide);
+  app.post("/api/ride/book", [authJwt.verifyToken], controller.bookRide);
 
-  app.put("/api/booking/driver-response", controller.driverResponseBooking);
+  app.put(
+    "/api/booking/driver-response",
+    [authJwt.verifyToken],
+    controller.driverResponseBooking
+  );
 
-  app.get("/api/ride/user-bookings-ride", controller.getUserBookingsRide);
+  app.get(
+    "/api/ride/user-bookings-ride",
+    [authJwt.verifyToken],
+    controller.getUserBookingsRide
+  );
 
-  app.get("/api/ride/driver-bookings-ride", controller.getDriverBookingsRide);
+  app.get(
+    "/api/ride/driver-bookings-ride",
+    [authJwt.verifyToken],
+    controller.getDriverBookingsRide
+  );
 
-  app.get("/api/ride/user-bookings", controller.getUserBookings);
+  app.get(
+    "/api/ride/user-bookings",
+    [authJwt.verifyToken],
+    controller.getUserBookings
+  );
 
-  app.get("/api/ride/driver-bookings", controller.getDriverBookings);
+  app.get(
+    "/api/ride/driver-bookings",
+    [authJwt.verifyToken],
+    controller.getDriverBookings
+  );
 
-  app.get("/api/ride/passengers", controller.getPassengers);
+  app.get(
+    "/api/ride/passengers",
+    [authJwt.verifyToken],
+    controller.getPassengers
+  );
 
-  app.get("/api/ride/rides-to-confirm", controller.getRidesToConfirm);
+  app.get(
+    "/api/ride/rides-to-confirm",
+    [authJwt.verifyToken],
+    controller.getRidesToConfirm
+  );
 
-  app.post("/api/ride/form-confirm-ride", controller.confirmRide);
+  app.post(
+    "/api/ride/form-confirm-ride",
+    [authJwt.verifyToken],
+    controller.confirmRide
+  );
 
-  app.get("/api/ride/nb-rides-online", controller.nbRidesOnline);
+  app.get(
+    "/api/ride/nb-rides-online",
+    [authJwt.verifyToken],
+    controller.nbRidesOnline
+  );
 
-  app.get("/api/ride/:rideId", controller.getRide);
+  app.get("/api/ride/:rideId", [authJwt.verifyToken], controller.getRide);
 
-  app.get("/api/driver/:username", controller.getDriverProfile);
+  app.get(
+    "/api/driver/:username",
+    [authJwt.verifyToken],
+    controller.getDriverProfile
+  );
 
-  app.get("/api/booking/:bookingId", controller.getBooking);
+  app.get(
+    "/api/booking/:bookingId",
+    [authJwt.verifyToken],
+    controller.getBooking
+  );
 };

@@ -268,8 +268,8 @@ module.exports = {
               flag: "INVALID_PASSWORD",
             });
           } else {
-            var token = jwt.sign({ id: user.id }, config.secret, {
-              expiresIn: 604800, // 7 days
+            var token = jwt.sign({ userId: user.id }, config.secret, {
+              expiresIn: 172800, // 2 days
             });
 
             if (user.emailConfirmed) {

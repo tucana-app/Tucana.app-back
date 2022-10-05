@@ -875,94 +875,122 @@ module.exports = {
   },
 
   getRidesToConfirm(req, res) {
-    const user = JSON.parse(req.query.user);
-    const driverId = user.Driver ? user.Driver.id : 0;
+    const { userId } = req.query;
     let ridesToFeedback = [];
 
-    (async function () {
-      let bookings = await Booking.findAll({
-        where: {
-          [Op.or]: {
-            UserId: user.id,
-            DriverId: driverId,
-          },
-          BookingStatusId: 3, // accepted
-        },
-      });
-
-      if (bookings.length) {
-        await Promise.all(
-          bookings.map((booking) => {
-            return Ride.findOne({
-              where: {
-                id: booking.RideId,
-                RideStatusId: 3, // done
+    return User.findOne({
+      where: {
+        id: userId,
+      },
+      include: [
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
               },
-              include: [
-                {
-                  model: Booking,
-                  include: [
-                    {
-                      model: User,
-                      attributes: {
-                        exclude: [
-                          "biography",
-                          "password",
-                          "phoneNumber",
-                          "createdAt",
-                          "updatedAt",
-                        ],
-                      },
-                    },
-                  ],
-                },
-                {
-                  model: Driver,
-                  include: [
-                    {
-                      model: User,
-                      attributes: {
-                        exclude: [
-                          "biography",
-                          "password",
-                          "phoneNumber",
-                          "createdAt",
-                          "updatedAt",
-                        ],
-                      },
-                    },
-                  ],
-                },
-              ],
-            }).then((ride) => {
-              // If the ride is done
-              if (ride) {
-                // A feedback need to be given
-                return RideFeedback.findOne({
-                  where: {
-                    UserId: user.id,
-                    RideId: ride.id,
-                    BookingId: booking.id,
-                  },
-                })
-                  .then((feedback) => {
-                    if (!feedback) {
-                      // Feedback missing
-                      ridesToFeedback.push(ride);
-                    }
-                  })
-                  .catch((error) => res.status(400).json([]));
-              }
-            });
-          })
-        ).catch((error) => res.status(400).json([]));
+            },
+          ],
+        },
+      ],
+    })
+      .then((user) => {
+        const driverId = user.Driver ? user.Driver.id : 0;
 
-        return res.status(200).json(ridesToFeedback);
-      } else {
-        // console.log("No bookings");
-        return res.status(200).json(ridesToFeedback);
-      }
-    })();
+        (async function () {
+          let bookings = await Booking.findAll({
+            where: {
+              [Op.or]: {
+                UserId: user.id,
+                DriverId: driverId,
+              },
+              BookingStatusId: 3, // accepted
+            },
+          });
+
+          if (bookings.length) {
+            await Promise.all(
+              bookings.map((booking) => {
+                return Ride.findOne({
+                  where: {
+                    id: booking.RideId,
+                    RideStatusId: 3, // done
+                  },
+                  include: [
+                    {
+                      model: Booking,
+                      include: [
+                        {
+                          model: User,
+                          attributes: {
+                            exclude: [
+                              "biography",
+                              "password",
+                              "phoneNumber",
+                              "createdAt",
+                              "updatedAt",
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      model: Driver,
+                      include: [
+                        {
+                          model: User,
+                          attributes: {
+                            exclude: [
+                              "biography",
+                              "password",
+                              "phoneNumber",
+                              "createdAt",
+                              "updatedAt",
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                }).then((ride) => {
+                  // If the ride is done
+                  if (ride) {
+                    // A feedback need to be given
+                    return RideFeedback.findOne({
+                      where: {
+                        UserId: user.id,
+                        RideId: ride.id,
+                        BookingId: booking.id,
+                      },
+                    })
+                      .then((feedback) => {
+                        if (!feedback) {
+                          // Feedback missing
+                          ridesToFeedback.push(ride);
+                        }
+                      })
+                      .catch((error) => res.status(400).json([]));
+                  }
+                });
+              })
+            ).catch((error) => res.status(400).json([]));
+
+            return res.status(200).json(ridesToFeedback);
+          } else {
+            // console.log("No bookings");
+            return res.status(200).json(ridesToFeedback);
+          }
+        })();
+      })
+      .catch((error) => res.status(400).json([]));
   },
 
   confirmRide(req, res) {
@@ -997,92 +1025,6 @@ module.exports = {
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json({ flag: "ERROR" });
-      });
-  },
-
-  getDriverProfile(req, res) {
-    return User.findOne({
-      where: {
-        username: req.params.username,
-      },
-      attributes: {
-        exclude: [
-          "password",
-          "phoneNumber",
-          "phoneConfirmed",
-          "firstSetUp",
-          "email",
-          "emailConfirmed",
-          "isClosed",
-          "isClosedDate",
-        ],
-      },
-      include: [
-        {
-          model: Rating,
-        },
-        {
-          model: ExperienceUser,
-          include: [
-            {
-              model: ExperienceUserLevel,
-            },
-          ],
-        },
-      ],
-    })
-      .then((user) => {
-        // console.log(user);
-        if (user) {
-          return Driver.findOne({
-            where: {
-              UserId: user.id,
-            },
-          })
-            .then((driver) => {
-              if (driver) {
-                return Ride.findAndCountAll({
-                  where: {
-                    DriverId: user.id,
-                  },
-                })
-                  .then((rides) => {
-                    res.status(200).json({ user, ridesCount: rides.count });
-                  })
-                  .catch((error) => {
-                    consoleError(
-                      fileName,
-                      arguments.callee.name,
-                      Error().stack,
-                      error
-                    );
-                    res.status(400).json(errorMessage);
-                  });
-              } else {
-                res.status(404).json({
-                  message: "User not a driver",
-                  flag: "USER_NOT_DRIVER",
-                });
-              }
-            })
-            .catch((error) => {
-              consoleError(
-                fileName,
-                arguments.callee.name,
-                Error().stack,
-                error
-              );
-              res.status(400).json(errorMessage);
-            });
-        } else {
-          res
-            .status(404)
-            .json({ message: "User not found", flag: "USER_NOT_FOUND" });
-        }
-      })
-      .catch((error) => {
-        consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(errorMessage);
       });
   },
 

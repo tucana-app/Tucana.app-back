@@ -89,12 +89,6 @@ module.exports = (app) => {
   app.get("/api/ride/:rideId", [authJwt.verifyToken], controller.getRide);
 
   app.get(
-    "/api/driver/:username",
-    [authJwt.verifyToken],
-    controller.getDriverProfile
-  );
-
-  app.get(
     "/api/booking/:bookingId",
     [authJwt.verifyToken],
     controller.getBooking

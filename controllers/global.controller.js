@@ -5,6 +5,8 @@ require("dotenv").config;
 const db = require("../models");
 const Constant = db.Constant;
 const ExperienceUserLevel = db.ExperienceUserLevel;
+const emailController = require("./email.controller");
+const emailTemplates = require("./EmailTemplates/");
 
 const { consoleError } = require("../helpers");
 
@@ -33,5 +35,15 @@ module.exports = {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).send({ message: "NOK", flag: "FAIL" });
       });
+  },
+
+  sendErrorReport(req, res) {
+    const { message, stack } = req.body;
+
+    emailController.sendEmailToAdmin(
+      emailTemplates.admin_errorFrontEnd(message, stack)
+    );
+
+    return res.status(200).send({});
   },
 };

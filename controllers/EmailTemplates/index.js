@@ -27,6 +27,7 @@ const afterRide = require("./afterRide");
 const admin_newFormBecomeDriver = require("./admin_newFormBecomeDriver");
 const admin_newRating = require("./admin_newRating");
 const admin_newRideRejected = require("./admin_newRideRejected");
+const admin_errorFrontEnd = require("./admin_errorFrontEnd");
 
 module.exports = {
   confirmSignup,
@@ -58,4 +59,5 @@ module.exports = {
   admin_newFormBecomeDriver,
   admin_newRating,
   admin_newRideRejected,
+  admin_errorFrontEnd,
 };

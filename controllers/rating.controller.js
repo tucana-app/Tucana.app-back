@@ -8,6 +8,7 @@ const db = require("../models");
 const User = db.User;
 const Driver = db.Driver;
 const Ride = db.Ride;
+const Rating = db.Rating;
 const RideFeedback = db.RideFeedback;
 const Booking = db.Booking;
 const PassengerRating = db.PassengerRating;
@@ -224,6 +225,18 @@ module.exports = {
           model: admin_VerifPassengerRating,
         },
         {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+        {
           model: Driver,
           include: [
             {
@@ -409,28 +422,91 @@ module.exports = {
   },
 
   addRatingFromPassenger(req, res) {
-    const { ride, note, comment } = req.body;
+    const { bookingId, note, comment } = req.body;
 
-    return DriverRating.create({
-      UserId: ride.Booking.User.id,
-      DriverId: ride.DriverId,
-      RideId: ride.id,
-      BookingId: ride.Booking.id,
-      value: note,
-      comment,
+    return Booking.findOne({
+      where: {
+        id: bookingId,
+      },
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+          include: [
+            {
+              model: Rating,
+            },
+          ],
+        },
+        {
+          model: Ride,
+          include: [
+            {
+              model: Driver,
+              include: [
+                {
+                  model: User,
+                  attributes: {
+                    exclude: [
+                      "biography",
+                      "password",
+                      "phoneNumber",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     })
-      .then((rating) => {
-        // console.log(conversations);
+      .then((booking) => {
+        if (booking) {
+          return DriverRating.create({
+            UserId: booking.User.id,
+            DriverId: booking.Ride.DriverId,
+            RideId: booking.Ride.id,
+            BookingId: booking.id,
+            value: note,
+            comment,
+          })
+            .then((rating) => {
+              // console.log(conversations);
 
-        emailController.sendEmailToAdmin(emailTemplates.admin_newRating());
-        emailController.sendEmail(
-          ride.Booking.User,
-          emailTemplates.newRating()
-        );
+              emailController.sendEmailToAdmin(
+                emailTemplates.admin_newRating()
+              );
+              emailController.sendEmail(
+                booking.User,
+                emailTemplates.newRating()
+              );
 
-        res.status(201).json({
-          flag: "SUCCESS",
-        });
+              res.status(201).json({
+                flag: "SUCCESS",
+              });
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res.status(400).json(errorMessage);
+        }
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
@@ -439,25 +515,198 @@ module.exports = {
   },
 
   addRatingFromDriver(req, res) {
-    const { ride, note, comment } = req.body;
+    const { bookingId, note, comment } = req.body;
 
-    return PassengerRating.create({
-      UserId: ride.Booking.User.id,
-      DriverId: ride.DriverId,
-      RideId: ride.id,
-      BookingId: ride.Booking.id,
-      value: note,
-      comment,
+    return Booking.findOne({
+      where: {
+        id: bookingId,
+      },
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+          include: [
+            {
+              model: Rating,
+            },
+          ],
+        },
+        {
+          model: Ride,
+          include: [
+            {
+              model: Driver,
+              include: [
+                {
+                  model: User,
+                  attributes: {
+                    exclude: [
+                      "biography",
+                      "password",
+                      "phoneNumber",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     })
-      .then((rating) => {
-        // console.log(conversations);
+      .then((booking) => {
+        if (booking) {
+          return PassengerRating.create({
+            UserId: booking.User.id,
+            DriverId: booking.Ride.DriverId,
+            RideId: booking.Ride.id,
+            BookingId: booking.id,
+            value: note,
+            comment,
+          })
+            .then((rating) => {
+              // console.log(conversations);
 
-        emailController.sendEmailToAdmin(emailTemplates.admin_newRating());
-        emailController.sendEmail(ride.Driver.User, emailTemplates.newRating());
+              emailController.sendEmailToAdmin(
+                emailTemplates.admin_newRating()
+              );
+              emailController.sendEmail(
+                booking.Ride.Driver.User,
+                emailTemplates.newRating()
+              );
 
-        res.status(201).json({
-          flag: "SUCCESS",
-        });
+              res.status(201).json({
+                flag: "SUCCESS",
+              });
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res.status(400).json(errorMessage);
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  getDriverRatings(req, res) {
+    return User.findOne({
+      where: {
+        username: req.params.username,
+      },
+      include: [
+        {
+          model: Driver,
+        },
+      ],
+      attributes: {
+        exclude: [
+          "password",
+          "phoneNumber",
+          "phoneConfirmed",
+          "firstSetUp",
+          "email",
+          "emailConfirmed",
+          "isClosed",
+          "isClosedDate",
+        ],
+      },
+    })
+      .then((user) => {
+        // console.log(user);
+        if (user.Driver) {
+          return DriverRating.findAll({
+            where: {
+              DriverId: user.Driver.id,
+            },
+          })
+            .then((ratings) => {
+              res.status(200).json(ratings);
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res
+            .status(404)
+            .json({ message: "User not found", flag: "USER_NOT_FOUND" });
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  getPassengerRatings(req, res) {
+    return User.findOne({
+      where: {
+        username: req.params.username,
+      },
+      attributes: {
+        exclude: [
+          "password",
+          "phoneNumber",
+          "phoneConfirmed",
+          "firstSetUp",
+          "email",
+          "emailConfirmed",
+          "isClosed",
+          "isClosedDate",
+        ],
+      },
+    })
+      .then((user) => {
+        // console.log(user);
+        if (user) {
+          return PassengerRating.findAll({
+            where: {
+              UserId: user.id,
+            },
+          })
+            .then((ratings) => {
+              res.status(200).json(ratings);
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res
+            .status(404)
+            .json({ message: "User not found", flag: "USER_NOT_FOUND" });
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
+        }
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);

@@ -9,4 +9,10 @@ module.exports = function (app) {
   );
 
   app.get("/api/global/levels", [authJwt.verifyToken], controller.getLevels);
+
+  app.post(
+    "/api/global/error",
+    [authJwt.verifyToken],
+    controller.sendErrorReport
+  );
 };

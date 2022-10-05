@@ -49,4 +49,16 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     controller.addRatingFromDriver
   );
+
+  app.get(
+    "/api/driver/:username/ratings",
+    [authJwt.verifyToken],
+    controller.getDriverRatings
+  );
+
+  app.get(
+    "/api/passenger/:username/ratings",
+    [authJwt.verifyToken],
+    controller.getPassengerRatings
+  );
 };

@@ -114,4 +114,16 @@ module.exports = function (app) {
     [authJwt.verifyToken],
     controller.isAccountClosed
   );
+
+  app.get(
+    "/api/driver/:username",
+    [authJwt.verifyToken],
+    controller.getDriverProfile
+  );
+
+  app.get(
+    "/api/passenger/:username",
+    [authJwt.verifyToken],
+    controller.getPassengerProfile
+  );
 };

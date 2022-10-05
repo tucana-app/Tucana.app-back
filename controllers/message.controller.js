@@ -14,6 +14,7 @@ const {
 
 const User = db.User;
 const Driver = db.Driver;
+const Ride = db.Ride;
 const Conversation = db.Conversation;
 const Message = db.Message;
 const MessageStatus = db.MessageStatus;
@@ -75,6 +76,9 @@ module.exports = {
               "updatedAt",
             ],
           },
+        },
+        {
+          model: Ride,
         },
       ],
     })
@@ -173,7 +177,7 @@ module.exports = {
             },
           })
             .then((user) => {
-              emailController.sendEmail(user, emailTemplate.newMessage());
+              // emailController.sendEmail(user, emailTemplate.newMessage());
 
               // Update points
               updateExperienceUser(senderId, pointsGrid.NEW_MESSAGE);

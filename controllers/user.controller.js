@@ -15,6 +15,7 @@ const {
 const User = db.User;
 const Driver = db.Driver;
 const Rating = db.Rating;
+const Ride = db.Ride;
 const Car = db.Car;
 const DriverApplication = db.DriverApplication;
 const ExperienceUser = db.ExperienceUser;
@@ -28,6 +29,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 const { v4: uuidv4 } = require("uuid");
+const errorMessage = { message: "A problem occured with this request" };
 
 module.exports = {
   signup(req, res) {
@@ -1099,6 +1101,121 @@ module.exports = {
       })
       .catch((error) => {
         res.status(400).json({ message: "NOK", flag: "FAIL" });
+      });
+  },
+
+  getDriverProfile(req, res) {
+    return User.findOne({
+      where: {
+        username: req.params.username,
+      },
+      attributes: {
+        exclude: [
+          "password",
+          "phoneNumber",
+          "phoneConfirmed",
+          "firstSetUp",
+          "email",
+          "emailConfirmed",
+          "isClosed",
+          "isClosedDate",
+        ],
+      },
+      include: [
+        {
+          model: Driver,
+        },
+        {
+          model: Rating,
+        },
+        {
+          model: ExperienceUser,
+          include: [
+            {
+              model: ExperienceUserLevel,
+            },
+          ],
+        },
+      ],
+    })
+      .then((user) => {
+        // console.log(user);
+        if (user.Driver) {
+          return Ride.findAndCountAll({
+            where: {
+              DriverId: user.id,
+            },
+          })
+            .then((rides) => {
+              res.status(200).json({ user, ridesCount: rides.count });
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res.status(404).json({
+            message: "User is not a driver",
+            flag: "USER_NOT_DRIVER",
+          });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  getPassengerProfile(req, res) {
+    return User.findOne({
+      where: {
+        username: req.params.username,
+      },
+      attributes: {
+        exclude: [
+          "password",
+          "phoneNumber",
+          "phoneConfirmed",
+          "firstSetUp",
+          "email",
+          "emailConfirmed",
+          "isClosed",
+          "isClosedDate",
+        ],
+      },
+      include: [
+        {
+          model: Rating,
+        },
+        {
+          model: ExperienceUser,
+          include: [
+            {
+              model: ExperienceUserLevel,
+            },
+          ],
+        },
+      ],
+    })
+      .then((user) => {
+        // console.log(user);
+        if (user) {
+          res.status(200).json({ user });
+        } else {
+          res.status(404).json({
+            message: "User not found",
+            flag: "USER_NOT_FOUND",
+          });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
       });
   },
 };

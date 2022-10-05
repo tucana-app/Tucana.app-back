@@ -13,12 +13,14 @@ const Booking = db.Booking;
 
 const { consoleError, consoleCronStop } = require("../helpers");
 
+const now = new Date();
+
 // Function
 module.exports = async function afterRide() {
   const promise = await Ride.findAll({
     where: {
       dateTimeDestination: {
-        [Op.lte]: new Date(),
+        [Op.lte]: new Date(now.setHours(now.getHours() + 12)),
       },
       RideStatusId: {
         [Op.lt]: 3,

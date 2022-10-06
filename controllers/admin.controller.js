@@ -4,6 +4,9 @@ const fileName = path.basename(__filename);
 const db = require("../models");
 const config = require("../config/user.config");
 
+const afterRide = require("../crons/afterRide");
+const beforeRide = require("../crons/beforeRide");
+
 const emailController = require("./email.controller");
 const emailTemplates = require("./EmailTemplates/");
 const {
@@ -831,6 +834,26 @@ module.exports = {
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(errorMessage);
+      });
+  },
+
+  cronBeforeRide(req, res) {
+    return beforeRide()
+      .then((response) => {
+        res.status(200).send({ message: "OK", flag: "SUCCESS" });
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
+  },
+
+  cronAfterRide(req, res) {
+    return afterRide()
+      .then((response) => {
+        res.status(200).send({ message: "OK", flag: "SUCCESS" });
+      })
+      .catch((error) => {
+        res.status(400).send(error);
       });
   },
 };

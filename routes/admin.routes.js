@@ -81,4 +81,16 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     controller.submitVerifDriverRating
   );
+
+  app.get(
+    "/api/admin/cron/after-ride",
+    [authJwt.verifyToken],
+    controller.cronAfterRide
+  );
+
+  app.get(
+    "/api/admin/cron/before-ride",
+    [authJwt.verifyToken],
+    controller.cronBeforeRide
+  );
 };

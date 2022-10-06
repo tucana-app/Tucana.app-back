@@ -26,29 +26,71 @@ const errorMessage = "A problem occured with this request";
 
 module.exports = {
   getAllUserMessages(req, res) {
-    const user = JSON.parse(req.query.user);
-    const driverId = user.Driver ? user.Driver.id : 0;
+    // const user = JSON.parse(req.query.user);
+    const { userId } = req.query;
 
-    return Conversation.findAll({
+    return User.findOne({
       where: {
-        [Op.or]: {
-          UserId: user.id,
-          DriverId: driverId,
-        },
+        id: userId,
       },
-      order: [[Message, "createdAt", "ASC"]],
       include: [
-        {
-          model: Message,
-          include: [
-            {
-              model: MessageStatus,
-            },
-          ],
-        },
         {
           model: Driver,
           include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    })
+      .then((user) => {
+        const driverId = user.Driver ? user.Driver.id : 0;
+
+        return Conversation.findAll({
+          where: {
+            [Op.or]: {
+              UserId: user.id,
+              DriverId: driverId,
+            },
+          },
+          order: [[Message, "createdAt", "ASC"]],
+          include: [
+            {
+              model: Message,
+              include: [
+                {
+                  model: MessageStatus,
+                },
+              ],
+            },
+            {
+              model: Driver,
+              include: [
+                {
+                  model: User,
+                  attributes: {
+                    exclude: [
+                      "email",
+                      "biography",
+                      "password",
+                      "phoneNumber",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
+                },
+              ],
+            },
             {
               model: User,
               attributes: {
@@ -62,29 +104,22 @@ module.exports = {
                 ],
               },
             },
+            {
+              model: Ride,
+            },
           ],
-        },
-        {
-          model: User,
-          attributes: {
-            exclude: [
-              "email",
-              "biography",
-              "password",
-              "phoneNumber",
-              "createdAt",
-              "updatedAt",
-            ],
-          },
-        },
-        {
-          model: Ride,
-        },
-      ],
-    })
-      .then((conversations) => {
-        // console.log(conversations);
-        res.status(200).json(conversations);
+        })
+          .then((conversations) => {
+            // console.log(conversations);
+            res.status(200).json(conversations);
+          })
+          .catch((error) => {
+            consoleError(fileName, arguments.callee.name, Error().stack, error);
+            res.status(400).json({
+              errorMessage,
+              errorCode: 1,
+            });
+          });
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);

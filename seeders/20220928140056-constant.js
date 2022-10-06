@@ -115,7 +115,7 @@ module.exports = {
             value: 10,
           },
           CONFIRM_RIDE: {
-            label: "Confirm a ride",
+            label: "Complete a ride",
             value: 10,
           },
           ADD_DATE_OF_BIRTH: {

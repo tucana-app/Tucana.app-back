@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       min: DataTypes.INTEGER,
       max: DataTypes.INTEGER,
-      rate: DataTypes.INTEGER,
+      multiplier: DataTypes.FLOAT,
     },
     {
       sequelize,

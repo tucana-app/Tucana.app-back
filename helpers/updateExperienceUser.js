@@ -24,9 +24,10 @@ module.exports = function updateExperienceUser(userId, points) {
     ],
   })
     .then((experienceUser) => {
-      const newPoints =
+      const newPoints = Math.round(
         experienceUser.points +
-        points * experienceUser.ExperienceUserLevel.rate;
+          points * experienceUser.ExperienceUserLevel.multiplier
+      );
 
       return ExperienceUser.update(
         {

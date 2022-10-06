@@ -16,10 +16,6 @@ module.exports = {
         value: 50000,
       },
       {
-        key: "COMMISSION",
-        value: 1,
-      },
-      {
         key: "CAR_MAKERS",
         value: JSON.stringify([
           "Other",
@@ -79,55 +75,42 @@ module.exports = {
         key: "EXPERIENCE_POINTS_GRID",
         value: JSON.stringify({
           READ_MESSAGE: {
-            label: "Read a message",
             value: 1,
           },
           SEND_MESSAGE: {
-            label: "Send a message",
             value: 2,
           },
           ADD_BIO: {
-            label: "Add your bio",
             value: 15,
           },
           UPDATE_BIO: {
-            label: "Update your bio",
             value: 5,
           },
           BOOK_RIDE: {
-            label: "Book a ride",
             value: 10,
           },
           PUBLISH_RIDE: {
-            label: "Publish a ride",
             value: 20,
           },
           ANSWER_BOOKING: {
-            label: "Answer a booking",
             value: 10,
           },
           BECOME_DRIVER: {
-            label: "Become a driver",
             value: 20,
           },
           ADD_REVIEW: {
-            label: "Add a rewiew",
             value: 10,
           },
           CONFIRM_RIDE: {
-            label: "Complete a ride",
             value: 10,
           },
           ADD_DATE_OF_BIRTH: {
-            label: "Add your date of birth",
             value: 15,
           },
           SET_CAR_FUEL: {
-            label: "Set your car's fuel type",
             value: 2,
           },
           SET_CAR_SEATS: {
-            label: "Set your car's seat number",
             value: 2,
           },
         }),

@@ -4,7 +4,7 @@ module.exports = function rideFeedback(ride, isConfirmed) {
   var subject, text, html;
 
   if (isConfirmed) {
-    subject = "✅ You have confirmed the ride | Tucána";
+    subject = "✅ You have completed the ride | Tucána";
     text = `Tucána | Thank you for confirming your ride. Please consider rating your ride to help make the platform more secure. Leave a feedback about Tucána following this link: https://docs.google.com/forms/d/e/1FAIpQLSe5ryLUu84X7IELlLQO3XWfYajW4wj47Y-CkhVBQJsWGoh_4Q/viewform?usp=sf_link to help the community find out about the service we are publishing`;
     html = `
         <div>

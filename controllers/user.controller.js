@@ -1143,7 +1143,7 @@ module.exports = {
         if (user.Driver) {
           return Ride.findAndCountAll({
             where: {
-              DriverId: user.id,
+              DriverId: user.Driver.id,
             },
           })
             .then((rides) => {

@@ -245,7 +245,7 @@ module.exports = {
             }).then((ride) => {
               // If the ride is done
               if (ride) {
-                // Look if the ride has been confirmed
+                // Look if the ride has been completed
                 return RideFeedback.findOne({
                   where: {
                     RideId: ride.id,

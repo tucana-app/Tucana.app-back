@@ -1112,8 +1112,8 @@ module.exports = {
       });
   },
 
-  confirmRide(req, res) {
-    const { userId, driverId, bookingId, rideId, isCompleted } = req.body;
+  completeRide(req, res) {
+    const { userId, bookingId, rideId, isCompleted } = req.body;
 
     return RideFeedback.create({
       UserId: userId,

@@ -81,9 +81,9 @@ module.exports = (app) => {
   );
 
   app.post(
-    "/api/ride/form-confirm-ride",
+    "/api/ride/submit-complete-ride",
     [authJwt.verifyToken],
-    controller.confirmRide
+    controller.completeRide
   );
 
   app.get(

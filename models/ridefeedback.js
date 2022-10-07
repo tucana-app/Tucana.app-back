@@ -19,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       RideFeedback.belongsTo(models.Booking, {
         onDelete: "NO ACTION",
       });
-
-      RideFeedback.belongsTo(models.Driver, {
-        onDelete: "NO ACTION",
-      });
     }
   }
   RideFeedback.init(
@@ -30,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       UserId: DataTypes.INTEGER,
       RideId: DataTypes.INTEGER,
       BookingId: DataTypes.INTEGER,
-      DriverId: DataTypes.INTEGER,
       isConfirmed: DataTypes.BOOLEAN,
     },
     {

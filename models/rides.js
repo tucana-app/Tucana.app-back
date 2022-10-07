@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "NO ACTION",
       });
 
-      Ride.hasOne(models.Booking, {
+      Ride.hasMany(models.Booking, {
         onDelete: "NO ACTION",
       });
 
@@ -25,11 +25,11 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       Ride.hasMany(models.PassengerRating, {
-        onDelete: "CASCADE",
+        onDelete: "NO ACTION",
       });
 
       Ride.hasMany(models.DriverRating, {
-        onDelete: "CASCADE",
+        onDelete: "NO ACTION",
       });
     }
   }

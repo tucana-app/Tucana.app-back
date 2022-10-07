@@ -1,6 +1,9 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
+    await queryInterface.dropTable("RideFeedbacks");
+  },
+  async down(queryInterface, Sequelize) {
     await queryInterface.createTable("RideFeedbacks", {
       id: {
         type: Sequelize.INTEGER,
@@ -35,8 +38,5 @@ module.exports = {
         defaultValue: new Date(),
       },
     });
-  },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("RideFeedbacks");
   },
 };

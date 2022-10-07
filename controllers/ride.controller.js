@@ -874,9 +874,9 @@ module.exports = {
       });
   },
 
-  getRidesToConfirm(req, res) {
+  ridesToConfirm(req, res) {
     const { userId } = req.query;
-    let ridesToFeedback = [];
+    const ridesToConfirm = [];
 
     return User.findOne({
       where: {
@@ -903,105 +903,223 @@ module.exports = {
       ],
     })
       .then((user) => {
-        const driverId = user.Driver ? user.Driver.id : 0;
-
         (async function () {
           let bookings = await Booking.findAll({
             where: {
               [Op.or]: {
                 UserId: user.id,
-                DriverId: driverId,
+                DriverId: user.id,
               },
-              BookingStatusId: 3, // accepted
+              BookingStatusId: 3,
             },
+            include: [
+              {
+                model: Ride,
+                where: {
+                  RideStatusId: 3,
+                },
+                include: [
+                  {
+                    model: Driver,
+                    include: [
+                      {
+                        model: User,
+                        attributes: {
+                          exclude: [
+                            "lastName",
+                            "email",
+                            "biography",
+                            "password",
+                            "phoneNumber",
+                            "createdAt",
+                            "updatedAt",
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                model: User,
+                attributes: {
+                  exclude: [
+                    "lastName",
+                    "email",
+                    "biography",
+                    "password",
+                    "phoneNumber",
+                    "createdAt",
+                    "updatedAt",
+                  ],
+                },
+              },
+            ],
           });
 
           if (bookings.length) {
             await Promise.all(
               bookings.map((booking) => {
-                return Ride.findOne({
+                return RideFeedback.findOne({
                   where: {
-                    id: booking.RideId,
-                    RideStatusId: 3, // done
+                    UserId: userId,
+                    BookingId: booking.id,
                   },
-                  include: [
-                    {
-                      model: Booking,
-                      include: [
-                        {
-                          model: User,
-                          attributes: {
-                            exclude: [
-                              "biography",
-                              "password",
-                              "phoneNumber",
-                              "createdAt",
-                              "updatedAt",
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                    {
-                      model: Driver,
-                      include: [
-                        {
-                          model: User,
-                          attributes: {
-                            exclude: [
-                              "biography",
-                              "password",
-                              "phoneNumber",
-                              "createdAt",
-                              "updatedAt",
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                }).then((ride) => {
-                  // If the ride is done
-                  if (ride) {
-                    // A feedback need to be given
-                    return RideFeedback.findOne({
-                      where: {
-                        UserId: user.id,
-                        RideId: ride.id,
-                        BookingId: booking.id,
-                      },
-                    })
-                      .then((feedback) => {
-                        if (!feedback) {
-                          // Feedback missing
-                          ridesToFeedback.push(ride);
-                        }
-                      })
-                      .catch((error) => res.status(400).json([]));
-                  }
-                });
+                })
+                  .then((feedback) => {
+                    if (!feedback) {
+                      // The user hasn't already gave a feedback
+                      ridesToConfirm.push(booking);
+                    }
+                  })
+                  .catch((error) => {
+                    consoleError(
+                      fileName,
+                      arguments.callee.name,
+                      Error().stack,
+                      error
+                    );
+                    res.status(400).json([]);
+                  });
               })
-            ).catch((error) => res.status(400).json([]));
+            ).catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
 
-            return res.status(200).json(ridesToFeedback);
+              return res.status(400).json([]);
+            });
+
+            return res.status(200).json(ridesToConfirm);
           } else {
-            // console.log("No bookings");
-            return res.status(200).json(ridesToFeedback);
+            res.status(400).json({
+              message: "No rides to complete",
+              flag: "NO_RIDES_COMPLETE",
+            });
           }
         })();
       })
-      .catch((error) => res.status(400).json([]));
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json([]);
+      });
+  },
+
+  rideToConfirm(req, res) {
+    const { userId, bookingId } = req.query;
+
+    return Booking.findOne({
+      where: {
+        id: bookingId,
+      },
+      include: [
+        {
+          model: Ride,
+          where: {
+            RideStatusId: 3,
+          },
+          include: [
+            {
+              model: Driver,
+              include: [
+                {
+                  model: User,
+                  attributes: {
+                    exclude: [
+                      "biography",
+                      "password",
+                      "phoneNumber",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
+                  include: [
+                    {
+                      model: Rating,
+                    },
+                  ],
+                },
+                {
+                  model: Car,
+                },
+              ],
+            },
+            {
+              model: RideStatus,
+            },
+          ],
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "lastName",
+              "email",
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      ],
+    })
+      .then((booking) => {
+        // console.log(booking);
+        if (booking) {
+          return RideFeedback.findOne({
+            where: {
+              UserId: userId,
+              RideId: booking.RideId,
+              BookingId: bookingId,
+            },
+          })
+            .then((feedback) => {
+              if (!feedback) {
+                // The user hasn't already gave a feedback
+                res.status(200).json(booking);
+              } else {
+                // The user has already gave a feedback
+                res.status(400).json({
+                  message: "Ride already completed",
+                  flag: "ALREADY_COMPLETED",
+                });
+              }
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json([]);
+            });
+        } else {
+          res.status(400).json({
+            messagee: "Not booking found",
+            flag: "NO_BOOKING_FOUND",
+          });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json([]);
+      });
   },
 
   confirmRide(req, res) {
-    const { user, ride, isConfirmed } = req.body;
+    const { userId, driverId, bookingId, rideId, isCompleted } = req.body;
 
     return RideFeedback.create({
-      UserId: user.id,
-      RideId: ride.id,
-      BookingId: ride.Booking.id,
-      DriverId: ride.DriverId,
-      isConfirmed,
+      UserId: userId,
+      RideId: rideId,
+      BookingId: bookingId,
+      isConfirmed: isCompleted,
     })
       .then((response) => {
         // console.log(response);
@@ -1009,18 +1127,61 @@ module.exports = {
           flag: "SUCCESS",
         });
 
-        emailController.sendEmail(
-          user,
-          emailTemplates.rideFeedback(ride, isConfirmed)
-        );
-
-        updateExperienceUser(user.id, pointsGrid.CONFIRM_RIDE);
-
-        if (!isConfirmed) {
+        if (!isCompleted) {
           emailController.sendEmailToAdmin(
             emailTemplates.admin_newRideRejected()
           );
         }
+
+        updateExperienceUser(userId, pointsGrid.CONFIRM_RIDE);
+
+        return User.findOne({
+          where: {
+            id: userId,
+          },
+        })
+          .then((user) => {
+            if (user) {
+              return Ride.findOne({
+                where: {
+                  id: rideId,
+                },
+              })
+                .then((ride) => {
+                  if (ride) {
+                    emailController.sendEmail(
+                      user,
+                      emailTemplates.rideFeedback(ride, isCompleted)
+                    );
+                  } else {
+                    consoleError(
+                      fileName,
+                      arguments.callee.name,
+                      Error().stack,
+                      "No ride found"
+                    );
+                  }
+                })
+                .catch((error) => {
+                  consoleError(
+                    fileName,
+                    arguments.callee.name,
+                    Error().stack,
+                    error
+                  );
+                });
+            } else {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                "No user found"
+              );
+            }
+          })
+          .catch((error) => {
+            consoleError(fileName, arguments.callee.name, Error().stack, error);
+          });
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);

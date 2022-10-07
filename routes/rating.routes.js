@@ -27,6 +27,12 @@ module.exports = (app) => {
   );
 
   app.get(
+    "/api/rating/get-rating-to-do",
+    [authJwt.verifyToken],
+    controller.getRatingToDo
+  );
+
+  app.get(
     "/api/rating/get-ratings-to-do-passenger",
     [authJwt.verifyToken],
     controller.getRatingsToDoAsPassenger
@@ -39,15 +45,9 @@ module.exports = (app) => {
   );
 
   app.post(
-    "/api/rating/submit-passenger-rating-form",
+    "/api/rating/submit-rating-form",
     [authJwt.verifyToken],
-    controller.addRatingFromPassenger
-  );
-
-  app.post(
-    "/api/rating/submit-driver-rating-form",
-    [authJwt.verifyToken],
-    controller.addRatingFromDriver
+    controller.submitRating
   );
 
   app.get(

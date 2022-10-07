@@ -22,6 +22,75 @@ const emailTemplates = require("./EmailTemplates/");
 const errorMessage = { message: "A problem occured with this request" };
 
 module.exports = {
+  getRatingToDo(req, res) {
+    const { userId, bookingId } = req.query;
+
+    return Booking.findOne({
+      where: {
+        id: bookingId,
+        [Op.or]: {
+          UserId: userId,
+          DriverId: userId,
+        },
+      },
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+          include: [
+            {
+              model: Rating,
+            },
+          ],
+        },
+        {
+          model: Ride,
+          include: [
+            {
+              model: Driver,
+              include: [
+                {
+                  model: User,
+                  attributes: {
+                    exclude: [
+                      "biography",
+                      "password",
+                      "phoneNumber",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    })
+      .then((booking) => {
+        // console.log(booking);
+        if (booking) {
+          res.status(200).json(booking);
+        } else {
+          res
+            .status(400)
+            .json({ message: "No rating to do found", flag: "NOT_FOUND" });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
   getRatingsToDoAsPassenger(req, res) {
     const { userId } = req.query;
     let ratingsToDoPassenger = [];
@@ -421,8 +490,8 @@ module.exports = {
       });
   },
 
-  addRatingFromPassenger(req, res) {
-    const { bookingId, note, comment } = req.body;
+  submitRating(req, res) {
+    const { userId, bookingId, note, comment } = req.body;
 
     return Booking.findOne({
       where: {
@@ -471,100 +540,9 @@ module.exports = {
       ],
     })
       .then((booking) => {
-        if (booking) {
-          return DriverRating.create({
-            UserId: booking.User.id,
-            DriverId: booking.Ride.DriverId,
-            RideId: booking.Ride.id,
-            BookingId: booking.id,
-            value: note,
-            comment,
-          })
-            .then((rating) => {
-              // console.log(conversations);
+        const isDriver = userId === booking.DriverId ? true : false;
 
-              emailController.sendEmailToAdmin(
-                emailTemplates.admin_newRating()
-              );
-              emailController.sendEmail(
-                booking.User,
-                emailTemplates.newRating()
-              );
-
-              res.status(201).json({
-                flag: "SUCCESS",
-              });
-            })
-            .catch((error) => {
-              consoleError(
-                fileName,
-                arguments.callee.name,
-                Error().stack,
-                error
-              );
-              res.status(400).json(errorMessage);
-            });
-        } else {
-          res.status(400).json(errorMessage);
-        }
-      })
-      .catch((error) => {
-        consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(errorMessage);
-      });
-  },
-
-  addRatingFromDriver(req, res) {
-    const { bookingId, note, comment } = req.body;
-
-    return Booking.findOne({
-      where: {
-        id: bookingId,
-      },
-      include: [
-        {
-          model: User,
-          attributes: {
-            exclude: [
-              "biography",
-              "password",
-              "phoneNumber",
-              "createdAt",
-              "updatedAt",
-            ],
-          },
-          include: [
-            {
-              model: Rating,
-            },
-          ],
-        },
-        {
-          model: Ride,
-          include: [
-            {
-              model: Driver,
-              include: [
-                {
-                  model: User,
-                  attributes: {
-                    exclude: [
-                      "biography",
-                      "password",
-                      "phoneNumber",
-                      "createdAt",
-                      "updatedAt",
-                    ],
-                  },
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    })
-      .then((booking) => {
-        if (booking) {
+        if (isDriver) {
           return PassengerRating.create({
             UserId: booking.User.id,
             DriverId: booking.Ride.DriverId,
@@ -598,7 +576,38 @@ module.exports = {
               res.status(400).json(errorMessage);
             });
         } else {
-          res.status(400).json(errorMessage);
+          return DriverRating.create({
+            UserId: booking.User.id,
+            DriverId: booking.Ride.DriverId,
+            RideId: booking.Ride.id,
+            BookingId: booking.id,
+            value: note,
+            comment,
+          })
+            .then((rating) => {
+              // console.log(conversations);
+
+              emailController.sendEmailToAdmin(
+                emailTemplates.admin_newRating()
+              );
+              emailController.sendEmail(
+                booking.User,
+                emailTemplates.newRating()
+              );
+
+              res.status(201).json({
+                flag: "SUCCESS",
+              });
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
         }
       })
       .catch((error) => {

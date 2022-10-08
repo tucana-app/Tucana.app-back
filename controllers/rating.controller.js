@@ -25,6 +25,48 @@ module.exports = {
   getRatingToDo(req, res) {
     const { userId, bookingId } = req.query;
 
+    DriverRating.findOne({
+      where: {
+        UserId: userId,
+        BookingId: bookingId,
+      },
+    })
+      .then((driverRating) => {
+        if (driverRating) {
+          return res
+            .status(400)
+            .json({
+              message: "The rating already exist",
+              flag: "RATING_ALREADY_EXIST",
+            });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+
+    PassengerRating.findOne({
+      where: {
+        UserId: userId,
+        BookingId: bookingId,
+      },
+    })
+      .then((passengerRating) => {
+        if (passengerRating) {
+          return res
+            .status(400)
+            .json({
+              message: "The rating already exist",
+              flag: "RATING_ALREADY_EXIST",
+            });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+
     return Booking.findOne({
       where: {
         id: bookingId,
@@ -101,6 +143,42 @@ module.exports = {
           UserId: userId,
           BookingStatusId: 3, // accepted
         },
+        include: [
+          {
+            model: Ride,
+            include: [
+              {
+                model: Driver,
+                include: [
+                  {
+                    model: User,
+                    attributes: {
+                      exclude: [
+                        "biography",
+                        "password",
+                        "phoneNumber",
+                        "createdAt",
+                        "updatedAt",
+                      ],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            model: User,
+            attributes: {
+              exclude: [
+                "biography",
+                "password",
+                "phoneNumber",
+                "createdAt",
+                "updatedAt",
+              ],
+            },
+          },
+        ],
       });
 
       if (bookings.length) {
@@ -111,72 +189,66 @@ module.exports = {
                 id: booking.RideId,
                 RideStatusId: 3, // done
               },
-              include: [
-                {
-                  model: Booking,
-                  include: [
-                    {
-                      model: User,
-                      attributes: {
-                        exclude: [
-                          "biography",
-                          "password",
-                          "phoneNumber",
-                          "createdAt",
-                          "updatedAt",
-                        ],
-                      },
+            })
+              .then((ride) => {
+                if (ride) {
+                  return RideFeedback.findOne({
+                    where: {
+                      RideId: ride.id,
+                      UserId: userId,
+                      isConfirmed: true,
                     },
-                  ],
-                },
-                {
-                  model: Driver,
-                  include: [
-                    {
-                      model: User,
-                      attributes: {
-                        exclude: [
-                          "biography",
-                          "password",
-                          "phoneNumber",
-                          "createdAt",
-                          "updatedAt",
-                        ],
-                      },
-                    },
-                  ],
-                },
-              ],
-            }).then((ride) => {
-              // If the ride is done
-              if (ride) {
-                // Look for past ratings now
-
-                return RideFeedback.findOne({
-                  where: {
-                    RideId: ride.id,
-                    UserId: userId,
-                    isConfirmed: true,
-                  },
-                }).then((feedback) => {
-                  if (feedback) {
-                    return DriverRating.findOne({
-                      where: {
-                        RideId: ride.id,
-                        UserId: userId,
-                      },
-                    }).then((rating) => {
-                      if (!rating) {
-                        // Rating needs to be done
-                        ratingsToDoPassenger.push(ride);
+                  })
+                    .then((feedback) => {
+                      if (feedback) {
+                        return DriverRating.findOne({
+                          where: {
+                            RideId: ride.id,
+                            UserId: userId,
+                          },
+                        })
+                          .then((rating) => {
+                            if (!rating) {
+                              // Rating needs to be done
+                              ratingsToDoPassenger.push(ride);
+                            }
+                          })
+                          .catch((error) => {
+                            consoleError(
+                              fileName,
+                              arguments.callee.name,
+                              Error().stack,
+                              error
+                            );
+                            res.status(400).json([]);
+                          });
                       }
+                    })
+                    .catch((error) => {
+                      consoleError(
+                        fileName,
+                        arguments.callee.name,
+                        Error().stack,
+                        error
+                      );
+                      res.status(400).json([]);
                     });
-                  }
-                });
-              }
-            });
+                }
+              })
+              .catch((error) => {
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
+                res.status(400).json([]);
+              });
           })
-        ).catch((error) => res.status(400).json([]));
+        ).catch((error) => {
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
+          res.status(400).json([]);
+        });
 
         return res.status(200).json(ratingsToDoPassenger);
       } else {
@@ -196,6 +268,42 @@ module.exports = {
           DriverId: driverId,
           BookingStatusId: 3, // accepted
         },
+        include: [
+          {
+            model: Ride,
+            include: [
+              {
+                model: Driver,
+                include: [
+                  {
+                    model: User,
+                    attributes: {
+                      exclude: [
+                        "biography",
+                        "password",
+                        "phoneNumber",
+                        "createdAt",
+                        "updatedAt",
+                      ],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            model: User,
+            attributes: {
+              exclude: [
+                "biography",
+                "password",
+                "phoneNumber",
+                "createdAt",
+                "updatedAt",
+              ],
+            },
+          },
+        ],
       });
 
       if (bookings.length) {
@@ -206,70 +314,64 @@ module.exports = {
                 id: booking.RideId,
                 RideStatusId: 3, // done
               },
-              include: [
-                {
-                  model: Booking,
-                  include: [
-                    {
-                      model: User,
-                      attributes: {
-                        exclude: [
-                          "biography",
-                          "password",
-                          "phoneNumber",
-                          "createdAt",
-                          "updatedAt",
-                        ],
-                      },
+            })
+              .then((ride) => {
+                // If the ride is done
+                if (ride) {
+                  // Look if the ride has been completed
+                  return RideFeedback.findOne({
+                    where: {
+                      RideId: ride.id,
+                      UserId: userId,
+                      isConfirmed: true,
                     },
-                  ],
-                },
-                {
-                  model: Driver,
-                  include: [
-                    {
-                      model: User,
-                      attributes: {
-                        exclude: [
-                          "biography",
-                          "password",
-                          "phoneNumber",
-                          "createdAt",
-                          "updatedAt",
-                        ],
-                      },
-                    },
-                  ],
-                },
-              ],
-            }).then((ride) => {
-              // If the ride is done
-              if (ride) {
-                // Look if the ride has been completed
-                return RideFeedback.findOne({
-                  where: {
-                    RideId: ride.id,
-                    UserId: userId,
-                    isConfirmed: true,
-                  },
-                }).then((feedback) => {
-                  if (feedback) {
-                    // Look for past ratings now
-                    return PassengerRating.findOne({
-                      where: {
-                        RideId: ride.id,
-                        DriverId: driverId,
-                      },
-                    }).then((rating) => {
-                      if (!rating) {
-                        // Rating needs to be done
-                        ratingsToDoDriver.push(ride);
+                  })
+                    .then((feedback) => {
+                      if (feedback) {
+                        // Look for past ratings now
+                        return PassengerRating.findOne({
+                          where: {
+                            RideId: ride.id,
+                            DriverId: driverId,
+                          },
+                        })
+                          .then((rating) => {
+                            if (!rating) {
+                              // Rating needs to be done
+                              ratingsToDoDriver.push(ride);
+                            }
+                          })
+                          .catch((error) => {
+                            consoleError(
+                              fileName,
+                              arguments.callee.name,
+                              Error().stack,
+                              error
+                            );
+                            res.status(400).json([]);
+                          });
                       }
+                    })
+                    .catch((error) => {
+                      consoleError(
+                        fileName,
+                        arguments.callee.name,
+                        Error().stack,
+                        error
+                      );
+                      res.status(400).json([]);
                     });
-                  }
-                });
-              }
-            });
+                }
+              })
+              .catch((error) => {
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
+                res.status(400).json([]);
+              });
           })
         ).catch((error) => {
           consoleError(fileName, arguments.callee.name, Error().stack, error);

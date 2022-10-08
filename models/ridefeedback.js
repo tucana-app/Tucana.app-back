@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       RideId: DataTypes.INTEGER,
       BookingId: DataTypes.INTEGER,
       isConfirmed: DataTypes.BOOLEAN,
+      userComment: DataTypes.STRING,
     },
     {
       sequelize,

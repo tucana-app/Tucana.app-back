@@ -11,14 +11,13 @@ const {
   updateExperienceUser,
   pointsGrid,
   consoleError,
+  changeTimezone,
 } = require("../helpers");
 
 const Ride = db.Ride;
 const RideFeedback = db.RideFeedback;
 const RideStatus = db.RideStatus;
 const User = db.User;
-const ExperienceUser = db.ExperienceUser;
-const ExperienceUserLevel = db.ExperienceUserLevel;
 const Driver = db.Driver;
 const Car = db.Car;
 const Rating = db.Rating;
@@ -73,15 +72,23 @@ module.exports = {
 
   addRide(req, res) {
     const { user, formPublishRide } = req.body;
-
     commentConverted = convert(formPublishRide.comment);
+
+    var dTO = changeTimezone(
+      new Date(formPublishRide.dateTimeOrigin),
+      "America/Costa_Rica"
+    );
+    var dTD = changeTimezone(
+      new Date(formPublishRide.dateTimeDestination),
+      "America/Costa_Rica"
+    );
 
     return Ride.create({
       DriverId: user.Driver.id,
       origin: formPublishRide.origin,
       destination: formPublishRide.destination,
-      dateTimeOrigin: formPublishRide.dateTimeOrigin,
-      dateTimeDestination: formPublishRide.dateTimeDestination,
+      dateTimeOrigin: dTO,
+      dateTimeDestination: dTD,
       ETA: formPublishRide.ETAdata,
       price: formPublishRide.price,
       seatsAvailable: formPublishRide.seats,
@@ -137,75 +144,6 @@ module.exports = {
         },
         {
           model: RideStatus,
-        },
-      ],
-    })
-      .then((response) => {
-        // console.log(response);
-        res.status(200).json(response);
-      })
-      .catch((error) => {
-        consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(errorMessage);
-      });
-  },
-
-  getBooking(req, res) {
-    return Booking.findOne({
-      where: {
-        id: req.params.bookingId,
-      },
-      order: [["createdAt", "ASC"]],
-      include: [
-        {
-          model: User,
-          attributes: {
-            exclude: [
-              "biography",
-              "password",
-              "phoneNumber",
-              "createdAt",
-              "updatedAt",
-            ],
-          },
-          include: [
-            {
-              model: Rating,
-            },
-          ],
-        },
-        {
-          model: Ride,
-          include: [
-            {
-              model: Driver,
-              include: [
-                {
-                  model: User,
-                  attributes: {
-                    exclude: [
-                      "biography",
-                      "password",
-                      "phoneNumber",
-                      "createdAt",
-                      "updatedAt",
-                    ],
-                  },
-                  include: [
-                    {
-                      model: Rating,
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              model: RideStatus,
-            },
-          ],
-        },
-        {
-          model: BookingStatus,
         },
       ],
     })
@@ -995,7 +933,7 @@ module.exports = {
 
             return res.status(200).json(ridesToConfirm);
           } else {
-            res.status(400).json({
+            res.status(304).json({
               message: "No rides to complete",
               flag: "NO_RIDES_COMPLETE",
             });
@@ -1113,13 +1051,14 @@ module.exports = {
   },
 
   completeRide(req, res) {
-    const { userId, bookingId, rideId, isCompleted } = req.body;
+    const { userId, bookingId, rideId, comment, isCompleted } = req.body;
 
     return RideFeedback.create({
       UserId: userId,
       RideId: rideId,
       BookingId: bookingId,
       isConfirmed: isCompleted,
+      userComment: comment,
     })
       .then((response) => {
         // console.log(response);

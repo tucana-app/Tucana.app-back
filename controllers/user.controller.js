@@ -16,6 +16,7 @@ const User = db.User;
 const Driver = db.Driver;
 const Rating = db.Rating;
 const Ride = db.Ride;
+const Booking = db.Booking;
 const Car = db.Car;
 const DriverApplication = db.DriverApplication;
 const ExperienceUser = db.ExperienceUser;
@@ -1140,7 +1141,7 @@ module.exports = {
     })
       .then((user) => {
         // console.log(user);
-        if (user.Driver) {
+        if (user && user.Driver) {
           return Ride.findAndCountAll({
             where: {
               DriverId: user.Driver.id,
@@ -1206,6 +1207,93 @@ module.exports = {
         // console.log(user);
         if (user) {
           res.status(200).json({ user });
+        } else {
+          res.status(404).json({
+            message: "User not found",
+            flag: "USER_NOT_FOUND",
+          });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  driverEarnings(req, res) {
+    return User.findOne({
+      where: {
+        id: req.query.userId,
+      },
+      attributes: {
+        exclude: [
+          "password",
+          "phoneNumber",
+          "phoneConfirmed",
+          "firstSetUp",
+          "email",
+          "emailConfirmed",
+          "isClosed",
+          "isClosedDate",
+        ],
+      },
+      include: [
+        {
+          model: Driver,
+        },
+      ],
+    })
+      .then((user) => {
+        // console.log(user);
+        if (user) {
+          return Booking.findAll({
+            where: {
+              DriverId: user.Driver.id,
+              BookingStatusId: 3,
+            },
+          })
+            .then((bookings) => {
+              if (bookings.length) {
+                let bookingsEarned = 0;
+                bookings.map((booking) => {
+                  return Ride.findOne({
+                    where: {
+                      id: booking.RideId,
+                      RideStatusId: 3,
+                    },
+                  })
+                    .then((ride) => {
+                      if (ride) {
+                        bookingsEarned.push(booking);
+                      }
+                    })
+                    .catch((error) => {
+                      consoleError(
+                        fileName,
+                        arguments.callee.name,
+                        Error().stack,
+                        error
+                      );
+                      res.status(400).json(errorMessage);
+                    });
+                });
+                res.status(200).json(bookingsEarned);
+              } else {
+                res.status(400).json({
+                  message: "No bookings found for this driver",
+                  flag: "DRIVER_NO_BOOKINGS",
+                });
+              }
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
         } else {
           res.status(404).json({
             message: "User not found",

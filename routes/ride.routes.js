@@ -69,13 +69,13 @@ module.exports = (app) => {
   );
 
   app.get(
-    "/api/ride/rides-to-confirm",
+    "/api/ride/rides-to-complete",
     [authJwt.verifyToken],
     controller.ridesToConfirm
   );
 
   app.get(
-    "/api/ride/ride-to-confirm",
+    "/api/ride/ride-to-complete",
     [authJwt.verifyToken],
     controller.rideToConfirm
   );
@@ -93,10 +93,4 @@ module.exports = (app) => {
   );
 
   app.get("/api/ride/:rideId", [authJwt.verifyToken], controller.getRide);
-
-  app.get(
-    "/api/booking/:bookingId",
-    [authJwt.verifyToken],
-    controller.getBooking
-  );
 };

@@ -116,6 +116,12 @@ module.exports = function (app) {
   );
 
   app.get(
+    "/api/driver/get-earnings",
+    [authJwt.verifyToken],
+    controller.driverEarnings
+  );
+
+  app.get(
     "/api/driver/:username",
     [authJwt.verifyToken],
     controller.getDriverProfile

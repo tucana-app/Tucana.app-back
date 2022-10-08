@@ -85,6 +85,18 @@ const DateDiff = (d1, d2) => {
   return { dys, hrs, min };
 };
 
+const changeTimezone = (date, ianatz) => {
+  var invdate = new Date(
+    date.toLocaleString("en-US", {
+      timeZone: ianatz,
+    })
+  );
+
+  var diff = date.getTime() - invdate.getTime();
+
+  return new Date(date.getTime() - diff); // needs to substract
+};
+
 module.exports = {
   updateExperienceUser,
   pointsGrid,
@@ -94,4 +106,5 @@ module.exports = {
   findPhones,
   findEmails,
   findLinks,
+  changeTimezone,
 };

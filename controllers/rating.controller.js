@@ -27,44 +27,46 @@ module.exports = {
 
     DriverRating.findOne({
       where: {
-        UserId: userId,
+        [Op.or]: {
+          UserId: userId,
+          DriverId: userId,
+        },
         BookingId: bookingId,
       },
     })
       .then((driverRating) => {
         if (driverRating) {
-          return res
-            .status(400)
-            .json({
-              message: "The rating already exist",
-              flag: "RATING_ALREADY_EXIST",
-            });
+          return res.status(400).json({
+            message: "The rating already exist",
+            flag: "RATING_ALREADY_EXIST",
+          });
         }
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(errorMessage);
+        return res.status(400).json(errorMessage);
       });
 
     PassengerRating.findOne({
       where: {
-        UserId: userId,
+        [Op.or]: {
+          UserId: userId,
+          DriverId: userId,
+        },
         BookingId: bookingId,
       },
     })
       .then((passengerRating) => {
         if (passengerRating) {
-          return res
-            .status(400)
-            .json({
-              message: "The rating already exist",
-              flag: "RATING_ALREADY_EXIST",
-            });
+          return res.status(400).json({
+            message: "The rating already exist",
+            flag: "RATING_ALREADY_EXIST",
+          });
         }
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(errorMessage);
+        return res.status(400).json(errorMessage);
       });
 
     return Booking.findOne({
@@ -210,7 +212,7 @@ module.exports = {
                           .then((rating) => {
                             if (!rating) {
                               // Rating needs to be done
-                              ratingsToDoPassenger.push(ride);
+                              ratingsToDoPassenger.push(booking);
                             }
                           })
                           .catch((error) => {
@@ -338,7 +340,7 @@ module.exports = {
                           .then((rating) => {
                             if (!rating) {
                               // Rating needs to be done
-                              ratingsToDoDriver.push(ride);
+                              ratingsToDoDriver.push(booking);
                             }
                           })
                           .catch((error) => {

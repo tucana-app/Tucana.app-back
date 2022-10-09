@@ -10,6 +10,10 @@ module.exports = {
     password: process.env.DATABASE_PASSWORD,
     dialect: "postgres",
     logging: false,
+    dialectOptions: {
+      useUTC: false, // for reading from database
+    },
+    timezone: "-06:00", // for writing to database
   },
   production: {
     url: process.env.DATABASE_URL,
@@ -26,6 +30,8 @@ module.exports = {
         require: true,
         rejectUnauthorized: false,
       },
+      useUTC: false, // for reading from database
     },
+    timezone: "-06:00", // for writing to database
   },
 };

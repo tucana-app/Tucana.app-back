@@ -74,21 +74,12 @@ module.exports = {
     const { user, formPublishRide } = req.body;
     commentConverted = convert(formPublishRide.comment);
 
-    var dTO = changeTimezone(
-      new Date(formPublishRide.dateTimeOrigin),
-      "America/Costa_Rica"
-    );
-    var dTD = changeTimezone(
-      new Date(formPublishRide.dateTimeDestination),
-      "America/Costa_Rica"
-    );
-
     return Ride.create({
       DriverId: user.Driver.id,
       origin: formPublishRide.origin,
       destination: formPublishRide.destination,
-      dateTimeOrigin: dTO,
-      dateTimeDestination: dTD,
+      dateTimeOrigin: formPublishRide.dateTimeOrigin,
+      dateTimeDestination: formPublishRide.dateTimeDestination,
       ETA: formPublishRide.ETAdata,
       price: formPublishRide.price,
       seatsAvailable: formPublishRide.seats,

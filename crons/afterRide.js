@@ -14,13 +14,20 @@ const Booking = db.Booking;
 const { consoleError, consoleCronStop } = require("../helpers");
 
 const now = new Date();
+const in12hours = new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate(),
+  now.getHours() + 12,
+  now.getMinutes()
+);
 
 // Function
-module.exports = async function afterRide() {
-  const promise = await Ride.findAll({
+module.exports = function afterRide() {
+  return Ride.findAll({
     where: {
       dateTimeDestination: {
-        [Op.lte]: new Date(now.setHours(now.getHours() + 12)),
+        [Op.lte]: in12hours,
       },
       RideStatusId: {
         [Op.lt]: 3,
@@ -49,7 +56,7 @@ module.exports = async function afterRide() {
     .then((rides) => {
       // console.log(rides);
 
-      if (rides.length) {
+      if (rides) {
         rides.map((ride) => {
           // We update the ride to "Done"
           return Ride.update(

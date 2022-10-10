@@ -22,6 +22,8 @@ const passwordUpdated = require("./passwordUpdated");
 const accountClosed = require("./accountClosed");
 const beforeRide = require("./beforeRide");
 const afterRide = require("./afterRide");
+const bookingCanceledToUser = require("./bookingCanceledToUser");
+const bookingCanceledToDriver = require("./bookingCanceledToDriver");
 
 // Admin emails
 const admin_newFormBecomeDriver = require("./admin_newFormBecomeDriver");
@@ -54,6 +56,8 @@ module.exports = {
   accountClosed,
   beforeRide,
   afterRide,
+  bookingCanceledToUser,
+  bookingCanceledToDriver,
 
   // Admin emails
   admin_newFormBecomeDriver,

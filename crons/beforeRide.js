@@ -13,12 +13,14 @@ const Op = db.Sequelize.Op;
 
 const { consoleError, consoleCronStop, DateDiff } = require("../helpers");
 
+const now = new Date();
+
 // Function
-module.exports = async function beforeRide() {
-  const promise = await Ride.findAll({
+module.exports = function beforeRide() {
+  return Ride.findAll({
     where: {
       dateTimeOrigin: {
-        [Op.gt]: new Date(),
+        [Op.gt]: now,
       },
       RideStatusId: {
         [Op.lt]: 3,
@@ -48,7 +50,7 @@ module.exports = async function beforeRide() {
       if (rides) {
         rides.map((ride) => {
           if (ride.seatsAvailable !== ride.seatsLeft) {
-            const { dys, hrs, min } = DateDiff(ride.dateTimeOrigin, new Date());
+            const { dys, hrs, min } = DateDiff(ride.dateTimeOrigin, now);
 
             // Ride coming in less than 1h
             if (dys === 0 && hrs <= 0 && min > 0) {
@@ -112,13 +114,18 @@ module.exports = async function beforeRide() {
                   bookings.map((booking) => {
                     const { dys, hrs, min } = DateDiff(
                       ride.dateTimeOrigin,
-                      new Date()
+                      now
                     );
 
                     if (dys === 0 && hrs <= 0 && min > 0) {
                       // Ride coming in less than 1h
                       emailController.sendEmail(
                         booking.User,
+                        emailTemplate.beforeRide(ride)
+                      );
+
+                      emailController.sendEmail(
+                        booking.Driver.User,
                         emailTemplate.beforeRide(ride)
                       );
                     }

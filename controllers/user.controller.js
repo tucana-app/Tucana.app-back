@@ -1105,6 +1105,54 @@ module.exports = {
       });
   },
 
+  getPublicProfile(req, res) {
+    return User.findOne({
+      where: {
+        username: req.params.username,
+      },
+      attributes: {
+        exclude: [
+          "password",
+          "phoneNumber",
+          "phoneConfirmed",
+          "firstSetUp",
+          "email",
+          "emailConfirmed",
+          "isClosed",
+          "isClosedDate",
+        ],
+      },
+      include: [
+        {
+          model: Rating,
+        },
+        {
+          model: ExperienceUser,
+          include: [
+            {
+              model: ExperienceUserLevel,
+            },
+          ],
+        },
+      ],
+    })
+      .then((user) => {
+        // console.log(user);
+        if (user) {
+          res.status(200).json({ user });
+        } else {
+          res.status(404).json({
+            message: "User not found",
+            flag: "USER_NOT_FOUND",
+          });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
   getDriverProfile(req, res) {
     return User.findOne({
       where: {
@@ -1172,54 +1220,6 @@ module.exports = {
       });
   },
 
-  getPassengerProfile(req, res) {
-    return User.findOne({
-      where: {
-        username: req.params.username,
-      },
-      attributes: {
-        exclude: [
-          "password",
-          "phoneNumber",
-          "phoneConfirmed",
-          "firstSetUp",
-          "email",
-          "emailConfirmed",
-          "isClosed",
-          "isClosedDate",
-        ],
-      },
-      include: [
-        {
-          model: Rating,
-        },
-        {
-          model: ExperienceUser,
-          include: [
-            {
-              model: ExperienceUserLevel,
-            },
-          ],
-        },
-      ],
-    })
-      .then((user) => {
-        // console.log(user);
-        if (user) {
-          res.status(200).json({ user });
-        } else {
-          res.status(404).json({
-            message: "User not found",
-            flag: "USER_NOT_FOUND",
-          });
-        }
-      })
-      .catch((error) => {
-        consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(errorMessage);
-      });
-  },
-
   driverEarnings(req, res) {
     return User.findOne({
       where: {
@@ -1254,7 +1254,7 @@ module.exports = {
           })
             .then((bookings) => {
               if (bookings.length) {
-                let bookingsEarned = 0;
+                let bookingsEarned = [];
                 bookings.map((booking) => {
                   return Ride.findOne({
                     where: {

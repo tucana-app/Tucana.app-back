@@ -116,6 +116,12 @@ module.exports = function (app) {
   );
 
   app.get(
+    "/api/profile/:username",
+    [authJwt.verifyToken],
+    controller.getPublicProfile
+  );
+
+  app.get(
     "/api/driver/get-earnings",
     [authJwt.verifyToken],
     controller.driverEarnings
@@ -125,11 +131,5 @@ module.exports = function (app) {
     "/api/driver/:username",
     [authJwt.verifyToken],
     controller.getDriverProfile
-  );
-
-  app.get(
-    "/api/passenger/:username",
-    [authJwt.verifyToken],
-    controller.getPassengerProfile
   );
 };

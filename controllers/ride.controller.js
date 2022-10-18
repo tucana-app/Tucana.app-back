@@ -837,7 +837,7 @@ module.exports = {
             where: {
               [Op.or]: {
                 UserId: user.id,
-                DriverId: user.id,
+                DriverId: user.Driver.id,
               },
               BookingStatusId: 3,
             },

@@ -833,11 +833,13 @@ module.exports = {
     })
       .then((user) => {
         (async function () {
+          const driverId = user.Driver ? user.Driver.id : 0;
+
           let bookings = await Booking.findAll({
             where: {
               [Op.or]: {
                 UserId: user.id,
-                DriverId: user.Driver.id,
+                DriverId: driverId,
               },
               BookingStatusId: 3,
             },

@@ -891,8 +891,6 @@ module.exports = {
           if (bookings.length) {
             await Promise.all(
               bookings.map((booking) => {
-                console.log(booking.id, booking.User.id);
-
                 return RideFeedback.findOne({
                   where: {
                     UserId: userId,
@@ -900,8 +898,6 @@ module.exports = {
                   },
                 })
                   .then((feedback) => {
-                    console.log(feedback);
-
                     if (!feedback) {
                       // The user hasn't already gave a feedback
                       ridesToConfirm.push(booking);

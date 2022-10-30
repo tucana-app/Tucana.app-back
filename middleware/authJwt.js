@@ -11,12 +11,13 @@ verifyToken = (req, res, next) => {
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({
-        message: "Unauthorized",
-      });
-    }
     // Verify the expiracy of the token here
+
+    // if (err) {
+    //   return res.status(401).send({
+    //     message: "Unauthorized",
+    //   });
+    // }
 
     // console.log(decoded);
 

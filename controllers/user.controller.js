@@ -47,16 +47,19 @@ module.exports = {
     })
       .then((user) => {
         return ConfirmEmail.create({
+          id: user.id,
           UserId: user.id,
           UUID: uuidv4(),
         })
           .then((confirmEmailLine) => {
             return Rating.create({
+              id: user.id,
               UserId: user.id,
             })
               .then((response) => {
                 // console.log(response)
                 return ExperienceUser.create({
+                  id: user.id,
                   UserId: user.id,
                 })
                   .then((response) => {

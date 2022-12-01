@@ -27,17 +27,14 @@ module.exports = {
 
     DriverRating.findOne({
       where: {
-        [Op.or]: {
-          UserId: userId,
-          DriverId: userId,
-        },
+        UserId: userId,
         BookingId: bookingId,
       },
     })
       .then((driverRating) => {
         if (driverRating) {
           return res.status(400).json({
-            message: "The rating already exist",
+            message: "The driver rating already exist",
             flag: "RATING_ALREADY_EXIST",
           });
         }
@@ -49,17 +46,14 @@ module.exports = {
 
     PassengerRating.findOne({
       where: {
-        [Op.or]: {
-          UserId: userId,
-          DriverId: userId,
-        },
+        DriverId: userId,
         BookingId: bookingId,
       },
     })
       .then((passengerRating) => {
         if (passengerRating) {
           return res.status(400).json({
-            message: "The rating already exist",
+            message: "The passenger rating already exist",
             flag: "RATING_ALREADY_EXIST",
           });
         }

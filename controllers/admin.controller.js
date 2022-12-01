@@ -440,6 +440,7 @@ module.exports = {
         if (isAccepted) {
           // Create the new driver
           return Driver.create({
+            id: application.UserId,
             UserId: application.UserId,
             idType: application.idType,
             idNumber: application.idNumber,

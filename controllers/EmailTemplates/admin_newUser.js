@@ -1,8 +1,8 @@
 require("dotenv").config;
 
 module.exports = function admin_newUser() {
-  const subject = "New user 🎉 | Tucána";
-  const text = `Tucána | New user signed up`;
+  const subject = "🎉 New user | Tucána";
+  const text = `New user signed up`;
   const html = `
       <div>
       <h1>Tucána</h1>

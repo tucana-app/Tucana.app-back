@@ -93,6 +93,8 @@ module.exports = {
 
         emailController.sendEmail(user, emailTemplates.publishRide(ride));
 
+        emailController.sendEmailToAdmin(emailTemplates.admin_newRide());
+
         updateExperienceUser(user.id, pointsGrid.PUBLISH_RIDE);
       })
       .catch((error) => {

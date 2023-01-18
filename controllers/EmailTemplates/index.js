@@ -27,6 +27,7 @@ const bookingCanceledToDriver = require("./bookingCanceledToDriver");
 
 // Admin emails
 const admin_newUser = require("./admin_newUser");
+const admin_newRide = require("./admin_newRide");
 const admin_newFormBecomeDriver = require("./admin_newFormBecomeDriver");
 const admin_newRating = require("./admin_newRating");
 const admin_newRideRejected = require("./admin_newRideRejected");
@@ -62,6 +63,7 @@ module.exports = {
 
   // Admin emails
   admin_newUser,
+  admin_newRide,
   admin_newFormBecomeDriver,
   admin_newRating,
   admin_newRideRejected,

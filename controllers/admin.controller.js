@@ -31,6 +31,9 @@ const admin_VerifPassengerRating = db.admin_VerifPassengerRating;
 const admin_VerifDriverRating = db.admin_VerifDriverRating;
 const Op = db.Sequelize.Op;
 const admin_VerifDriverApplication = db.admin_VerifDriverApplication;
+const Conversation = db.Conversation;
+const Message = db.Message;
+const MessageStatus = db.MessageStatus;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -855,6 +858,87 @@ module.exports = {
       })
       .catch((error) => {
         res.status(400).send(error);
+      });
+  },
+
+  adminListConversations(req, res) {
+    return Conversation.findAll({
+      order: [["id", "ASC"]],
+      include: [
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminSingleConversation(req, res) {
+    return Message.findAll({
+      where: {
+        ConversationId: req.query.conversationId,
+      },
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+        {
+          model: MessageStatus,
+        },
+        {
+          model: Conversation,
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
       });
   },
 };

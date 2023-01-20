@@ -93,4 +93,16 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     controller.cronBeforeRide
   );
+
+  app.get(
+    "/api/admin/list-conversations",
+    [authJwt.verifyToken],
+    controller.adminListConversations
+  );
+
+  app.get(
+    "/api/admin/single-conversation",
+    [authJwt.verifyToken],
+    controller.adminSingleConversation
+  );
 };

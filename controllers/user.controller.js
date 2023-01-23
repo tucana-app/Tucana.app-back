@@ -613,7 +613,7 @@ module.exports = {
                 emailController.sendEmailToAdmin(
                   emailTemplates.admin_errorFrontEnd(
                     arguments.callee.name +
-                      "We couldn't send the confirmation link",
+                      " - We couldn't send the confirmation link",
                     Error().stack
                   )
                 );
@@ -646,7 +646,7 @@ module.exports = {
               emailController.sendEmailToAdmin(
                 emailTemplates.admin_errorFrontEnd(
                   arguments.callee.name +
-                    "We couldn't send the confirmation link",
+                    " - We couldn't send the confirmation link",
                   Error().stack
                 )
               );
@@ -661,7 +661,8 @@ module.exports = {
 
           emailController.sendEmailToAdmin(
             emailTemplates.admin_errorFrontEnd(
-              arguments.callee.name + "We couldn't send the confirmation link",
+              arguments.callee.name +
+                " - We couldn't send the confirmation link",
               Error().stack
             )
           );
@@ -677,7 +678,7 @@ module.exports = {
 
         emailController.sendEmailToAdmin(
           emailTemplates.admin_errorFrontEnd(
-            arguments.callee.name + "We couldn't send the confirmation link",
+            arguments.callee.name + " - We couldn't send the confirmation link",
             Error().stack
           )
         );

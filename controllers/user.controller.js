@@ -602,6 +602,21 @@ module.exports = {
                   message: "We couldn't send the confirmation link",
                   flag: "NO_CONFIRMATION",
                 });
+
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
+
+                emailController.sendEmailToAdmin(
+                  emailTemplates.admin_errorFrontEnd(
+                    arguments.callee.name +
+                      "We couldn't send the confirmation link",
+                    Error().stack
+                  )
+                );
               } else {
                 res.status(200).send({
                   message:
@@ -620,12 +635,36 @@ module.exports = {
                 message: "We couldn't send the confirmation link",
                 flag: "ERROR_DB",
               });
+
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+
+              emailController.sendEmailToAdmin(
+                emailTemplates.admin_errorFrontEnd(
+                  arguments.callee.name +
+                    "We couldn't send the confirmation link",
+                  Error().stack
+                )
+              );
             });
         } else {
           res.status(404).send({
             message: "We couldn't send the confirmation link",
             flag: "USER_NOT_FOUND",
           });
+
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
+
+          emailController.sendEmailToAdmin(
+            emailTemplates.admin_errorFrontEnd(
+              arguments.callee.name + "We couldn't send the confirmation link",
+              Error().stack
+            )
+          );
         }
       })
       .catch((error) => {
@@ -633,6 +672,15 @@ module.exports = {
           message: "We couldn't send the confirmation link",
           flag: "GENERAL_ERROR",
         });
+
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+
+        emailController.sendEmailToAdmin(
+          emailTemplates.admin_errorFrontEnd(
+            arguments.callee.name + "We couldn't send the confirmation link",
+            Error().stack
+          )
+        );
       });
   },
 

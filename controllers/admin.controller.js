@@ -359,6 +359,7 @@ module.exports = {
 
   adminAllDriversApplications(req, res) {
     return DriverApplication.findAll({
+      order: [["id", "DESC"]],
       include: [
         {
           model: admin_VerifDriverApplication,

@@ -34,6 +34,7 @@ const admin_VerifDriverApplication = db.admin_VerifDriverApplication;
 const Conversation = db.Conversation;
 const Message = db.Message;
 const MessageStatus = db.MessageStatus;
+const ExperienceUser = db.ExperienceUser;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -930,6 +931,38 @@ module.exports = {
         },
         {
           model: Conversation,
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminSingleUser(req, res) {
+    return User.findOne({
+      where: {
+        id: req.query.userId,
+      },
+      attributes: {
+        exclude: ["password"],
+      },
+      include: [
+        {
+          model: Driver,
+          include: [
+            {
+              model: Car,
+            },
+          ],
+        },
+        {
+          model: ExperienceUser,
         },
       ],
     })

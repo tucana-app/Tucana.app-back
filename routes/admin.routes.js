@@ -105,4 +105,10 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     controller.adminSingleConversation
   );
+
+  app.get(
+    "/api/admin/single-user",
+    [authJwt.verifyToken],
+    controller.adminSingleUser
+  );
 };

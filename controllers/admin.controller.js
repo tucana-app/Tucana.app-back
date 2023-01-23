@@ -96,7 +96,7 @@ module.exports = {
 
   adminListUsers(req, res) {
     return User.findAll({
-      order: [["id", "ASC"]],
+      order: [["id", "DESC"]],
     })
       .then((response) => {
         // console.log(response);
@@ -110,7 +110,7 @@ module.exports = {
 
   adminListRides(req, res) {
     return Ride.findAll({
-      order: [["id", "ASC"]],
+      order: [["id", "DESC"]],
       include: [
         {
           model: Driver,

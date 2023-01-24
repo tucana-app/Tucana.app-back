@@ -212,7 +212,7 @@ module.exports = {
             },
           })
             .then((user) => {
-              // emailController.sendEmail(user, emailTemplate.newMessage());
+              emailController.sendEmail(user, emailTemplate.newMessage());
 
               // Update points
               updateExperienceUser(senderId, pointsGrid.NEW_MESSAGE);

@@ -33,12 +33,43 @@ const transporterAdmin = nodemailer.createTransport({
 
 module.exports = {
   sendEmail(user, template) {
-    var mailOptions = {
+    var mailOptions;
+
+    mailOptions = {
       from: `Tucána <${process.env.EMAIL_ADDRESS}>`,
       to: `${user.firstName} ${user.lastName} <${user.email}>`,
       subject: template.subject,
       text: template.text,
       html: template.html,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        consoleError(fileName, "sendEmail", Error().stack, error);
+      } else {
+        // console.log("Email sent: ", info.response);
+      }
+    });
+
+    // Send a copy to info@tucana.app to keep a record of what is being sent
+    mailOptions = {
+      from: `Tucána <${process.env.EMAIL_ADDRESS}>`,
+      to: `info@tucana.app`,
+      subject: `🟨 Copy email`,
+      text: `${user.firstName} ${user.lastName} - <${user.email}> | ${template.text}`,
+      html: `<p>Subject: "${template.subject}"</p>
+      Sent to: 
+      <ul>
+        <li>User ID: <strong>${user.id}</strong></li>
+        <li>Fullname: <strong>${user.firstName} ${user.lastName}</strong></li>
+        <li>Email: <strong>${user.email}</strong></li>
+      </ul>
+
+      <br />
+      <hr />
+      <br />
+
+      ${template.html}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

@@ -40,7 +40,7 @@ module.exports = {
     return User.create({
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       phoneNumber,
       username: username.toLowerCase().replace(" ", ""),
       password: bcrypt.hashSync(password, 10),
@@ -361,9 +361,8 @@ module.exports = {
       .then((user) => {
         if (!user) {
           // Email not found
-          res.status(200).json({
-            message:
-              "If your email address exists, please verify your inbox for a password reset link email",
+          res.status(404).json({
+            message: "We couldn't find this email in our database",
           });
         } else {
           // Email found

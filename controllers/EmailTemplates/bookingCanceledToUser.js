@@ -1,12 +1,18 @@
 // const dateFormat = require("dateformat");
+const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function bookingCanceledToUser(booking, comment) {
-  const subject = `❌ You canceled the booking to ${booking.Ride.destination.city} | Tucána`;
-  const text = `The booking for ${booking.seatsBooked} seat(s) has been canceld successfully. Reason: ${comment}. The driver has been notificed via email.`;
-  const html = `<p>Tucána</p>
-  <p>The booking for ${booking.seatsBooked} seat(s) has been canceld successfully.</p>
-  <p>Reason: ${comment}.
-  <p>The driver has been notificed via email</p>`;
+  const subject = `❌ Reserva anulada - Booking canceled`;
+  const text = `Your booking for ${booking.seatsBooked} seat(s) has been canceled successfully. Reason: "${comment}". The driver has been notified via email.`;
+
+  const html = emailHtmlTemplate({
+    titleEN: `❌ Your booking for ${booking.seatsBooked} seat(s) has been canceled successfully`,
+    textEN: `<p>Reason: "${comment}".</p>
+    <p>The driver has been notified via email.</p>`,
+    titleES: `❌ Su reserva para ${booking.seatsBooked} asiento(s) ha sido cancelada con éxito`,
+    textES: `<p>Motivo: "${comment}".</p>
+    <p>El conductor ha sido notificado por correo electrónico.</p>`,
+  });
 
   return { subject, text, html };
 };

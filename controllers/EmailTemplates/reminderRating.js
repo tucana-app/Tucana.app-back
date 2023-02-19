@@ -1,25 +1,40 @@
 require("dotenv").config;
 const dateFormat = require("dateformat");
+const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function reminderRating({ user, ride, booking }) {
-  const subject = "Reminder to rate your ride | Tucána";
-  const text = `Tucána | We would like to know more about your ride from ${
-    ride.origin.city
-  } to ${ride.destination.city} on the ${dateFormat(
+  const subject = "Califique tu ride - Rate your ride";
+
+  const text = `Tucána | 
+  Nos gustaría saber más acerca de tu ride de ${ride.origin.city} a ${
+    ride.destination.city
+  } el ${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
-  )}. You can add your rating.`;
-  const html = `
-      <div>
-      <h1>Tucána</h1>
-      <p>We would like to know more about your ride from ${
-        ride.origin.city
-      } to ${ride.destination.city} on the ${dateFormat(
+  )}. Por favor, añade una calificación a la persona con la que viajaste. 
+  We would like to know more about your ride from ${ride.origin.city} to ${
+    ride.destination.city
+  } on the ${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
-  )}</p>
-      <p>You can add your rating</p>
-      </div>
-    `;
+  )}. Please add a rating to the person you traveled with.`;
+
+  const html = emailHtmlTemplate({
+    titleEN: `Reminder to rate your ride`,
+    textEN: `<p>We would like to know more about your ride from ${
+      ride.origin.city
+    } to ${ride.destination.city} on the ${dateFormat(
+      ride.dateTimeOrigin,
+      "dd/mm/yyyy"
+    )}. Please add a rating to the person you traveled with.</p>`,
+    titleES: `Recordatorio para calificar  tu ride`,
+    textES: `<p>Nos gustaría saber más acerca de tu ride de ${
+      ride.origin.city
+    } a ${ride.destination.city} el ${dateFormat(
+      ride.dateTimeOrigin,
+      "dd/mm/yyyy"
+    )}. Por favor, añade una calificación a la persona con la que viajaste.</p>.`,
+  });
+
   return { subject, text, html };
 };

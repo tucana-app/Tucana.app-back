@@ -85,6 +85,21 @@ const DateDiff = (d1, d2) => {
   return { dys, hrs, min };
 };
 
+const getYearsDiff = (date1, date2) => {
+  // convert both dates to milliseconds
+  const date1Millis = date1.getTime();
+  const date2Millis = date2.getTime();
+
+  // calculate the difference in milliseconds
+  const diffMillis = Math.abs(date2Millis - date1Millis);
+
+  // convert milliseconds to years
+  const millisPerYear = 1000 * 60 * 60 * 24 * 365.25; // 365.25 days in a year to account for leap years
+  const diffYears = Math.floor(diffMillis / millisPerYear);
+
+  return diffYears;
+};
+
 module.exports = {
   updateExperienceUser,
   pointsGrid,
@@ -94,4 +109,5 @@ module.exports = {
   findPhones,
   findEmails,
   findLinks,
+  getYearsDiff,
 };

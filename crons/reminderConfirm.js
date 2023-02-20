@@ -17,7 +17,7 @@ const emailReminderRating = db.emailReminderRating;
 const { consoleError, consoleCronStop } = require("../helpers");
 
 // Function
-module.exports = async function afterRide() {
+module.exports = async function reminderConfirm() {
   const promise = await Ride.findAll({
     where: {
       dateTimeDestination: {

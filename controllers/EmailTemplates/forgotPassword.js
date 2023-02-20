@@ -3,6 +3,7 @@ const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function forgotPassword(UUID) {
   const subject = "Contraseña olvidada - Forgot your password";
+
   const text = `Tucána | 
   Para crear una nueva contraseña, haga clic en este enlace: ${process.env.REACT_APP_URL_CLIENT}/new-password/${UUID} | 
   To create a new password, please click on this link: ${process.env.REACT_APP_URL_CLIENT}/new-password/${UUID}`;

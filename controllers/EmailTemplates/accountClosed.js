@@ -3,6 +3,7 @@ const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function accountClosed() {
   const subject = "Cuenta cerrada - Account closed";
+
   const text = `Tucána | 
   Para volver a acceder a nuestra plataforma, debe crear otra cuenta, con un nuevo nombre de usuario y una nueva dirección de correo electrónico. Si no eres el autor de esta solicitud, ponte en contacto con nosotros inmediatamente.
   

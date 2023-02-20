@@ -3,6 +3,7 @@ const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function bookRideByUser(ride, seats) {
   const subject = "Resumen de la reserva - Booking summary";
+
   const text = `Tucána | 
   Tu solicitud de reserva ha sido enviada a ${ride.Driver.User.firstName}. 
   Reservaste ${seats} asiento(s) en el Ride por ${
@@ -10,8 +11,7 @@ module.exports = function bookRideByUser(ride, seats) {
   } de ${ride.origin.city} a ${ride.destination.city} el ${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
-  )} a las ${dateFormat(ride.dateTimeOrigin, "hh:mm TT")}.
-  
+  )} a las ${dateFormat(ride.dateTimeOrigin, "hh:mm TT")}. 
   Your booking request has been sent to ${ride.Driver.User.firstName}.
   You booked ${seats} seat(s) on the ride by ${
     ride.Driver.User.firstName

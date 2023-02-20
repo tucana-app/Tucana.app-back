@@ -4,6 +4,7 @@ const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function publishRide(ride) {
   const subject = "Ride en línea - Ride online";
+
   const text = `Tucána | 
   Tu ride de ${ride.origin.city} a ${ride.destination.city} el ${dateFormat(
     ride.dateTimeOrigin,

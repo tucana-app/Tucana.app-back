@@ -6,9 +6,11 @@ module.exports = function becomeDriver(isAccepted, comment) {
 
   if (isAccepted) {
     subject = "Ya eres conductor - You are now a driver";
+
     text = `Tucána | 
     Felicidades, ahora eres parte de nuestra comunidad de conductores alrededor de Costa Rica. Ya puedes publicar viajes.
     Congratulations, you are now part of our community of drivers around Costa Rica. You can now publish rides.`;
+
     html = emailHtmlTemplate({
       titleEN: `Congratulations 🎉`,
       textEN: `<p>You are now part of our community of drivers around Costa Rica.</p>
@@ -19,9 +21,11 @@ module.exports = function becomeDriver(isAccepted, comment) {
     });
   } else {
     subject = "Tu solicitud ha sido rechazada - Your application was rejected";
+
     text = `Tucána | 
     Lamentamos comunicarle que su solicitud ha sido rechazada por nuestro equipo. Motivo: "${comment}". Por favor, vuelva a solicitarlo.
     We are sorry to tell you that your application was rejected by our team. Reason: "${comment}". Please re-apply`;
+
     html = emailHtmlTemplate({
       titleEN: `Your application was rejected`,
       textEN: `<p>We are sorry to tell you that your application was rejected by our team</p>

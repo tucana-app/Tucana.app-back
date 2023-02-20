@@ -3,6 +3,7 @@ const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function passwordUpdated() {
   const subject = "Contraseña actualizada - Password updated";
+
   const text = `Tucána | 
   Tu contraseña se ha actualizado correctamente. 
   Your password has been updated successfully.`;

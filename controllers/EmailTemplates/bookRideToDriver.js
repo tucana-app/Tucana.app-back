@@ -3,6 +3,7 @@ const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function bookRideToDriver(ride, passenger, seats) {
   const subject = "☀ Nueva reserva - New booking";
+
   const text = `Tucána | 
   El/la pasenjero/a ${
     passenger.firstName
@@ -11,8 +12,7 @@ module.exports = function bookRideToDriver(ride, passenger, seats) {
   } en el ${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
-  )}. Acepta o rechaza la reserva en la app.
-
+  )}. Acepta o rechaza la reserva en la app. 
   The passenger ${
     passenger.firstName
   } has requested <strong>${seats}</strong> seat(s) on your ride to ${

@@ -3,6 +3,7 @@ const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function bookingCanceledToDriver(booking, comment) {
   const subject = `❌ Reserva anulada - Booking canceled`;
+
   const text = `Tucána | 
   La reserva de ${booking.seatsBooked} asiento(s) ha sido cancelada por ${booking.User.firstName}. Motivo: "${comment}". Hemos vuelto a poner los asientos en línea para que la gente los reserve.
   The booking for ${booking.seatsBooked} seat(s) has been canceled by ${booking.User.firstName}. Reason: "${comment}". We've put the seats back online for people to book them.`;

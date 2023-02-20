@@ -3,7 +3,10 @@ const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function newMessage() {
   const subject = "Nuevo mensaje - New message";
-  const text = `Tucána | You have received a new message`;
+
+  const text = `Tucána | 
+  Tienes un nuevo mensaje. Vuelve a la aplicación para verlo. 
+  You have received a new message`;
 
   const html = emailHtmlTemplate({
     titleEN: `New message`,

@@ -3,6 +3,7 @@ const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function contactToUser(values) {
   const subject = `Mensaje recibido - Message received`;
+
   const text = `Tucána | 
   Hemos recibido su mensaje. Haremos todo lo posible para responderle lo antes posible. 
   Datos enviados:

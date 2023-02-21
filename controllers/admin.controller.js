@@ -976,4 +976,238 @@ module.exports = {
         res.status(400).json(errorMessage);
       });
   },
+
+  adminSingleUserAllBookingsMade(req, res) {
+    return Booking.findAll({
+      where: {
+        UserId: req.query.userId,
+      },
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+        {
+          model: Ride,
+        },
+        {
+          model: BookingStatus,
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminSingleDriverAllBookingsReceived(req, res) {
+    return Driver.findOne({
+      where: {
+        UserId: req.query.userId,
+      },
+    })
+      .then((driver) => {
+        if (driver) {
+          return Booking.findAll({
+            where: {
+              DriverId: driver.id,
+            },
+            include: [
+              {
+                model: User,
+                attributes: {
+                  exclude: [
+                    "biography",
+                    "password",
+                    "phoneNumber",
+                    "createdAt",
+                    "updatedAt",
+                  ],
+                },
+              },
+              {
+                model: Ride,
+              },
+              {
+                model: BookingStatus,
+              },
+            ],
+          })
+            .then((response) => {
+              // console.log(response);
+              res.status(200).json(response);
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res.status(400).json({ message: "The user isn't a driver" });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminSingleDriverAllRidesPublished(req, res) {
+    return Driver.findOne({
+      where: {
+        UserId: req.query.userId,
+      },
+    })
+      .then((driver) => {
+        if (driver) {
+          return Ride.findAll({
+            where: {
+              DriverId: driver.id,
+            },
+            include: [
+              {
+                model: RideStatus,
+              },
+            ],
+          })
+            .then((response) => {
+              // console.log(response);
+              res.status(200).json(response);
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res.status(400).json({ message: "The user isn't a driver" });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminListBookings(req, res) {
+    return Booking.findAll({
+      order: [["RideId", "DESC"]],
+      include: [
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+        {
+          model: Ride,
+        },
+        {
+          model: BookingStatus,
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminSingleBooking(req, res) {
+    return Booking.findOne({
+      where: {
+        id: req.query.bookingId,
+      },
+      include: [
+        {
+          model: Driver,
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: [
+                  "biography",
+                  "password",
+                  "phoneNumber",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+          ],
+        },
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+        {
+          model: BookingStatus,
+        },
+      ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
 };

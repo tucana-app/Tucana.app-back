@@ -107,8 +107,38 @@ module.exports = (app) => {
   );
 
   app.get(
+    "/api/admin/list-bookings",
+    [authJwt.verifyToken],
+    controller.adminListBookings
+  );
+
+  app.get(
+    "/api/admin/single-booking",
+    [authJwt.verifyToken],
+    controller.adminSingleBooking
+  );
+
+  app.get(
     "/api/admin/single-user",
     [authJwt.verifyToken],
     controller.adminSingleUser
+  );
+
+  app.get(
+    "/api/admin/single-user-all-bookings-made",
+    [authJwt.verifyToken],
+    controller.adminSingleUserAllBookingsMade
+  );
+
+  app.get(
+    "/api/admin/single-driver-all-rides-published",
+    [authJwt.verifyToken],
+    controller.adminSingleDriverAllRidesPublished
+  );
+
+  app.get(
+    "/api/admin/single-driver-all-bookings-received",
+    [authJwt.verifyToken],
+    controller.adminSingleDriverAllBookingsReceived
   );
 };

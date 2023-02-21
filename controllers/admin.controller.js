@@ -913,6 +913,7 @@ module.exports = {
       where: {
         ConversationId: req.query.conversationId,
       },
+      order: [["createdAt", "DESC"]],
       include: [
         {
           model: User,

@@ -1,5 +1,11 @@
 const path = require("path");
 const fileName = path.basename(__filename);
+const client = require("@mailchimp/mailchimp_marketing");
+
+client.setConfig({
+  apiKey: process.env.MAILCHIMP_API_KEY,
+  server: process.env.MAILCHIMP_SERVER,
+});
 
 const db = require("../models");
 const config = require("../config/user.config");
@@ -58,6 +64,21 @@ module.exports = {
     }
 
     const dob = new Date(birthYear, birthMonth - 1, birthDay);
+
+    (async () => {
+      const response = await client.lists
+        .addListMember(process.env.MAILCHIMP_LIST_ID, {
+          email_address: email,
+          merge_fields: {
+            FNAME: firstName,
+            LNAME: lastName,
+          },
+          status: "subscribed",
+        })
+        .catch((error) => {
+          consoleError(fileName, arguments.callee.name, Error().stack, error);
+        });
+    })();
 
     return User.create({
       firstName,

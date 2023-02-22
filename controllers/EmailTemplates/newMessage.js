@@ -1,14 +1,19 @@
 require("dotenv").config;
+const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function newMessage() {
-  const subject = "New Message | Tucána";
-  const text = `Tucána | You have received a new message`;
-  const html = `
-      <div>
-      <h1>Tucána</h1>
-      <p>You have received a new message</p>
-      </div>
-    `;
+  const subject = "Nuevo mensaje - New message";
+
+  const text = `Tucána | 
+  Tienes un nuevo mensaje. Vuelve a la aplicación para verlo. 
+  You have received a new message`;
+
+  const html = emailHtmlTemplate({
+    titleEN: `New message`,
+    textEN: `You have a new message. Go back to the app to see it.`,
+    titleES: `Nuevo mensaje`,
+    textES: `Tienes un nuevo mensaje. Vuelve a la aplicación para verlo.`,
+  });
 
   return { subject, text, html };
 };

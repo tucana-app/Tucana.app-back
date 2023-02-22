@@ -16,6 +16,7 @@ const {
   updateExperienceUser,
   pointsGrid,
   consoleError,
+  getYearsDiff,
 } = require("../helpers");
 
 const User = db.User;
@@ -40,8 +41,29 @@ const errorMessage = { message: "A problem occured with this request" };
 
 module.exports = {
   signup(req, res) {
-    const { firstName, lastName, email, phoneNumber, username, password } =
-      req.body.values;
+    const {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      username,
+      password,
+      birthDay,
+      birthMonth,
+      birthYear,
+    } = req.body.values;
+
+    if (
+      getYearsDiff(new Date(birthYear, birthMonth - 1, birthDay), new Date()) <
+      18
+    ) {
+      return res.status(403).json({
+        message: "You must be at least 18 to use Tucána",
+        flag: "UNDERAGED",
+      });
+    }
+
+    const dob = new Date(birthYear, birthMonth - 1, birthDay);
 
     (async () => {
       const response = await client.lists
@@ -61,10 +83,11 @@ module.exports = {
     return User.create({
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       phoneNumber,
       username: username.toLowerCase().replace(" ", ""),
       password: bcrypt.hashSync(password, 10),
+      dateOfBirth: dob,
     })
       .then((user) => {
         return ConfirmEmail.create({
@@ -382,9 +405,8 @@ module.exports = {
       .then((user) => {
         if (!user) {
           // Email not found
-          res.status(200).json({
-            message:
-              "If your email address exists, please verify your inbox for a password reset link email",
+          res.status(404).json({
+            message: "We couldn't find this email in our database",
           });
         } else {
           // Email found

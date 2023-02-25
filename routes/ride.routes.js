@@ -86,11 +86,7 @@ module.exports = (app) => {
     controller.completeRide
   );
 
-  app.get(
-    "/api/ride/nb-rides-online",
-    [authJwt.verifyToken],
-    controller.nbRidesOnline
-  );
+  app.get("/api/ride/rides-online", controller.ridesOnline);
 
   app.get("/api/ride/:rideId", [authJwt.verifyToken], controller.getRide);
 };

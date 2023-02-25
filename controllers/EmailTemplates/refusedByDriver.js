@@ -6,14 +6,14 @@ module.exports = function refusedByDriver(booking) {
 
   const text = `Tucána | 
   Has rechazado la reserva de ${booking.User.firstName} en tu ride de ${
-    booking.Ride.origin.city
-  } a ${booking.Ride.destination.city} (${dateFormat(
+    booking.Ride.origin.placeName
+  } a ${booking.Ride.destination.placeName} (${dateFormat(
     booking.Ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )})
   You have refused the booking of ${booking.User.firstName} on your ride from ${
-    booking.Ride.origin.city
-  } to ${booking.Ride.destination.city} (${dateFormat(
+    booking.Ride.origin.placeName
+  } to ${booking.Ride.destination.placeName} (${dateFormat(
     booking.Ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )})`;
@@ -22,14 +22,14 @@ module.exports = function refusedByDriver(booking) {
     titleEN: `You have refused a booking`,
     textEN: `<p>You have refused the booking of ${
       booking.User.firstName
-    } on your ride from ${booking.Ride.origin.city} to ${
-      booking.Ride.destination.city
+    } on your ride from ${booking.Ride.origin.placeName} to ${
+      booking.Ride.destination.placeName
     } (${dateFormat(booking.Ride.dateTimeOrigin, "dd/mm/yyyy")})</p>`,
     titleES: `Has rechazado una reserva`,
     textES: `<p>Has rechazado la reserva de ${
       booking.User.firstName
-    } en tu ride de ${booking.Ride.origin.city} a ${
-      booking.Ride.destination.city
+    } en tu ride de ${booking.Ride.origin.placeName} a ${
+      booking.Ride.destination.placeName
     } (${dateFormat(booking.Ride.dateTimeOrigin, "dd/mm/yyyy")})</p>.`,
   });
 

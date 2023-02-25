@@ -1210,4 +1210,117 @@ module.exports = {
         res.status(400).json(errorMessage);
       });
   },
+
+  adminGetRidesObjects(req, res) {
+    return Ride.findAll({
+      order: [["id", "ASC"]],
+    })
+      .then((response) => {
+        let obj = [];
+        if (req.query.type === "origin") {
+          response.map((ride) => obj.push({ id: ride.id, obj: ride.origin }));
+        } else if (req.query.type === "destination") {
+          response.map((ride) =>
+            obj.push({ id: ride.id, obj: ride.destination })
+          );
+        } else {
+          res.status(400).json({ message: "Not authorized" });
+        }
+        res.status(200).json(obj);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminChangeRideObject(req, res) {
+    const { rideId, location } = req.body;
+
+    function changeObjectKey(obj, oldKey, newKey) {
+      // Check if the old key exists in the object
+      if (obj.hasOwnProperty(oldKey)) {
+        // Create a new property with the new key and assign the value of the old key to it
+        obj[newKey] = obj[oldKey];
+        // Delete the old key
+        delete obj[oldKey];
+      }
+      // Return the updated object
+      return obj;
+    }
+
+    return Ride.findOne({
+      where: {
+        id: rideId,
+      },
+      order: [["id", "ASC"]],
+    })
+      .then((response) => {
+        if (location === "origin") {
+          let newObj = changeObjectKey(response.origin, "city", "placeName");
+          newObj = changeObjectKey(
+            response.origin,
+            "details",
+            "locationObject"
+          );
+          newObj = {
+            ...newObj,
+            country: "Costa Rica",
+            placeDetails: newObj.address,
+          };
+
+          return Ride.update(
+            {
+              origin: newObj,
+            },
+            {
+              where: {
+                id: rideId,
+              },
+            }
+          )
+            .then((response) => {
+              res.status(200).json({ message: "Done" });
+            })
+            .catch((err) => res.status(200).json(err));
+        } else if (location === "destination") {
+          let newObj = changeObjectKey(
+            response.destination,
+            "city",
+            "placeName"
+          );
+          newObj = changeObjectKey(
+            response.origin,
+            "details",
+            "locationObject"
+          );
+          newObj = {
+            ...newObj,
+            country: "Costa Rica",
+            placeDetails: newObj.address,
+          };
+
+          return Ride.update(
+            {
+              destination: newObj,
+            },
+            {
+              where: {
+                id: rideId,
+              },
+            }
+          )
+            .then((response) => {
+              res.status(200).json({ message: "Done" });
+            })
+            .catch((err) => res.status(200).json(err));
+        } else {
+          res.status(400).json({ message: "Not authorized" });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
 };

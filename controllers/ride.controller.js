@@ -193,15 +193,10 @@ module.exports = {
   },
 
   getFilteredRides(req, res) {
-    const {
-      originProvince,
-      originLat,
-      originLng,
-      destinationProvince,
-      destinationLat,
-      destinationLng,
-      date,
-    } = req.query;
+    const { origin, destination, date, seats } = req.query;
+
+    searchOrigin = JSON.parse(origin);
+    searchDestination = JSON.parse(destination);
 
     const datePlusOne = new Date(date);
     datePlusOne.setDate(datePlusOne.getDate() + 1);
@@ -251,27 +246,20 @@ module.exports = {
         // var distanceFromDestination = [];
 
         response.map((ride) => {
-          if (
-            ride.dataValues.origin.province === originProvince &&
-            ride.dataValues.destination.province === destinationProvince
-          ) {
-            ridesFound.push(ride);
+          arrayRidesOriginLatLng.push(
+            `${ride.dataValues.origin.latLng.lat},${ride.dataValues.origin.latLng.lng}`
+          );
 
-            arrayRidesOriginLatLng.push(
-              `${ride.dataValues.origin.latLng.lat},${ride.dataValues.origin.latLng.lng}`
-            );
-
-            arrayRidesDestinationLatLng.push(
-              `${ride.dataValues.destination.latLng.lat},${ride.dataValues.destination.latLng.lng}`
-            );
-          }
+          arrayRidesDestinationLatLng.push(
+            `${ride.dataValues.destination.latLng.lat},${ride.dataValues.destination.latLng.lng}`
+          );
         });
 
-        if (ridesFound.length) {
+        if (response.length) {
           (async function () {
             const promiseDistanceOrigin = distance
               .get({
-                origin: `${originLat},${originLng}`,
+                origin: `${searchOrigin.latLng.lat},${searchOrigin.latLng.lng}`,
                 destinations: arrayRidesOriginLatLng,
               })
               .then((data) => data)
@@ -282,7 +270,7 @@ module.exports = {
 
             const promiseDistanceDestination = distance
               .get({
-                origin: `${destinationLat},${destinationLng}`,
+                origin: `${searchDestination.latLng.lat},${searchDestination.latLng.lng}`,
                 destinations: arrayRidesDestinationLatLng,
               })
               .then((data) => data)
@@ -293,13 +281,26 @@ module.exports = {
 
             Promise.all([promiseDistanceOrigin, promiseDistanceDestination])
               .then((distances) => {
-                const ridesWithDistance = ridesFound.map((ride, index) => ({
-                  rideDetails: ride,
-                  distanceFromOrigin: distances[0],
-                  distanceFromDestination: distances[1],
-                }));
+                const ridesWithDistance = [];
 
-                res.status(200).json(ridesWithDistance);
+                response.map((ride, index) => {
+                  if (
+                    distances[0][index].distanceValue <= 20000 ||
+                    distances[1][index].distanceValue <= 20000
+                  ) {
+                    ridesWithDistance.push({
+                      rideDetails: ride,
+                      distanceFromOrigin: distances[0],
+                      distanceFromDestination: distances[1],
+                    });
+                  }
+                });
+
+                if (ridesWithDistance.length) {
+                  res.status(200).json(ridesWithDistance);
+                } else {
+                  res.status(200).json({});
+                }
               })
               .catch((error) => {
                 console.log("10", error);
@@ -1123,8 +1124,9 @@ module.exports = {
       });
   },
 
-  nbRidesOnline(req, res) {
+  ridesOnline(req, res) {
     return Ride.findAndCountAll({
+      order: [["dateTimeOrigin", "DESC"]],
       where: {
         [Op.and]: {
           dateTimeOrigin: {
@@ -1141,7 +1143,7 @@ module.exports = {
     })
       .then((response) => {
         // console.log(response);
-        res.status(200).json(response.count);
+        res.status(200).json(response);
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);

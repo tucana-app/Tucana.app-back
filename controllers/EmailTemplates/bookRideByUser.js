@@ -8,17 +8,16 @@ module.exports = function bookRideByUser(ride, seats) {
   Tu solicitud de reserva ha sido enviada a ${ride.Driver.User.firstName}. 
   Reservaste ${seats} asiento(s) en el Ride por ${
     ride.Driver.User.firstName
-  } de ${ride.origin.city} a ${ride.destination.city} el ${dateFormat(
+  } de ${ride.origin.placeName} a ${ride.destination.placeName} el ${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
   )} a las ${dateFormat(ride.dateTimeOrigin, "hh:mm TT")}. 
   Your booking request has been sent to ${ride.Driver.User.firstName}.
   You booked ${seats} seat(s) on the ride by ${
     ride.Driver.User.firstName
-  } from ${ride.origin.city} to ${ride.destination.city} on the ${dateFormat(
-    ride.dateTimeOrigin,
-    "dd/mm/yyyy"
-  )} at ${dateFormat(
+  } from ${ride.origin.placeName} to ${
+    ride.destination.placeName
+  } on the ${dateFormat(ride.dateTimeOrigin, "dd/mm/yyyy")} at ${dateFormat(
     ride.dateTimeOrigin,
     "hh:mm TT"
   )}. Please wait for an answer from the driver. Note that your seats are not guaranteed until the driver confirms your booking.`;
@@ -27,8 +26,8 @@ module.exports = function bookRideByUser(ride, seats) {
     titleEN: `Your booking request has been sent to ${ride.Driver.User.firstName}`,
     textEN: `<p>You booked <strong>${seats}</strong> seat(s) on the ride by <strong>${
       ride.Driver.User.firstName
-    }</strong> from <strong>${ride.origin.city}</strong> to <strong>${
-      ride.destination.city
+    }</strong> from <strong>${ride.origin.placeName}</strong> to <strong>${
+      ride.destination.placeName
     }</strong> on the <strong>${dateFormat(
       ride.dateTimeOrigin,
       "dd/mm/yyyy"
@@ -40,8 +39,8 @@ module.exports = function bookRideByUser(ride, seats) {
     titleES: `Tu solicitud de reserva ha sido enviada a ${ride.Driver.User.firstName}`,
     textES: `<p>Reservaste <strong>${seats}</strong> asiento(s) en el Ride por <strong>${
       ride.Driver.User.firstName
-    }</strong> de <strong>${ride.origin.city}</strong> a <strong>${
-      ride.destination.city
+    }</strong> de <strong>${ride.origin.placeName}</strong> a <strong>${
+      ride.destination.placeName
     }</strong> el <strong>${dateFormat(
       ride.dateTimeOrigin,
       "dd/mm/yyyy"

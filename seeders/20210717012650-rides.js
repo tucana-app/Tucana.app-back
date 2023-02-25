@@ -7,14 +7,16 @@ module.exports = {
       {
         DriverId: 3,
         origin: JSON.stringify({
-          city: "Sámara",
-          province: "Guanacaste",
+          placeName: "Sámara",
+          placeDetails: "Guanacaste Province, Sámara, Costa Rica",
           address: "Guanacaste Province, Sámara, Costa Rica",
+          province: "Guanacaste",
+          country: "Costa Rica",
           latLng: {
             lat: 9.8820222,
             lng: -85.5290361,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Sámara",
@@ -57,14 +59,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Tumbas",
-          province: "San José",
+          placeName: "Tumbas",
+          placeDetails: "Tumbas, San José Province, Pérez Zeledón, Costa Rica",
           address: "Tumbas, San José Province, Pérez Zeledón, Costa Rica",
+          province: "San José",
+          country: "Costa Rica",
           latLng: {
             lat: 9.2852104,
             lng: -83.8137418,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Pérez Zeledón",
@@ -137,14 +141,16 @@ module.exports = {
       {
         DriverId: 4,
         origin: JSON.stringify({
-          city: "Limon",
-          province: "Limón",
+          placeName: "Limon",
+          placeDetails: "Limón Province, Limon, Costa Rica",
           address: "Limón Province, Limon, Costa Rica",
+          province: "Limón",
+          country: "Costa Rica",
           latLng: {
             lat: 9.9913106,
             lng: -83.04150779999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Limon",
@@ -187,14 +193,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Puerto Viejo de Talamanca",
-          province: "Limón",
+          placeName: "Puerto Viejo de Talamanca",
+          placeDetails: "Limón Province, Puerto Viejo de Talamanca, Costa Rica",
           address: "Limón Province, Puerto Viejo de Talamanca, Costa Rica",
+          province: "Limón",
+          country: "Costa Rica",
           latLng: {
             lat: 9.6540146,
             lng: -82.75494119999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Puerto Viejo de Talamanca",
@@ -267,14 +275,16 @@ module.exports = {
       {
         DriverId: 1,
         origin: JSON.stringify({
-          city: "Uvita",
-          province: "Puntarenas",
+          placeName: "Uvita",
+          placeDetails: "Puntarenas Province, Uvita, Costa Rica",
           address: "Puntarenas Province, Uvita, Costa Rica",
+          province: "Puntarenas",
+          country: "Costa Rica",
           latLng: {
             lat: 9.163500899999999,
             lng: -83.7358514,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Uvita",
@@ -317,14 +327,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Barucito",
-          province: "San José",
+          placeName: "Barucito",
+          placeDetails: "San José Province, Barucito, Costa Rica",
           address: "San José Province, Barucito, Costa Rica",
+          province: "San José",
+          country: "Costa Rica",
           latLng: {
             lat: 9.247745,
             lng: -83.80459599999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Barucito",
@@ -390,15 +402,16 @@ module.exports = {
       {
         DriverId: 1,
         origin: JSON.stringify({
-          city: "Dominical",
-          province: "Puntarenas",
-          address:
+          placeName: "Dominical",
+          placeDetails:
             "Dominical, Puntarenas Province, Savegre de Aguirre, Costa Rica",
+          province: "Puntarenas",
+          country: "Costa Rica",
           latLng: {
             lat: 9.252431099999999,
             lng: -83.85923059999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Dominical",
@@ -447,14 +460,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Nosara",
-          province: "Guanacaste",
+          placeName: "Nosara",
+          placeDetails: "Guanacaste Province, Nosara, Costa Rica",
           address: "Guanacaste Province, Nosara, Costa Rica",
+          province: "Guanacaste",
+          country: "Costa Rica",
           latLng: {
             lat: 9.9797332,
             lng: -85.64862509999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Nosara",
@@ -525,14 +540,16 @@ module.exports = {
       {
         DriverId: 2,
         origin: JSON.stringify({
-          city: "Tamarindo",
-          province: "Guanacaste",
+          placeName: "Tamarindo",
+          placeDetails: "Guanacaste Province, Tamarindo, Costa Rica",
           address: "Guanacaste Province, Tamarindo, Costa Rica",
+          province: "Guanacaste",
+          country: "Costa Rica",
           latLng: {
             lat: 10.2992746,
             lng: -85.83710579999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Tamarindo",
@@ -575,14 +592,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Liberia",
-          province: "Guanacaste",
+          placeName: "Liberia",
+          placeDetails: "Guanacaste Province, Liberia, Costa Rica",
           address: "Guanacaste Province, Liberia, Costa Rica",
+          province: "Guanacaste",
+          country: "Costa Rica",
           latLng: {
             lat: 10.6345964,
             lng: -85.4406747,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Liberia",
@@ -654,14 +673,16 @@ module.exports = {
       {
         DriverId: 4,
         origin: JSON.stringify({
-          city: "Escazu",
-          province: "San José",
+          placeName: "Escazu",
+          placeDetails: "San José Province, Escazu, Costa Rica",
           address: "San José Province, Escazu, Costa Rica",
+          province: "San José",
+          country: "Costa Rica",
           latLng: {
             lat: 9.920695,
             lng: -84.14615189999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Escazu",
@@ -704,14 +725,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Puerto Carrillo",
-          province: "Guanacaste",
+          placeName: "Puerto Carrillo",
+          placeDetails: "Guanacaste Province, Carrillo, Costa Rica",
           address: "Guanacaste Province, Carrillo, Costa Rica",
+          province: "Guanacaste",
+          country: "Costa Rica",
           latLng: {
             lat: 9.868858,
             lng: -85.48138349999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Puerto Carrillo",
@@ -784,14 +807,16 @@ module.exports = {
       {
         DriverId: 2,
         origin: JSON.stringify({
-          city: "Tarcoles",
-          province: "Puntarenas",
+          placeName: "Tarcoles",
+          placeDetails: "Puntarenas Province, Tarcoles, Costa Rica",
           address: "Puntarenas Province, Tarcoles, Costa Rica",
+          province: "Puntarenas",
+          country: "Costa Rica",
           latLng: {
             lat: 9.7730312,
             lng: -84.6295991,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Tarcoles",
@@ -834,14 +859,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Santa Teresa Beach",
-          province: "Puntarenas",
+          placeName: "Santa Teresa Beach",
+          placeDetails: "Santa Teresa Beach, Puntarenas Province, Costa Rica",
           address: "Santa Teresa Beach, Puntarenas Province, Costa Rica",
+          province: "Puntarenas",
+          country: "Costa Rica",
           latLng: {
             lat: 9.6463176,
             lng: -85.1673785,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Santa Teresa Beach",
@@ -914,14 +941,16 @@ module.exports = {
       {
         DriverId: 3,
         origin: JSON.stringify({
-          city: "Jaco",
-          province: "Puntarenas",
+          placeName: "Jaco",
+          placeDetails: "Puntarenas Province, Jaco, Costa Rica",
           address: "Puntarenas Province, Jaco, Costa Rica",
+          province: "Puntarenas",
+          country: "Costa Rica",
           latLng: {
             lat: 9.6202396,
             lng: -84.6217487,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Jaco",
@@ -964,14 +993,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Quepos",
-          province: "Puntarenas",
+          placeName: "Quepos",
+          placeDetails: "Puntarenas Province, Quepos, Costa Rica",
           address: "Puntarenas Province, Quepos, Costa Rica",
+          province: "Puntarenas",
+          country: "Costa Rica",
           latLng: {
             lat: 9.431868099999999,
             lng: -84.16190759999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Quepos",
@@ -1043,14 +1074,16 @@ module.exports = {
       {
         DriverId: 2,
         origin: JSON.stringify({
-          city: "La Fortuna",
-          province: "Alajuela",
+          placeName: "La Fortuna",
+          placeDetails: "Alajuela Province, La Fortuna, Costa Rica",
           address: "Alajuela Province, La Fortuna, Costa Rica",
+          province: "Alajuela",
+          country: "Costa Rica",
           latLng: {
             lat: 10.4678335,
             lng: -84.64268059999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "La Fortuna",
@@ -1093,14 +1126,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Santo Domingo",
-          province: "Heredia",
+          placeName: "Santo Domingo",
+          placeDetails: "Heredia Province, Santo Domingo, Costa Rica",
           address: "Heredia Province, Santo Domingo, Costa Rica",
+          province: "Heredia",
+          country: "Costa Rica",
           latLng: {
             lat: 9.980723399999999,
             lng: -84.0909289,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Santo Domingo",
@@ -1172,14 +1207,16 @@ module.exports = {
       {
         DriverId: 1,
         origin: JSON.stringify({
-          city: "La Fortuna",
-          province: "Alajuela",
+          placeName: "La Fortuna",
+          placeDetails: "Alajuela Province, La Fortuna, Costa Rica",
           address: "Alajuela Province, La Fortuna, Costa Rica",
+          province: "Alajuela",
+          country: "Costa Rica",
           latLng: {
             lat: 10.4678335,
             lng: -84.64268059999999,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "La Fortuna",
@@ -1222,14 +1259,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Santo Domingo",
-          province: "Heredia",
+          placeName: "Santo Domingo",
+          placeDetails: "Heredia Province, Santo Domingo, Costa Rica",
           address: "Heredia Province, Santo Domingo, Costa Rica",
+          province: "Heredia",
+          country: "Costa Rica",
           latLng: {
             lat: 9.980723399999999,
             lng: -84.0909289,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Santo Domingo",
@@ -1301,14 +1340,16 @@ module.exports = {
       {
         DriverId: 3,
         origin: JSON.stringify({
-          city: "Tarcoles",
-          province: "Puntarenas",
+          placeName: "Tarcoles",
+          placeDetails: "Puntarenas Province, Tarcoles, Costa Rica",
           address: "Puntarenas Province, Tarcoles, Costa Rica",
+          province: "Puntarenas",
+          country: "Costa Rica",
           latLng: {
             lat: 9.7730312,
             lng: -84.6295991,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Tarcoles",
@@ -1351,14 +1392,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Santa Teresa Beach",
-          province: "Puntarenas",
+          placeName: "Santa Teresa Beach",
+          placeDetails: "Santa Teresa Beach, Puntarenas Province, Costa Rica",
           address: "Santa Teresa Beach, Puntarenas Province, Costa Rica",
+          province: "Puntarenas",
+          country: "Costa Rica",
           latLng: {
             lat: 9.6463176,
             lng: -85.1673785,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Santa Teresa Beach",
@@ -1431,14 +1474,16 @@ module.exports = {
       {
         DriverId: 3,
         origin: JSON.stringify({
-          city: "Sámara",
-          province: "Guanacaste",
+          placeName: "Sámara",
+          placeDetails: "Guanacaste Province, Sámara, Costa Rica",
           address: "Guanacaste Province, Sámara, Costa Rica",
+          province: "Guanacaste",
+          country: "Costa Rica",
           latLng: {
             lat: 9.8820222,
             lng: -85.5290361,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Sámara",
@@ -1481,14 +1526,16 @@ module.exports = {
           },
         }),
         destination: JSON.stringify({
-          city: "Tumbas",
-          province: "San José",
+          placeName: "Tumbas",
+          placeDetails: "Tumbas, San José Province, Pérez Zeledón, Costa Rica",
           address: "Tumbas, San José Province, Pérez Zeledón, Costa Rica",
+          province: "San José",
+          country: "Costa Rica",
           latLng: {
             lat: 9.2852104,
             lng: -83.8137418,
           },
-          details: {
+          locationObject: {
             address_components: [
               {
                 long_name: "Pérez Zeledón",

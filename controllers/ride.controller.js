@@ -12,6 +12,7 @@ const {
   pointsGrid,
   consoleError,
   changeTimezone,
+  calculateDistance,
 } = require("../helpers");
 
 const Ride = db.Ride;
@@ -240,75 +241,100 @@ module.exports = {
       .then((response) => {
         // console.log(response);
 
-        var arrayRidesOriginLatLng = [];
-        var arrayRidesDestinationLatLng = [];
-
-        response.map((ride) => {
-          arrayRidesOriginLatLng.push(
-            `${ride.dataValues.origin.latLng.lat},${ride.dataValues.origin.latLng.lng}`
-          );
-
-          arrayRidesDestinationLatLng.push(
-            `${ride.dataValues.destination.latLng.lat},${ride.dataValues.destination.latLng.lng}`
-          );
-        });
-
         if (response.length) {
-          (async function () {
-            const promiseDistanceOrigin = distance
-              .get({
-                origin: `${searchOrigin.latLng.lat},${searchOrigin.latLng.lng}`,
-                destinations: arrayRidesOriginLatLng,
-              })
-              .then((data) => data)
-              .catch((error) => {
-                console.log("5", error);
-                res.status(400).json(errorMessage);
-              });
+          var arrayRidesOriginLatLng = [];
+          var arrayRidesDestinationLatLng = [];
+          let ridesToCalculate = []; // rides we need to calculate the real distance from and to
 
-            const promiseDistanceDestination = distance
-              .get({
-                origin: `${searchDestination.latLng.lat},${searchDestination.latLng.lng}`,
-                destinations: arrayRidesDestinationLatLng,
-              })
-              .then((data) => data)
-              .catch((error) => {
-                console.log("6", error);
-                res.status(400).json(errorMessage);
-              });
+          // If the origin or destination is located within a 50km radius
+          // we add them to a queue where we calculate the true distance with a car
+          // allows to save some unecessary API calls
+          response.map((ride, index) => {
+            if (
+              calculateDistance(
+                ride.dataValues.origin.latLng.lat,
+                ride.dataValues.origin.latLng.lng,
+                searchOrigin.latLng.lat,
+                searchOrigin.latLng.lng
+              ) <= 50000 &&
+              calculateDistance(
+                ride.dataValues.destination.latLng.lat,
+                ride.dataValues.destination.latLng.lng,
+                searchDestination.latLng.lat,
+                searchDestination.latLng.lng
+              ) <= 50000
+            ) {
+              ridesToCalculate.push(ride);
 
-            Promise.all([promiseDistanceOrigin, promiseDistanceDestination])
-              .then((distances) => {
-                const ridesWithDistance = [];
+              arrayRidesOriginLatLng.push(
+                `${ride.dataValues.origin.latLng.lat},${ride.dataValues.origin.latLng.lng}`
+              );
 
-                const distancesOrigin = distances[0];
-                const distancesDestination = distances[1];
+              arrayRidesDestinationLatLng.push(
+                `${ride.dataValues.destination.latLng.lat},${ride.dataValues.destination.latLng.lng}`
+              );
+            }
+          });
 
-                response.map((ride, index) => {
-                  if (
-                    distancesOrigin[index].distanceValue <= 20000 &&
-                    distancesDestination[index].distanceValue <= 20000
-                  ) {
-                    ridesWithDistance.push({
-                      rideDetails: ride,
-                      distanceFromOrigin: distances[0][index],
-                      distanceFromDestination: distances[1][index],
-                    });
-                  }
+          if (ridesToCalculate.length) {
+            (async function () {
+              const promiseDistanceOrigin = distance
+                .get({
+                  origin: `${searchOrigin.latLng.lat},${searchOrigin.latLng.lng}`,
+                  destinations: arrayRidesOriginLatLng,
+                })
+                .then((data) => data)
+                .catch((error) => {
+                  console.log("5", error);
+                  res.status(400).json(errorMessage);
                 });
 
-                if (ridesWithDistance.length) {
-                  // res.status(200).json(ridesWithDistance);
-                  res.status(200).json(ridesWithDistance);
-                } else {
-                  res.status(200).json({});
-                }
-              })
-              .catch((error) => {
-                console.log("10", error);
-                res.status(400).json(errorMessage);
-              });
-          })();
+              const promiseDistanceDestination = distance
+                .get({
+                  origin: `${searchDestination.latLng.lat},${searchDestination.latLng.lng}`,
+                  destinations: arrayRidesDestinationLatLng,
+                })
+                .then((data) => data)
+                .catch((error) => {
+                  console.log("6", error);
+                  res.status(400).json(errorMessage);
+                });
+
+              Promise.all([promiseDistanceOrigin, promiseDistanceDestination])
+                .then((distances) => {
+                  const ridesWithDistance = [];
+                  const distancesOrigin = distances[0];
+                  const distancesDestination = distances[1];
+
+                  ridesToCalculate.map((ride, index) => {
+                    if (
+                      distancesOrigin[index].distanceValue <= 30000 &&
+                      distancesDestination[index].distanceValue <= 30000
+                    ) {
+                      ridesWithDistance.push({
+                        rideDetails: ride,
+                        distanceFromOrigin: distancesOrigin[index],
+                        distanceFromDestination: distancesDestination[index],
+                      });
+                    }
+                  });
+
+                  if (ridesWithDistance.length) {
+                    // res.status(200).json(ridesWithDistance);
+                    res.status(200).json(ridesWithDistance);
+                  } else {
+                    res.status(200).json({});
+                  }
+                })
+                .catch((error) => {
+                  console.log("10", error);
+                  res.status(400).json(errorMessage);
+                });
+            })();
+          } else {
+            // No rides found under 50km radius
+            res.status(200).json({});
+          }
         } else {
           // No rides found
           res.status(200).json({});

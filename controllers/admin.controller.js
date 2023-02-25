@@ -1293,7 +1293,7 @@ module.exports = {
             "placeName"
           );
           newObj = changeObjectKey(
-            response.origin,
+            response.destination,
             "details",
             "locationObject"
           );

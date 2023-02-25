@@ -286,7 +286,7 @@ module.exports = {
 
                 response.map((ride, index) => {
                   if (
-                    distancesOrigin[index].distanceValue <= 20000 ||
+                    distancesOrigin[index].distanceValue <= 20000 &&
                     distancesDestination[index].distanceValue <= 20000
                   ) {
                     ridesWithDistance.push({

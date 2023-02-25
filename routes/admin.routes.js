@@ -141,16 +141,4 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     controller.adminSingleDriverAllBookingsReceived
   );
-
-  app.get(
-    "/api/admin/get-rides-objects",
-    [authJwt.verifyToken],
-    controller.adminGetRidesObjects
-  );
-
-  app.put(
-    "/api/admin/change-rides-object",
-    [authJwt.verifyToken],
-    controller.adminChangeRideObject
-  );
 };

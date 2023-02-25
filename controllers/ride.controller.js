@@ -36,6 +36,7 @@ module.exports = {
       where: {
         DriverId: req.query.driverId,
       },
+      order: [["dateTimeOrigin", "ASC"]],
       include: [
         {
           model: RideStatus,
@@ -239,11 +240,8 @@ module.exports = {
       .then((response) => {
         // console.log(response);
 
-        var ridesFound = [];
         var arrayRidesOriginLatLng = [];
         var arrayRidesDestinationLatLng = [];
-        // var distanceFromOrigin = [];
-        // var distanceFromDestination = [];
 
         response.map((ride) => {
           arrayRidesOriginLatLng.push(
@@ -283,20 +281,24 @@ module.exports = {
               .then((distances) => {
                 const ridesWithDistance = [];
 
+                const distancesOrigin = distances[0];
+                const distancesDestination = distances[1];
+
                 response.map((ride, index) => {
                   if (
-                    distances[0][index].distanceValue <= 20000 ||
-                    distances[1][index].distanceValue <= 20000
+                    distancesOrigin[index].distanceValue <= 20000 ||
+                    distancesDestination[index].distanceValue <= 20000
                   ) {
                     ridesWithDistance.push({
                       rideDetails: ride,
-                      distanceFromOrigin: distances[0],
-                      distanceFromDestination: distances[1],
+                      distanceFromOrigin: distances[0][index],
+                      distanceFromDestination: distances[1][index],
                     });
                   }
                 });
 
                 if (ridesWithDistance.length) {
+                  // res.status(200).json(ridesWithDistance);
                   res.status(200).json(ridesWithDistance);
                 } else {
                   res.status(200).json({});

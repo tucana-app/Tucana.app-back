@@ -982,6 +982,7 @@ module.exports = {
       where: {
         UserId: req.query.userId,
       },
+      order: [["id", "DESC"]],
       include: [
         {
           model: User,
@@ -1025,6 +1026,7 @@ module.exports = {
             where: {
               DriverId: driver.id,
             },
+            order: [["id", "DESC"]],
             include: [
               {
                 model: User,
@@ -1081,6 +1083,7 @@ module.exports = {
             where: {
               DriverId: driver.id,
             },
+            order: [["id", "DESC"]],
             include: [
               {
                 model: RideStatus,

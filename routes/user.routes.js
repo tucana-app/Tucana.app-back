@@ -115,11 +115,7 @@ module.exports = function (app) {
     controller.isAccountClosed
   );
 
-  app.get(
-    "/api/profile/:username",
-    [authJwt.verifyToken],
-    controller.getPublicProfile
-  );
+  app.get("/api/profile/:username", controller.getPublicProfile);
 
   app.get(
     "/api/driver/get-earnings",

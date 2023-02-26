@@ -20,11 +20,7 @@ module.exports = (app) => {
     controller.getDriverRides
   );
 
-  app.get(
-    "/api/ride/filtered-rides",
-    [authJwt.verifyToken],
-    controller.getFilteredRides
-  );
+  app.get("/api/ride/filtered-rides", controller.getFilteredRides);
 
   app.get("/api/ride/get-eta", [authJwt.verifyToken], controller.getETA);
 
@@ -88,5 +84,5 @@ module.exports = (app) => {
 
   app.get("/api/ride/rides-online", controller.ridesOnline);
 
-  app.get("/api/ride/:rideId", [authJwt.verifyToken], controller.getRide);
+  app.get("/api/ride/:rideId", controller.getRide);
 };

@@ -25,6 +25,7 @@ const Rating = db.Rating;
 const Booking = db.Booking;
 const BookingStatus = db.BookingStatus;
 const Op = db.Sequelize.Op;
+const Sequelize = db.Sequelize;
 
 var distance = require("hpsweb-google-distance");
 distance.apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -208,6 +209,7 @@ module.exports = {
         seatsLeft: {
           [Op.gt]: 0,
         },
+        RideStatusId: 1,
         dateTimeOrigin: {
           [Op.between]: [date, datePlusOne],
         },
@@ -1172,6 +1174,184 @@ module.exports = {
       .then((response) => {
         // console.log(response);
         res.status(200).json(response);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  cancelRide(req, res) {
+    const { driverId, rideId, reason } = req.body;
+
+    return Driver.findOne({
+      where: {
+        id: driverId,
+      },
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              "lastName",
+              "biography",
+              "password",
+              "phoneNumber",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      ],
+    })
+      .then((driver) => {
+        // console.log(driver);
+
+        if (driver) {
+          return Ride.update(
+            {
+              comment: `Reason for cancellation: ${reason}`,
+              RideStatusId: 4,
+              seatsLeft: 0,
+            },
+            {
+              where: {
+                id: rideId,
+              },
+            }
+          )
+            .then((response) => {
+              // console.log(response);
+
+              // Look for bookings for this rides
+              return Booking.findAll({
+                where: {
+                  RideId: rideId,
+                },
+                include: [
+                  {
+                    model: Ride,
+                  },
+                  {
+                    model: User,
+                    attributes: {
+                      exclude: [
+                        "lastName",
+                        "biography",
+                        "password",
+                        "phoneNumber",
+                        "createdAt",
+                        "updatedAt",
+                      ],
+                    },
+                  },
+                ],
+              })
+                .then((bookings) => {
+                  // console.log(bookings);
+
+                  // If bookings were made for this ride
+                  // Cancel all bookings, and send email to the user
+                  bookings.length &&
+                    bookings.map((booking, index) => {
+                      if (booking.BookingStatusId <= 3) {
+                        return Booking.update(
+                          {
+                            BookingStatusId: 5,
+                            commentDriver: `Canceled by Driver. Reason: ${reason}`,
+                          },
+                          {
+                            where: {
+                              id: booking.id,
+                            },
+                          }
+                        ).catch((error) => {
+                          consoleError(
+                            fileName,
+                            arguments.callee.name,
+                            Error().stack,
+                            error
+                          );
+
+                          res.status(400).json(errorMessage);
+                        });
+                      }
+
+                      if (booking.BookingStatusId < 2) {
+                        // If the booking is pending or seen
+                        // Send email. Ride not charged
+
+                        emailController.sendEmail(
+                          booking.User,
+                          emailTemplates.cancelRideToUser(
+                            booking.Ride,
+                            driver.User,
+                            reason
+                          )
+                        );
+                      } else if (booking.BookingStatusId === 3) {
+                        // If the booking is accepted
+                        // Send email. Ride refunded
+
+                        emailController.sendEmail(
+                          booking.User,
+                          emailTemplates.cancelRideToUser(
+                            booking.Ride,
+                            driver.User,
+                            reason
+                          )
+                        );
+                      }
+                    });
+
+                  // Email the driver
+                  return Ride.findOne({
+                    where: {
+                      id: rideId,
+                    },
+                  })
+                    .then((ride) => {
+                      // console.log(ride);
+                      emailController.sendEmail(
+                        driver.User,
+                        emailTemplates.cancelRideToDriver(ride, reason)
+                      );
+
+                      res.status(200).json({ flag: "SUCCESS" });
+                    })
+                    .catch((error) => {
+                      consoleError(
+                        fileName,
+                        arguments.callee.name,
+                        Error().stack,
+                        error
+                      );
+                    });
+                })
+                .catch((error) => {
+                  consoleError(
+                    fileName,
+                    arguments.callee.name,
+                    Error().stack,
+                    error
+                  );
+                  res.status(400).json(errorMessage);
+                });
+            })
+            .catch((error) => {
+              consoleError(
+                fileName,
+                arguments.callee.name,
+                Error().stack,
+                error
+              );
+              res.status(400).json(errorMessage);
+            });
+        } else {
+          res
+            .status(403)
+            .json({ message: "You are not the driver for this ride" });
+        }
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);

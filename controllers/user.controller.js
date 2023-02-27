@@ -114,10 +114,6 @@ module.exports = {
                       user,
                       emailTemplates.confirmSignup(confirmEmailLine.UUID)
                     );
-
-                    emailController.sendEmailToAdmin(
-                      emailTemplates.admin_newUser()
-                    );
                   })
                   .catch((error) => {
                     consoleError(
@@ -192,6 +188,10 @@ module.exports = {
                       emailController.sendEmail(
                         user,
                         emailTemplates.signupConfirmed(user)
+                      );
+
+                      emailController.sendEmailToAdmin(
+                        emailTemplates.admin_newUser()
                       );
 
                       return ConfirmEmail.destroy({

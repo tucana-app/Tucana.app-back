@@ -84,5 +84,11 @@ module.exports = (app) => {
 
   app.get("/api/ride/rides-online", controller.ridesOnline);
 
+  app.put(
+    "/api/ride/cancel-ride",
+    [authJwt.verifyToken],
+    controller.cancelRide
+  );
+
   app.get("/api/ride/:rideId", controller.getRide);
 };

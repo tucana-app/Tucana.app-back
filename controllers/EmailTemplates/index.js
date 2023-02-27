@@ -24,6 +24,8 @@ const beforeRide = require("./beforeRide");
 const afterRide = require("./afterRide");
 const bookingCanceledToUser = require("./bookingCanceledToUser");
 const bookingCanceledToDriver = require("./bookingCanceledToDriver");
+const cancelRideToDriver = require("./cancelRideToDriver");
+const cancelRideToUser = require("./cancelRideToUser");
 
 // Admin emails
 const admin_newUser = require("./admin_newUser");
@@ -60,6 +62,8 @@ module.exports = {
   afterRide,
   bookingCanceledToUser,
   bookingCanceledToDriver,
+  cancelRideToDriver,
+  cancelRideToUser,
 
   // Admin emails
   admin_newUser,

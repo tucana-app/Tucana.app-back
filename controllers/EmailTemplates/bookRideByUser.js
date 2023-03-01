@@ -11,15 +11,15 @@ module.exports = function bookRideByUser(ride, seats) {
   } de ${ride.origin.placeName} a ${ride.destination.placeName} el ${dateFormat(
     ride.dateTimeOrigin,
     "dd/mm/yyyy"
-  )} a las ${dateFormat(ride.dateTimeOrigin, "hh:mm TT")}. 
+  )}. 
   Your booking request has been sent to ${ride.Driver.User.firstName}.
   You booked ${seats} seat(s) on the ride by ${
     ride.Driver.User.firstName
   } from ${ride.origin.placeName} to ${
     ride.destination.placeName
-  } on the ${dateFormat(ride.dateTimeOrigin, "dd/mm/yyyy")} at ${dateFormat(
+  } on the ${dateFormat(
     ride.dateTimeOrigin,
-    "hh:mm TT"
+    "dd/mm/yyyy"
   )}. Please wait for an answer from the driver. Note that your seats are not guaranteed until the driver confirms your booking.`;
 
   const html = emailHtmlTemplate({
@@ -31,9 +31,6 @@ module.exports = function bookRideByUser(ride, seats) {
     }</strong> on the <strong>${dateFormat(
       ride.dateTimeOrigin,
       "dd/mm/yyyy"
-    )}</strong> at <strong>${dateFormat(
-      ride.dateTimeOrigin,
-      "hh:mm TT"
     )}</strong></p>
     <p>Please wait for an answer from the driver. Note that your seats are not guaranteed until the driver confirms your booking.</p>`,
     titleES: `Tu solicitud de reserva ha sido enviada a ${ride.Driver.User.firstName}`,
@@ -44,10 +41,7 @@ module.exports = function bookRideByUser(ride, seats) {
     }</strong> el <strong>${dateFormat(
       ride.dateTimeOrigin,
       "dd/mm/yyyy"
-    )}</strong> a las <strong>${dateFormat(
-      ride.dateTimeOrigin,
-      "hh:mm TT"
-    )}</strong></p>
+    )}</strong>.</p>
     <p>Espere la respuesta del conductor. Tenga en cuenta que sus asientos no están garantizados hasta que el conductor confirme su reserva.</p>`,
   });
 

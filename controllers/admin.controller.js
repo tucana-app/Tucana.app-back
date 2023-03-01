@@ -35,6 +35,7 @@ const Conversation = db.Conversation;
 const Message = db.Message;
 const MessageStatus = db.MessageStatus;
 const ExperienceUser = db.ExperienceUser;
+const RideFeedback = db.RideFeedback;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -1203,6 +1204,20 @@ module.exports = {
           model: BookingStatus,
         },
       ],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  adminListFeedbacks(req, res) {
+    return RideFeedback.findAll({
+      order: [["isConfirmed", "ASC"]],
     })
       .then((response) => {
         // console.log(response);

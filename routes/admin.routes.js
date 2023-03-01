@@ -141,4 +141,10 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     controller.adminSingleDriverAllBookingsReceived
   );
+
+  app.get(
+    "/api/admin/list-feedbacks",
+    [authJwt.verifyToken],
+    controller.adminListFeedbacks
+  );
 };

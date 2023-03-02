@@ -36,6 +36,7 @@ const Message = db.Message;
 const MessageStatus = db.MessageStatus;
 const ExperienceUser = db.ExperienceUser;
 const RideFeedback = db.RideFeedback;
+const ConfirmEmail = db.ConfirmEmail;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -1211,7 +1212,7 @@ module.exports = {
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(errorMessage);
+        res.status(400).json(error);
       });
   },
 
@@ -1225,7 +1226,38 @@ module.exports = {
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(errorMessage);
+        res.status(400).json(error);
+      });
+  },
+
+  adminResendConfirmation(req, res) {
+    const { userId } = req.body;
+
+    return ConfirmEmail.findOne({
+      where: {
+        UserId: userId,
+      },
+      include: [
+        {
+          model: User,
+        },
+      ],
+    })
+      .then((confirm) => {
+        if (confirm) {
+          emailController.sendEmail(
+            confirm.User,
+            emailTemplates.confirmSignup(confirm.UUID)
+          );
+        } else {
+          res
+            .status(400)
+            .json({ message: "No confirmation found for this user" });
+        }
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(error);
       });
   },
 };

@@ -147,4 +147,10 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     controller.adminListFeedbacks
   );
+
+  app.post(
+    "/api/admin/resend-confirmation",
+    [authJwt.verifyToken],
+    controller.adminResendConfirmation
+  );
 };

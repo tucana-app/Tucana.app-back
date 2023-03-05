@@ -4,47 +4,47 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert("admins_roles", [
       {
-        // adminId: 1 = Administrator
-        adminId: 1,
-        roleId: 1,
+        // AdminId: 1 = Administrator
+        AdminId: 1,
+        RoleId: 1,
       },
       {
-        adminId: 1,
-        roleId: 2,
+        AdminId: 1,
+        RoleId: 2,
       },
       {
-        adminId: 1,
-        roleId: 3,
+        AdminId: 1,
+        RoleId: 3,
       },
       {
-        adminId: 1,
-        roleId: 4,
+        AdminId: 1,
+        RoleId: 4,
       },
       {
-        // adminId: 2 = Moderator
-        adminId: 2,
-        roleId: 2,
+        // AdminId: 2 = Moderator
+        AdminId: 2,
+        RoleId: 2,
       },
       {
-        // adminId: 3 = Support
-        adminId: 3,
-        roleId: 3,
+        // AdminId: 3 = Support
+        AdminId: 3,
+        RoleId: 3,
       },
       {
-        // adminId: 4 = Sales
-        adminId: 4,
-        roleId: 4,
+        // AdminId: 4 = Sales
+        AdminId: 4,
+        RoleId: 4,
       },
     ]);
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete("admins_roles", {
-      adminId: {
-        // adminId: 1 = Administrator
-        // adminId: 2 = Moderator
-        // adminId: 3 = Support
-        // adminId: 4 = Sales
+      AdminId: {
+        // AdminId: 1 = Administrator
+        // AdminId: 2 = Moderator
+        // AdminId: 3 = Support
+        // AdminId: 4 = Sales
         [Sequelize.Op.in]: [1, 2, 3, 4],
       },
     });

@@ -9,10 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Admin.belongsToMany(models.Role, {
-        through: "admins_roles",
+        through: models.admins_roles,
       });
 
       Admin.hasMany(models.admin_VerifDriverApplication, {
+        onDelete: "NO ACTION",
+      });
+
+      Admin.hasMany(models.admin_VerifDriverRating, {
+        onDelete: "NO ACTION",
+      });
+
+      Admin.hasMany(models.admin_VerifPassengerRating, {
         onDelete: "NO ACTION",
       });
     }

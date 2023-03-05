@@ -147,4 +147,16 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     controller.adminListFeedbacks
   );
+
+  app.get(
+    "/api/admin/list-admins",
+    [authJwt.verifyToken],
+    controller.adminListAdmins
+  );
+
+  app.post(
+    "/api/admin/create-admin",
+    [authJwt.verifyToken],
+    controller.createAdmin
+  );
 };

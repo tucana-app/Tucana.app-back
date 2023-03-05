@@ -9,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Role.belongsToMany(models.Admin, {
-        through: "admins_roles",
+        through: models.admins_roles,
       });
     }
   }
   Role.init(
     {
-      name: DataTypes.STRING,
+      code: DataTypes.STRING,
     },
     {
       sequelize,

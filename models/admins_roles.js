@@ -8,18 +8,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      admins_roles.belongsTo(models.User, {
-        through: "admins_roles",
+      admins_roles.belongsTo(models.Admin, {
+        onDelete: "NO ACTION",
       });
+
       admins_roles.belongsTo(models.Role, {
-        through: "admins_roles",
+        onDelete: "NO ACTION",
       });
     }
   }
   admins_roles.init(
     {
-      adminId: DataTypes.INTEGER,
-      roleId: DataTypes.INTEGER,
+      AdminId: DataTypes.INTEGER,
+      RoleId: DataTypes.INTEGER,
     },
     {
       sequelize,

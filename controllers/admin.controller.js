@@ -16,6 +16,8 @@ const {
 } = require("../helpers");
 
 const Admin = db.Admin;
+const Role = db.Role;
+const admins_roles = db.admins_roles;
 const User = db.User;
 const Ride = db.Ride;
 const Driver = db.Driver;
@@ -45,13 +47,15 @@ const errorMessage = { message: "A problem occured with this request" };
 
 module.exports = {
   adminSignin(req, res) {
+    let { credential, password } = req.body.formLogin;
+
     return Admin.findOne({
       where: {
         [Op.or]: {
-          username: req.body.formLogin.credential,
-          username: req.body.formLogin.credential.toLowerCase(),
-          email: req.body.formLogin.credential,
-          email: req.body.formLogin.credential.toLowerCase(),
+          username: credential,
+          username: credential.toLowerCase(),
+          email: credential,
+          email: credential.toLowerCase(),
         },
       },
     })
@@ -59,33 +63,58 @@ module.exports = {
         if (!admin) {
           res
             .status(404)
-            .send({ message: "User not found", flag: "GENERAL_ERROR" });
+            .send({ message: "User not found", flag: "USER_NOT_FOUND" });
         } else {
-          var passwordIsValid = bcrypt.compareSync(
-            req.body.formLogin.password,
-            admin.password
-          );
+          var passwordIsValid = bcrypt.compareSync(password, admin.password);
 
           if (!passwordIsValid) {
             return res.status(401).send({
               accessToken: null,
               message: "Invalid Password",
+              flag: "INVALID_PASSWORD",
             });
+          } else {
+            var token = jwt.sign({ id: admin.id }, config.secret, {
+              expiresIn: 86400, // 1 day
+            });
+
+            return admins_roles
+              .findAll({
+                where: {
+                  AdminId: admin.id,
+                },
+                include: [
+                  {
+                    model: Role,
+                    attributes: {
+                      exclude: ["code", "createdAt", "updatedAt"],
+                    },
+                  },
+                ],
+                attributes: {
+                  exclude: ["AdminId", "RoleId", "createdAt", "updatedAt"],
+                },
+              })
+              .then((roles) => {
+                const rolesArray = [];
+                roles.map((role) => rolesArray.push(role.Role.id));
+
+                res.status(200).send({
+                  roles: rolesArray,
+                  adminId: admin.id,
+                  firstName: admin.firstName,
+                  lastName: admin.lastName,
+                  username: admin.username,
+                  email: admin.email,
+                  createdAt: admin.createdAt,
+                  accessToken: token,
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+                res.status(400).json(err);
+              });
           }
-
-          var token = jwt.sign({ id: admin.id }, config.secret, {
-            expiresIn: 86400, // 1 day
-          });
-
-          res.status(200).send({
-            adminId: admin.id,
-            firstName: admin.firstName,
-            lastName: admin.lastName,
-            username: admin.username,
-            email: admin.email,
-            createdAt: admin.createdAt,
-            accessToken: token,
-          });
         }
       })
       .catch((error) => {
@@ -1227,6 +1256,48 @@ module.exports = {
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
         res.status(400).json(error);
+      });
+  },
+
+  adminListAdmins(req, res) {
+    return Admin.findAll({
+      order: [["id", "DESC"]],
+    })
+      .then((response) => {
+        // console.log(response);
+        res.status(200).json(response);
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
+      });
+  },
+
+  createAdmin(req, res) {
+    const { values } = req.body;
+
+    return Admin.create({
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email.toLowerCase(),
+      username: values.username.toLowerCase().replace(" ", ""),
+      password: bcrypt.hashSync(values.password, 10),
+    })
+      .then((admin) => {
+        // console.log(response);
+
+        values.roles.map((role) => {
+          return admins_roles.create({
+            AdminId: admin.id,
+            RoleId: role,
+          });
+        });
+
+        res.status(200).json({});
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(errorMessage);
       });
   },
 };

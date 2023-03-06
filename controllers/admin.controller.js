@@ -58,6 +58,14 @@ module.exports = {
           email: credential.toLowerCase(),
         },
       },
+      include: [
+        {
+          model: Role,
+          attributes: {
+            exclude: ["code", "createdAt", "updatedAt"],
+          },
+        },
+      ],
     })
       .then((admin) => {
         if (!admin) {
@@ -78,42 +86,21 @@ module.exports = {
               expiresIn: 86400, // 1 day
             });
 
-            return admins_roles
-              .findAll({
-                where: {
-                  AdminId: admin.id,
-                },
-                include: [
-                  {
-                    model: Role,
-                    attributes: {
-                      exclude: ["code", "createdAt", "updatedAt"],
-                    },
-                  },
-                ],
-                attributes: {
-                  exclude: ["AdminId", "RoleId", "createdAt", "updatedAt"],
-                },
-              })
-              .then((roles) => {
-                const rolesArray = [];
-                roles.map((role) => rolesArray.push(role.Role.id));
+            const roles = [];
+            admin.Roles.map((role) => {
+              roles.push(role.id);
+            });
 
-                res.status(200).send({
-                  roles: rolesArray,
-                  adminId: admin.id,
-                  firstName: admin.firstName,
-                  lastName: admin.lastName,
-                  username: admin.username,
-                  email: admin.email,
-                  createdAt: admin.createdAt,
-                  accessToken: token,
-                });
-              })
-              .catch((err) => {
-                console.log(err);
-                res.status(400).json(err);
-              });
+            res.status(200).send({
+              adminId: admin.id,
+              firstName: admin.firstName,
+              lastName: admin.lastName,
+              username: admin.username,
+              email: admin.email,
+              createdAt: admin.createdAt,
+              roles,
+              accessToken: token,
+            });
           }
         }
       })
@@ -1262,10 +1249,21 @@ module.exports = {
   adminListAdmins(req, res) {
     return Admin.findAll({
       order: [["id", "DESC"]],
+      include: [
+        {
+          model: Role,
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+        },
+      ],
+      attributes: {
+        exclude: ["password"],
+      },
     })
-      .then((response) => {
-        // console.log(response);
-        res.status(200).json(response);
+      .then((admins) => {
+        // console.log(admins);
+        res.status(200).json(admins);
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);

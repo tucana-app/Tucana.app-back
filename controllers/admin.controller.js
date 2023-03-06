@@ -1295,7 +1295,7 @@ module.exports = {
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(errorMessage);
+        res.status(400).json(error);
       });
   },
 };

@@ -914,6 +914,9 @@ module.exports = {
             ],
           },
         },
+        {
+          model: Message,
+        },
       ],
     })
       .then((response) => {

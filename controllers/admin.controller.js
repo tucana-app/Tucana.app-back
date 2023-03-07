@@ -1166,6 +1166,11 @@ module.exports = {
         },
         {
           model: Ride,
+          include: [
+            {
+              model: RideStatus,
+            },
+          ],
         },
         {
           model: BookingStatus,
@@ -1291,7 +1296,34 @@ module.exports = {
           });
         });
 
-        res.status(200).json({});
+        res.status(200).json({ message: "OK", flag: "SUCCESS" });
+      })
+      .catch((error) => {
+        consoleError(fileName, arguments.callee.name, Error().stack, error);
+        res.status(400).json(error);
+      });
+  },
+
+  updateDob(req, res) {
+    const { userId, dob } = req.body.values;
+    console.log(userId, dob);
+
+    return User.update(
+      {
+        dateOfBirth: new Date(dob),
+      },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    )
+      .then((response) => {
+        if (response[0] !== 0) {
+          res.status(200).json({ message: "OK", flag: "SUCCESS" });
+        } else {
+          res.status(400).json({ message: "NOK", flag: "ERROR" });
+        }
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);

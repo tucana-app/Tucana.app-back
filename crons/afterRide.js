@@ -54,9 +54,7 @@ module.exports = function afterRide() {
     ],
   })
     .then((rides) => {
-      // console.log(rides);
-
-      if (rides) {
+      if (rides.length) {
         rides.map((ride) => {
           // We update the ride to "Done"
           return Ride.update(
@@ -69,15 +67,18 @@ module.exports = function afterRide() {
               },
             }
           )
-            .then(() => {
-              emailController.sendEmail(
-                ride.Driver.User,
-                emailTemplates.afterRide(ride)
-              );
-
+            .then((response) => {
               // If booking were made
               if (ride.seatsAvailable !== ride.seatsLeft) {
-                // The ride has had bookings, next step is to get the accepted booking (3)
+                // The ride had bookings
+                // Get the accepted booking (StatusId === 3)
+
+                // First, send an email to the driver
+                emailController.sendEmail(
+                  ride.Driver.User,
+                  emailTemplates.afterRide(ride)
+                );
+
                 return Booking.findAll({
                   where: {
                     RideId: ride.id,

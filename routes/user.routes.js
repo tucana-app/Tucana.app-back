@@ -18,12 +18,6 @@ module.exports = function (app) {
     controller.setUserAvatar
   );
 
-  app.post(
-    "/api/user/set-user-first-setup",
-    [authJwt.verifyToken],
-    controller.setUserFirstSetup
-  );
-
   app.get(
     "/api/user/send-email-forgot-password",
     controller.sendForgotPasswordEmail

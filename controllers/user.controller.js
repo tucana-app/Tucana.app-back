@@ -378,27 +378,6 @@ module.exports = {
       });
   },
 
-  setUserFirstSetup(req, res) {
-    const { user } = req.body;
-
-    return User.update(
-      {
-        firstSetUp: false,
-      },
-      {
-        where: {
-          id: user.id,
-        },
-      }
-    )
-      .then((response) => {
-        res.status(200).send({ message: "OK", flag: "SUCCESS" });
-      })
-      .catch((error) => {
-        res.status(400).json({ message: "NOK", flag: "FAIL" });
-      });
-  },
-
   sendForgotPasswordEmail(req, res) {
     return User.findOne({
       where: {
@@ -1220,7 +1199,6 @@ module.exports = {
           "password",
           "phoneNumber",
           "phoneConfirmed",
-          "firstSetUp",
           "email",
           "emailConfirmed",
           "isClosed",
@@ -1268,7 +1246,6 @@ module.exports = {
           "password",
           "phoneNumber",
           "phoneConfirmed",
-          "firstSetUp",
           "email",
           "emailConfirmed",
           "isClosed",
@@ -1335,7 +1312,6 @@ module.exports = {
           "password",
           "phoneNumber",
           "phoneConfirmed",
-          "firstSetUp",
           "email",
           "emailConfirmed",
           "isClosed",

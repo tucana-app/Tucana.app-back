@@ -1,4 +1,5 @@
 require("dotenv").config;
+const dateFormat = require("dateformat");
 const emailHtmlTemplate = require("./emailHtmlTemplate");
 
 module.exports = function afterRide(ride) {

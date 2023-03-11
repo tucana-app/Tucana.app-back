@@ -16,7 +16,6 @@ module.exports = {
         phoneNumber: "+50625213256",
         emailConfirmed: true,
         phoneConfirmed: false,
-        firstSetUp: false,
         avatar: "toucan",
       },
       {
@@ -28,7 +27,6 @@ module.exports = {
         phoneNumber: "+33605040302",
         emailConfirmed: true,
         phoneConfirmed: false,
-        firstSetUp: false,
         avatar: "sloth",
       },
       {
@@ -40,7 +38,6 @@ module.exports = {
         phoneNumber: "+50680706050",
         emailConfirmed: true,
         phoneConfirmed: false,
-        firstSetUp: false,
         avatar: "toucan",
       },
       {
@@ -52,7 +49,6 @@ module.exports = {
         phoneNumber: "+50687956231",
         emailConfirmed: true,
         phoneConfirmed: false,
-        firstSetUp: false,
         avatar: "dolphin",
       },
       {

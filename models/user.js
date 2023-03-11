@@ -61,7 +61,6 @@ module.exports = (sequelize, DataTypes) => {
       phoneNumber: DataTypes.STRING,
       emailConfirmed: DataTypes.BOOLEAN,
       phoneConfirmed: DataTypes.BOOLEAN,
-      firstSetUp: DataTypes.BOOLEAN,
       avatar: DataTypes.STRING,
       isClosed: DataTypes.BOOLEAN,
       isClosedDate: DataTypes.DATE,

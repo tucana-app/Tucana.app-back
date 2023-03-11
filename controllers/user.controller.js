@@ -94,7 +94,6 @@ module.exports = {
     })
       .then((user) => {
         return ConfirmEmail.create({
-          id: user.id,
           UserId: user.id,
           UUID: uuidv4(),
         })
@@ -111,7 +110,9 @@ module.exports = {
                 })
                   .then((response) => {
                     // console.log(response)
-                    res.status(201).send({ message: "Sign up successful" });
+                    res.status(201).send({
+                      email: user.email,
+                    });
 
                     emailController.sendEmail(
                       user,
@@ -142,7 +143,9 @@ module.exports = {
           })
           .catch((error) => {
             consoleError(fileName, arguments.callee.name, Error().stack, error);
-            res.status(400).send({ message: "An error occured" });
+            res
+              .status(400)
+              .send({ message: "An error occured (Confirm email)" });
           });
       })
       .catch((error) => {
@@ -664,16 +667,16 @@ module.exports = {
                   )
                 );
               } else {
+                emailController.sendEmail(
+                  user,
+                  emailTemplates.confirmSignup(confirmation.UUID)
+                );
+
                 res.status(200).send({
                   message:
                     "We have resent you the confirmation link over email",
                   flag: "SUCCESS",
                 });
-
-                emailController.sendEmail(
-                  user,
-                  emailTemplates.confirmSignup(confirmation.UUID)
-                );
               }
             })
             .catch((error) => {

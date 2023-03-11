@@ -159,4 +159,10 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     controller.createAdmin
   );
+
+  app.post(
+    "/api/admin/edit-user-email",
+    [authJwt.verifyToken],
+    controller.editUserEmail
+  );
 };

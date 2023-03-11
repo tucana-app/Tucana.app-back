@@ -17,7 +17,7 @@ module.exports = {
       },
       {
         key: "SEATS_MAX",
-        value: "3",
+        value: "6",
       },
     ]);
   },

@@ -42,6 +42,7 @@ const ConfirmEmail = db.ConfirmEmail;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { v4: uuidv4 } = require("uuid");
 
 const errorMessage = { message: "A problem occured with this request" };
 
@@ -117,9 +118,9 @@ module.exports = {
     return User.findAll({
       order: [["id", "DESC"]],
     })
-      .then((response) => {
-        // console.log(response);
-        res.status(200).json(response);
+      .then((users) => {
+        // console.log(users);
+        res.status(200).json(users);
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
@@ -986,11 +987,14 @@ module.exports = {
         {
           model: ExperienceUser,
         },
+        {
+          model: ConfirmEmail,
+        },
       ],
     })
-      .then((response) => {
-        // console.log(response);
-        res.status(200).json(response);
+      .then((user) => {
+        // console.log(user);
+        res.status(200).json(user);
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
@@ -1299,7 +1303,7 @@ module.exports = {
           });
         });
 
-        res.status(200).json({ message: "OK", flag: "SUCCESS" });
+        res.status(200).json({ flag: "SUCCESS" });
       })
       .catch((error) => {
         consoleError(fileName, arguments.callee.name, Error().stack, error);
@@ -1307,30 +1311,93 @@ module.exports = {
       });
   },
 
-  updateDob(req, res) {
-    const { userId, dob } = req.body.values;
-    console.log(userId, dob);
+  editUserEmail(req, res) {
+    const { userId, email } = req.body;
 
-    return User.update(
-      {
-        dateOfBirth: new Date(dob),
+    return User.findOne({
+      where: {
+        email: email,
       },
-      {
-        where: {
-          id: userId,
-        },
+    }).then((userEmail) => {
+      if (userEmail) {
+        res
+          .status(400)
+          .json({ message: "Email already in use", flag: "EMAIL_ALREAD_USED" });
+      } else {
+        return User.findOne({
+          where: {
+            id: userId,
+          },
+        })
+          .then((user) => {
+            return User.update(
+              {
+                email: email.toLowerCase(),
+                emailConfirmed: false,
+              },
+              {
+                where: {
+                  id: userId,
+                },
+              }
+            )
+              .then((response) => {
+                if (response[0] !== 0) {
+                  ConfirmEmail.destroy({
+                    where: {
+                      UserId: userId,
+                    },
+                  });
+
+                  return ConfirmEmail.create({
+                    UserId: user.id,
+                    UUID: uuidv4(),
+                  })
+                    .then((confirmEmailLine) => {
+                      const newUser = {
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email,
+                      };
+
+                      emailController.sendEmail(
+                        newUser,
+                        emailTemplates.confirmSignup(confirmEmailLine.UUID)
+                      );
+
+                      res
+                        .status(200)
+                        .json({ message: "Done", flag: "SUCCESS" });
+                    })
+                    .catch((error) => {
+                      consoleError(
+                        fileName,
+                        arguments.callee.name,
+                        Error().stack,
+                        error
+                      );
+                      res.status(400).json(error);
+                    });
+                } else {
+                  res.status(400).json({ message: "NOK", flag: "ERROR" });
+                }
+              })
+              .catch((error) => {
+                consoleError(
+                  fileName,
+                  arguments.callee.name,
+                  Error().stack,
+                  error
+                );
+                res.status(400).json(error);
+              });
+          })
+          .catch((error) => {
+            consoleError(fileName, arguments.callee.name, Error().stack, error);
+            res.status(400).json(error);
+          });
       }
-    )
-      .then((response) => {
-        if (response[0] !== 0) {
-          res.status(200).json({ message: "OK", flag: "SUCCESS" });
-        } else {
-          res.status(400).json({ message: "NOK", flag: "ERROR" });
-        }
-      })
-      .catch((error) => {
-        consoleError(fileName, arguments.callee.name, Error().stack, error);
-        res.status(400).json(error);
-      });
+    });
   },
 };

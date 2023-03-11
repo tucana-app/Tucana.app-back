@@ -397,73 +397,55 @@ checkDuplicate = (req, res, next) => {
           message: "Username already in use",
         });
       } else {
-        // Username in Admin
-        return Admin.findOne({
+        // Email
+        return User.findOne({
           where: {
-            username,
+            email: email,
           },
         })
-          .then((admin) => {
-            if (admin) {
-              res.status(400).send({
-                message: "Username already in use",
-              });
+          .then((user) => {
+            if (user) {
+              // Email already exist, maybe user hasn't confirmed
+
+              if (user.emailConfirmed) {
+                // Email already confirmed, so is already in use
+
+                res.status(400).send({
+                  message: "Email already in use",
+                  flag: "CONFIRMED",
+                });
+              } else {
+                // Email already confirmed, so is already in use
+                res.status(403).send({
+                  message: "Email already in use, but not confirmed yet",
+                  flag: "NOT_CONFIRMED",
+                  userId: user.id,
+                });
+              }
             } else {
-              // Email
+              // Phone number
               return User.findOne({
                 where: {
-                  email: email,
+                  phoneNumber,
                 },
               })
-                .then((user) => {
-                  if (user) {
-                    // Email already exist, maybe user hasn't confirmed
+                .then((phoneNumber) => {
+                  if (phoneNumber) {
+                    res.status(400).send({
+                      message: "Phone number already in use",
+                    });
+                  } else {
+                    let found = arrayUserReserved.find(
+                      (usrnm) => usrnm === username
+                    );
 
-                    if (user.emailConfirmed) {
-                      // Email already confirmed, so is already in use
-
+                    if (found) {
                       res.status(400).send({
-                        message: "Email already in use",
-                        flag: "CONFIRMED",
+                        message: "Choose another username",
                       });
                     } else {
-                      // Email already confirmed, so is already in use
-                      res.status(403).send({
-                        message: "Email already in use, but not confirmed yet",
-                        flag: "NOT_CONFIRMED",
-                        userId: user.id,
-                      });
+                      next();
                     }
-                  } else {
-                    // Phone number
-                    return User.findOne({
-                      where: {
-                        phoneNumber,
-                      },
-                    })
-                      .then((phoneNumber) => {
-                        if (phoneNumber) {
-                          res.status(400).send({
-                            message: "Phone number already in use",
-                          });
-                        } else {
-                          let found = arrayUserReserved.find(
-                            (usrnm) => usrnm === username
-                          );
-
-                          if (found) {
-                            res.status(400).send({
-                              message: "Choose another username",
-                            });
-                          } else {
-                            next();
-                          }
-                        }
-                      })
-                      .catch((error) => {
-                        consoleError(fileName, arguments.callee.name, error);
-                        res.status(400).send({ message: error.message });
-                      });
                   }
                 })
                 .catch((error) => {

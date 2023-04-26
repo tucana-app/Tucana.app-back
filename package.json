@@ -4,7 +4,8 @@
   "description": "Tucána | Back-end",
   "private": false,
   "engines": {
-    "node": "10.x"
+    "node": "v18.15.0",
+    "npm": "9.6.4"
   },
   "scripts": {
     "start": "node server",

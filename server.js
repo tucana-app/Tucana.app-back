@@ -50,7 +50,8 @@ if (!isDev && cluster.isMaster) {
   require("./routes/global.routes")(app);
 
   // Crons
-  require("./crons");
+  // Disabling cron jobs
+  // require("./crons");
 
   app.all("*", function (req, res) {
     res.setHeader(
